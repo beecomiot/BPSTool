@@ -18,8 +18,12 @@ namespace BPSTool
         private const string STR_COMM_ERR = "通信错误";
         private const string STR_NEWEST_VERSION = "已经是最新版本";
         private const string STR_NEW_VERSION_CHECK = "检测到新版：";
+        private const string STR_BUTTON_CONNECT = "连接";
+        private const string STR_BUTTON_DISCONNECT = "断开";
         private const string STR_TT_DEBUG_SEND = "仅支持16进制发送，例如“BB CC 00 01 00 01 00 02”";
         private const string STR_TT_DEBUG_ENABLE = "使能串口发送/接收调试";
+        private const string STR_TT_BLE_NAME = "最长20字节";
+        
 
         public const uint BPSTOOL_VERSION_MAIN = 1;
         public const uint BPSTOOL_VERSION_SUB = 0;
@@ -30,8 +34,7 @@ namespace BPSTool
         private DelUpdateUI_VV DelUpdateChecker;
 
         private Updater UpdateChecker;
-
-        
+        private UartMng uartMng;
 
         public MainForm()
         {
@@ -48,6 +51,34 @@ namespace BPSTool
 
             /** append version info to title */
             this.Text += "-V" + BPSTOOL_VERSION_MAIN + "." + BPSTOOL_VERSION_SUB + "." + BPSTOOL_VERSION_PATCH;
+
+            uartMng = new UartMng();
+            RefreshUartList();
+            if (comboBoxUart.Items.Count > 0)
+            {
+                comboBoxUart.SelectedIndex = 0;
+            }
+        }
+
+        private void RefreshUartList()
+        {
+            string currentPortTmp = null;
+            if(comboBoxUart.Items.Count > 0)
+            {
+                currentPortTmp = (string)comboBoxUart.SelectedItem; ;
+            }
+
+            uartMng.RefreshPortList();
+            comboBoxUart.Items.Clear();
+
+            foreach (string port in uartMng.PortList)
+            {
+                comboBoxUart.Items.Add(port);
+                if(null != currentPortTmp && port.Equals(currentPortTmp))
+                {
+                    comboBoxUart.SelectedIndex = comboBoxUart.Items.Count - 1;
+                }
+            }
         }
 
         public void BpsToolCallback(DelUpdateUI_VV del_vv)
@@ -267,6 +298,46 @@ namespace BPSTool
         private void label5_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBoxUart_MouseHover(object sender, EventArgs e)
+        {
+            RefreshUartList();
+
+        }
+
+        private void buttonUartLink_Click(object sender, EventArgs e)
+        {
+            if(uartMng.IsOpen())
+            {
+                uartMng.Close();
+                buttonUartLink.Text = STR_BUTTON_CONNECT;
+                comboBoxUart.Enabled = true;
+            }
+            else
+            {
+                try
+                {
+                    if (uartMng.Open((string)comboBoxUart.SelectedItem))
+                    {
+                        buttonUartLink.Text = STR_BUTTON_DISCONNECT;
+                        comboBoxUart.Enabled = false;
+                    }
+                } 
+                catch(Exception ex)
+                {
+                    uartMng.Close();
+                    comboBoxUart.Enabled = true;
+                    buttonUartLink.Text = STR_BUTTON_CONNECT;
+                }
+            }
+        }
+
+        private void textBox3_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip p = new ToolTip();
+            p.ShowAlways = true;
+            p.SetToolTip(this.textBoxDebugSend, STR_TT_BLE_NAME);
         }
     }
 }

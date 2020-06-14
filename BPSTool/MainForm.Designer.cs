@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.buttonCheckVersion = new System.Windows.Forms.Button();
             this.linkLabelVersionUpdate = new System.Windows.Forms.LinkLabel();
@@ -65,6 +66,8 @@
             this.splitContainerDebugSend = new System.Windows.Forms.SplitContainer();
             this.textBoxDebugSend = new System.Windows.Forms.TextBox();
             this.buttonDebugSend = new System.Windows.Forms.Button();
+            this.serialPortBPS = new System.IO.Ports.SerialPort(this.components);
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).BeginInit();
             this.splitContainerTop1Title.Panel1.SuspendLayout();
             this.splitContainerTop1Title.Panel2.SuspendLayout();
@@ -339,6 +342,7 @@
             this.textBox3.Size = new System.Drawing.Size(100, 30);
             this.textBox3.TabIndex = 4;
             this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            this.textBox3.MouseHover += new System.EventHandler(this.textBox3_MouseHover);
             // 
             // label4
             // 
@@ -411,9 +415,11 @@
             this.buttonUartLink.TabIndex = 5;
             this.buttonUartLink.Text = "连接";
             this.buttonUartLink.UseVisualStyleBackColor = true;
+            this.buttonUartLink.Click += new System.EventHandler(this.buttonUartLink_Click);
             // 
             // buttonSearch
             // 
+            this.buttonSearch.Enabled = false;
             this.buttonSearch.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.buttonSearch.Location = new System.Drawing.Point(20, 126);
             this.buttonSearch.Name = "buttonSearch";
@@ -429,16 +435,21 @@
             this.comboBoxBaudrate.Name = "comboBoxBaudrate";
             this.comboBoxBaudrate.Size = new System.Drawing.Size(142, 23);
             this.comboBoxBaudrate.TabIndex = 3;
+            this.comboBoxBaudrate.Text = "9600";
             this.comboBoxBaudrate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxBaudrate_KeyPress);
             // 
             // comboBoxUart
             // 
             this.comboBoxUart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxUart.FormattingEnabled = true;
+            this.comboBoxUart.Items.AddRange(new object[] {
+            "abc",
+            "efg"});
             this.comboBoxUart.Location = new System.Drawing.Point(109, 23);
             this.comboBoxUart.Name = "comboBoxUart";
             this.comboBoxUart.Size = new System.Drawing.Size(142, 23);
             this.comboBoxUart.TabIndex = 2;
+            this.comboBoxUart.MouseHover += new System.EventHandler(this.comboBoxUart_MouseHover);
             // 
             // labelBaudrate
             // 
@@ -528,6 +539,11 @@
             this.buttonDebugSend.UseVisualStyleBackColor = true;
             this.buttonDebugSend.MouseHover += new System.EventHandler(this.buttonDebugSend_MouseHover);
             // 
+            // serialPortBPS
+            // 
+            this.serialPortBPS.ReadTimeout = 500;
+            this.serialPortBPS.WriteTimeout = 500;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -606,6 +622,8 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label5;
+        private System.IO.Ports.SerialPort serialPortBPS;
+        private System.IO.Ports.SerialPort serialPort1;
     }
 }
 
