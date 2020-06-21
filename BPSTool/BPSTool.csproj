@@ -51,6 +51,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,13 +61,15 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Winista.HtmlParser, Version=1.8.0.0, Culture=neutral">
-      <HintPath>..\packages\Winista.HtmlParser.1.8.0\lib\Winista.HtmlParser.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BPSPacket\BPSPacketBaudrate.cs" />
     <Compile Include="BPSPacket\BPSPacketCommTest.cs" />
     <Compile Include="BPSPacket\BaseBPSPacket.cs" />
+    <Compile Include="BPSPacket\BPSPacketName.cs" />
+    <Compile Include="BPSPacket\BPSPacketReset.cs" />
+    <Compile Include="BPSPacket\BPSPacketRestoreFac.cs" />
+    <Compile Include="BPSPacket\BPSPacketSysPara.cs" />
     <Compile Include="BPSPacket\BpsUtils.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -91,6 +94,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="BPSTool.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

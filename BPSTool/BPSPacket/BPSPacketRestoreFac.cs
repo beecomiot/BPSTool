@@ -5,13 +5,13 @@ using System.Text;
 
 namespace BPSTool.BPSPacket
 {
-    class BPSPacketCommTest : BaseBPSPacket
+    class BPSPacketRestoreFac : BaseBPSPacket
     {
-        public const byte REQUEST_CMD = 0x00;
-        public const byte RESPONSE_CMD = 0x01;
+        public const byte REQUEST_CMD = 0x10;
+        public const byte RESPONSE_CMD = 0x11;
 
-        private byte deviceType;
-        public byte DeviceType { get => deviceType; set => deviceType = value; }
+        private static byte[] safeWord = { 0xCB, 0xCB };
+        private byte responseCode;
 
         public override byte RequestCmd { get => REQUEST_CMD; }
 
@@ -26,8 +26,7 @@ namespace BPSTool.BPSPacket
             sendBuffer.Add(RequestCmd);
 
             ///** pack request data */
-            //deviceType = BpsUtils.DEVICE_TYPE_C;
-            //sendBuffer.Add(deviceType);
+            sendBuffer.AddRange(safeWord);
 
             /** pack remain length */
             int remainLen = PackRemainLen();
@@ -35,37 +34,32 @@ namespace BPSTool.BPSPacket
             /** pack checksum */
             Byte checksum = CalcChecksum();
             sendBuffer.Add(checksum);
-
         }
 
         public override bool RequestParse(ref List<byte> request)
         {
-            bool ret = true;
-
-            try
-            {
-                int remainLen = ParseRemainLen(ref request);
-                deviceType = request[DataIndex];
-            }
-            catch(Exception e)
-            {
-                ret = false;
-            }
-
-            return ret;
+            throw new NotImplementedException();
         }
 
         public override void ResponseAssemble()
         {
-            PackHeader();
-            /** TODO: test response logic */
-            int remainLen = PackRemainLen();
-            Byte checksum = CalcChecksum();
+            throw new NotImplementedException();
         }
 
         public override bool ResponseParse(ref List<byte> response)
         {
             bool ret = true;
+
+            int dataIndex = BpsUtils.DATA_INDEX + 1;
+
+            try
+            {
+                responseCode = response[dataIndex++];
+            }
+            catch (Exception e)
+            {
+                ret = false;
+            }
 
             return ret;
         }

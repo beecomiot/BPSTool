@@ -10,17 +10,18 @@ namespace BPSTool
     {
         public const int DEF_BAUDRATE = 9600;
 
-        private System.IO.Ports.SerialPort serialPort;
+        public System.IO.Ports.SerialPort serialPort;
         private int currentPort;
         private List<String> portList;
         private int baudrate;
         private bool disposed;
+        private MainForm form;
 
         public int Baudrate { get => baudrate; set => baudrate = value; }
         public List<string> PortList { get => portList; }
         public int CurrentPort { get => currentPort; set => currentPort = value; }
 
-        public UartMng()
+        public UartMng(MainForm f)
         {
             serialPort = new System.IO.Ports.SerialPort();
             baudrate = DEF_BAUDRATE;
@@ -35,6 +36,7 @@ namespace BPSTool
                 SetCurrentPort(-1);
             }
             disposed = false;
+            form = f;
         }
 
         public bool IsCommPortValid(string port)
@@ -114,7 +116,7 @@ namespace BPSTool
 
                 // 串口名
                 serialPort.PortName = port;
-                // 波特率 115200
+                // 波特率 9600
                 serialPort.BaudRate = baudrate;
                 // 数据位为 8 位
                 serialPort.DataBits = 8;
@@ -170,24 +172,33 @@ namespace BPSTool
             return ret;
         }
 
-        private void ReadCallback(SerialDataReceivedEventHandler callback)
+        public void ReadCallback(SerialDataReceivedEventHandler callback)
         {
             this.serialPort.DataReceived += callback;
         }
 
-        private void ReadCallbackClear(SerialDataReceivedEventHandler callback)
+        public void ReadCallbackClear(SerialDataReceivedEventHandler callback)
         {
             this.serialPort.DataReceived -= callback;
         }
 
-        private void ErrorCallback(SerialErrorReceivedEventHandler callback)
+        public void ErrorCallback(SerialErrorReceivedEventHandler callback)
         {
             this.serialPort.ErrorReceived += callback;
         }
 
-        private void ErrorCallbackClear(SerialErrorReceivedEventHandler callback)
+        public void ErrorCallbackClear(SerialErrorReceivedEventHandler callback)
         {
             this.serialPort.ErrorReceived -= callback;
+        }
+        public void PinChangedCallback(SerialPinChangedEventHandler callback)
+        {
+            this.serialPort.PinChanged += callback;
+        }
+
+        public void PinChangedCallbackClear(SerialPinChangedEventHandler callback)
+        {
+            this.serialPort.PinChanged -= callback;
         }
     }
 }

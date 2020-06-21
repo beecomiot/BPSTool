@@ -6,10 +6,6 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Winista.Text.HtmlParser;
-using Winista.Text.HtmlParser.Filters;
-using Winista.Text.HtmlParser.Lex;
-using Winista.Text.HtmlParser.Util;
 
 namespace BPSTool
 {

@@ -7,8 +7,8 @@ namespace BPSTool
 {
     class BpsUtils
     {
-        private static int hostAddress;
-        private static int moduleAddress;
+        private static int hostAddress = 0;
+        private static int moduleAddress = 1;
         private static byte[] bpsHeader = { 0xBB, 0xCC };
         private static byte[] bpsVersion = { 0x00 };
 
@@ -24,6 +24,10 @@ namespace BPSTool
         public static byte[] BPSVersion { get => bpsVersion; }
         public static byte[] BPSAddr { get => bpsAddr; }
         public const int REMAIN_LEN_SIZE = 2;
+        public const int BPS_CMD_WORD_SIZE = 1;
+
+        public static int REMAIN_LEN_INDEX = BPSHeader.Length + BpsUtils.BPSVersion.Length + BpsUtils.BPSAddr.Length;
+        public static int DATA_INDEX = REMAIN_LEN_INDEX + BpsUtils.REMAIN_LEN_SIZE;
 
         public static void PackHeader(ref List<Byte> buf)
         {

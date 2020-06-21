@@ -5,17 +5,18 @@ using System.Text;
 
 namespace BPSTool.BPSPacket
 {
-    class BPSPacketCommTest : BaseBPSPacket
+    class BPSPacketReset : BaseBPSPacket
     {
-        public const byte REQUEST_CMD = 0x00;
-        public const byte RESPONSE_CMD = 0x01;
+        public const byte REQUEST_CMD = 0x0E;
+        public const byte RESPONSE_CMD = 0x0F;
 
-        private byte deviceType;
-        public byte DeviceType { get => deviceType; set => deviceType = value; }
+        private byte responseCode;
+        private static byte[] safeWord = { 0xBB, 0xCC };
+        public static byte[] SafeWord { get => safeWord; }
 
-        public override byte RequestCmd { get => REQUEST_CMD; }
+        public override byte RequestCmd { get => 0x0E; }
 
-        public override byte ResponseCmd { get => RESPONSE_CMD; }
+        public override byte ResponseCmd { get => 0x0F; }
 
         public override void RequestAssemble()
         {
@@ -27,7 +28,7 @@ namespace BPSTool.BPSPacket
 
             ///** pack request data */
             //deviceType = BpsUtils.DEVICE_TYPE_C;
-            //sendBuffer.Add(deviceType);
+            sendBuffer.AddRange(safeWord);
 
             /** pack remain length */
             int remainLen = PackRemainLen();
@@ -35,37 +36,32 @@ namespace BPSTool.BPSPacket
             /** pack checksum */
             Byte checksum = CalcChecksum();
             sendBuffer.Add(checksum);
-
         }
 
         public override bool RequestParse(ref List<byte> request)
         {
-            bool ret = true;
-
-            try
-            {
-                int remainLen = ParseRemainLen(ref request);
-                deviceType = request[DataIndex];
-            }
-            catch(Exception e)
-            {
-                ret = false;
-            }
-
-            return ret;
+            throw new NotImplementedException();
         }
 
         public override void ResponseAssemble()
         {
-            PackHeader();
-            /** TODO: test response logic */
-            int remainLen = PackRemainLen();
-            Byte checksum = CalcChecksum();
+            throw new NotImplementedException();
         }
 
         public override bool ResponseParse(ref List<byte> response)
         {
             bool ret = true;
+
+            int dataIndex = BpsUtils.DATA_INDEX + 1;
+
+            try
+            {
+                responseCode = response[dataIndex++];
+            }
+            catch (Exception e)
+            {
+                ret = false;
+            }
 
             return ret;
         }

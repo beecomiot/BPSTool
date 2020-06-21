@@ -39,6 +39,15 @@ namespace BPSTool.BPSPacket
             return BpsUtils.ParseRemainLen(ref recvBuffer);
         }
 
+        public byte[] MsgBuffer()
+        {
+            return sendBuffer.ToArray();
+        }
+
+        public List<byte> MsgList()
+        {
+            return sendBuffer;
+        }
         abstract public Byte RequestCmd { get; }
         abstract public Byte ResponseCmd { get; }
         public int RemainLenIndex { get => remainLenIndex; }
