@@ -517,7 +517,7 @@ namespace BPSTool
             uartMng.Close();
             buttonUartLink.Text = STR_BUTTON_CONNECT;
             comboBoxUart.Enabled = true;
-
+            buttonSearch.Enabled = true;
         }
 
         private void ButtonCheckVersion_Click(object sender, EventArgs e)
@@ -661,6 +661,7 @@ namespace BPSTool
                 uartMng.Close();
                 buttonUartLink.Text = STR_BUTTON_CONNECT;
                 comboBoxUart.Enabled = true;
+                buttonSearch.Enabled = true;
             }
             else
             {
@@ -671,11 +672,13 @@ namespace BPSTool
                     {
                         buttonUartLink.Text = STR_BUTTON_DISCONNECT;
                         comboBoxUart.Enabled = false;
+                        buttonSearch.Enabled = false;
                     }
                     else
                     {
                         uartMng.Close();
                         comboBoxUart.Enabled = true;
+                        buttonSearch.Enabled = true;
                         buttonUartLink.Text = STR_BUTTON_CONNECT;
                     }
                 } 
@@ -683,6 +686,7 @@ namespace BPSTool
                 {
                     uartMng.Close();
                     comboBoxUart.Enabled = true;
+                    buttonSearch.Enabled = true;
                     buttonUartLink.Text = STR_BUTTON_CONNECT;
                 }
             }
@@ -749,7 +753,12 @@ namespace BPSTool
 
         private void toolStripMenuItemCopy_Click(object sender, EventArgs e)
         {
-
+            string copy = this.textBoxDebugMsg.SelectedText;
+            if(copy != null && copy.Length > 0)
+            {
+                Clipboard.SetDataObject(copy);
+            }
+            
         }
 
         private void buttonResetSet_Click(object sender, EventArgs e)
@@ -852,11 +861,13 @@ namespace BPSTool
                         {
                             buttonUartLink.Text = STR_BUTTON_DISCONNECT;
                             comboBoxUart.Enabled = false;
+                            buttonSearch.Enabled = false;
                         }
                         else
                         {
                             uartMng.Close();
                             comboBoxUart.Enabled = true;
+                            buttonSearch.Enabled = true;
                             buttonUartLink.Text = STR_BUTTON_CONNECT;
                         }
                     }
@@ -864,6 +875,7 @@ namespace BPSTool
                     {
                         uartMng.Close();
                         comboBoxUart.Enabled = true;
+                        buttonSearch.Enabled = true;
                         buttonUartLink.Text = STR_BUTTON_CONNECT;
                     }
                 }
@@ -872,6 +884,21 @@ namespace BPSTool
             {
 
             }
+        }
+
+        private void toolStripMenuItemClear_Click(object sender, EventArgs e)
+        {
+            textBoxDebugMsg.Clear();
+        }
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+            if(uartMng.IsOpen())
+            {
+                return;
+            }
+            SearchingForm searchForm = new SearchingForm(ref uartMng);
+            searchForm.ShowDialog(this);
         }
     }
 }

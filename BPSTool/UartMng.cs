@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BPSTool
 {
-    class UartMng
+    public class UartMng
     {
         public const int DEF_BAUDRATE = 9600;
 

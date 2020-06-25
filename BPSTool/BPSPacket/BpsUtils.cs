@@ -12,6 +12,8 @@ namespace BPSTool
         private static byte[] bpsHeader = { 0xBB, 0xCC };
         private static byte[] bpsVersion = { 0x00 };
 
+        private static int[] stdBaudrate = { 9600, 19200, 38400, 57600, 115200};
+
         public const byte DEVICE_TYPE_B = (byte)'B';
         public const byte DEVICE_TYPE_T = (byte)'T';
         public const byte DEVICE_TYPE_C = (byte)'C';
@@ -23,6 +25,8 @@ namespace BPSTool
         public static byte[] BPSHeader { get => bpsHeader; }
         public static byte[] BPSVersion { get => bpsVersion; }
         public static byte[] BPSAddr { get => bpsAddr; }
+        public static int[] StdBaudrate { get => stdBaudrate; }
+
         public const int REMAIN_LEN_SIZE = 2;
         public const int BPS_CMD_WORD_SIZE = 1;
 

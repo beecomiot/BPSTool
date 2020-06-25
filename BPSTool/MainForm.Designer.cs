@@ -477,6 +477,7 @@ namespace BPSTool
             this.buttonSearch.TabIndex = 4;
             this.buttonSearch.Text = "搜索";
             this.buttonSearch.UseVisualStyleBackColor = true;
+            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
             // 
             // comboBoxBaudrate
             // 
@@ -583,6 +584,7 @@ namespace BPSTool
             this.toolStripMenuItemClear.Name = "toolStripMenuItemClear";
             this.toolStripMenuItemClear.Size = new System.Drawing.Size(108, 24);
             this.toolStripMenuItemClear.Text = "清空";
+            this.toolStripMenuItemClear.Click += new System.EventHandler(this.toolStripMenuItemClear_Click);
             // 
             // splitContainerDebugSend
             // 
