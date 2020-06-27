@@ -76,7 +76,7 @@
             this.labeSearchlNote.Name = "labeSearchlNote";
             this.labeSearchlNote.Size = new System.Drawing.Size(356, 200);
             this.labeSearchlNote.TabIndex = 0;
-            this.labeSearchlNote.Text = "波特率9600搜索(5)...";
+            this.labeSearchlNote.Text = "BPS搜索...";
             this.labeSearchlNote.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timerSearchEndCheck

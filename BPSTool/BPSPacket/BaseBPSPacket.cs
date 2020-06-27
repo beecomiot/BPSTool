@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BPSTool.BPSPacket
 {
-    abstract class BaseBPSPacket
+    public abstract class BaseBPSPacket
     {
         protected List<Byte> sendBuffer;
         private int remainLenIndex;

@@ -47,12 +47,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>20200613092715922_easyicon_net_512.ico</ApplicationIcon>
+    <ApplicationIcon>desktop.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -73,6 +74,9 @@
     <Compile Include="BPSPacket\BPSPacketRestoreFac.cs" />
     <Compile Include="BPSPacket\BPSPacketSysPara.cs" />
     <Compile Include="BPSPacket\BpsUtils.cs" />
+    <Compile Include="CustomWidget\PicCombox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,7 +123,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="20200613092715922_easyicon_net_512.ico" />
+    <Content Include="desktop.ico" />
+    <None Include="Resources\united-states-of-america-flag-icon-64.png" />
+    <None Include="Resources\china-flag-icon-64.png" />
+    <None Include="Resources\china_flag.ico" />
     <None Include="Resources\waiting.gif" />
   </ItemGroup>
   <ItemGroup>

@@ -48,24 +48,28 @@ namespace BPSTool
 
         public delegate void DelUpdateUI_VV();
         public delegate void DelUpdateUI_VL(ref List<Byte> msg);
+        public delegate void DelDebugMsg(List<Byte> msgList, string prefix);
+        public delegate void DelRecvBPSPacket(BaseBPSPacket baseBPSPacket);
         //public delegate void DelUartErrorUI_VV();
 
 
         private DelUpdateUI_VV DelUpdateChecker;
-        private DelUpdateUI_VL DelUartRecv;
-        private DelUpdateUI_VV DelUartError;
+        private BpsMng.DelBPSRecvHandler DelUartRecv;
 
         private SerialErrorReceivedEventHandler serialErrorReceivedEvent;
         private SerialDataReceivedEventHandler serialDataReceivedEvent;
 
+        private BpsMng.DelBPSSendDebugHandler DelUartSendDebug;
+        private BpsMng.DelBPSRecvDebugHandler DelUartRecvDebug;
+        private BpsMng.DelUartErrorHandler DelUartError;
 
         private Updater UpdateChecker;
-        private UartMng uartMng;
+        // private UartMng uartMng;
+        private BpsMng bpsMngObj;
 
-        private List<byte> RecvBuffer;
-        private EnBPSParseStep enBPSParseStep;
-        private int remainLength;
-
+        //private List<byte> RecvBuffer;
+        //private EnBPSParseStep enBPSParseStep;
+        //private int remainLength;
 
 
         public MainForm()
@@ -84,14 +88,20 @@ namespace BPSTool
             /** append version info to title */
             this.Text += "-V" + BPSTOOL_VERSION_MAIN + "." + BPSTOOL_VERSION_SUB + "." + BPSTOOL_VERSION_PATCH;
 
-            uartMng = new UartMng(this);
-            DelUartRecv = new DelUpdateUI_VL(UartDataReceiedCallback);
-            DelUartError = new DelUpdateUI_VV(UartErrorCallback);
+            //uartMng = new UartMng(this);
+            bpsMngObj = new BpsMng();
+            DelUartRecv = new BpsMng.DelBPSRecvHandler(UartDataReceivedHandler);
+            DelUartSendDebug = new BpsMng.DelBPSSendDebugHandler(SendDebugHandler);
+            DelUartRecvDebug = new BpsMng.DelBPSRecvDebugHandler(RecvDebugHandler);
+            DelUartError = new BpsMng.DelUartErrorHandler(UartErrorHandler);
 
-            serialErrorReceivedEvent = new SerialErrorReceivedEventHandler(UartErrorReceivedCallback);
-            uartMng.ErrorCallback(serialErrorReceivedEvent);
-            serialDataReceivedEvent = new SerialDataReceivedEventHandler(UartDataeceivedCallback);
-            uartMng.ReadCallback(serialDataReceivedEvent);
+            AddBPSDelegate();
+            // DelUartError = new DelUpdateUI_VV(UartErrorCallback);
+
+            //serialErrorReceivedEvent = new SerialErrorReceivedEventHandler(UartErrorReceivedCallback);
+            //uartMng.ErrorCallbackAdd(serialErrorReceivedEvent);
+            //serialDataReceivedEvent = new SerialDataReceivedEventHandler(UartDataeceivedCallback);
+            //uartMng.ReadCallbackAdd(serialDataReceivedEvent);
 
             RefreshUartList();
             if (comboBoxUart.Items.Count > 0)
@@ -100,10 +110,10 @@ namespace BPSTool
             }
 
             /** TODO: need to move to uartMng */
-            RecvBuffer = new List<byte>();
-            HeadClear();
-            enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
-            remainLength = 0;
+            //RecvBuffer = new List<byte>();
+            //HeadClear();
+            //enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
+            //remainLength = 0;
 
             /** read configurature */
             try
@@ -124,8 +134,59 @@ namespace BPSTool
             }
         }
 
+        private void AddBPSDelegate()
+        {
+            bpsMngObj.AddRecvHandler(DelUartRecv);
+            bpsMngObj.AddSendDebugHandler(DelUartSendDebug);
+            bpsMngObj.AddRecvDebugHandler(DelUartRecvDebug);
+            bpsMngObj.AddErrorHandler(DelUartError);
+        }
 
-        private void printMsg(ref List<Byte> msgList, string prefix)
+        private void ClearBPSDelegate()
+        {
+            bpsMngObj.RemoveRecvHandler(DelUartRecv);
+            bpsMngObj.RemoveSendDebugHandler(DelUartSendDebug);
+            bpsMngObj.RemoveRecvDebugHandler(DelUartRecvDebug);
+            bpsMngObj.RemoveErrorHandler(DelUartError);
+        }
+
+        private void SendDebugHandler(BpsMng.IReadonlyMsgList msgList)
+        {
+            if (checkBoxDebugEnable.Checked)
+            {
+                DelDebugMsg del = new DelDebugMsg(printMsg);
+                object[] args = new object[2];
+                args[0] = msgList.msgList;
+                args[1] = STR_DEBUG_SEND_PREFIX;
+                BeginInvoke(del, args);
+            }
+        }
+
+        private void RecvDebugHandler(BpsMng.IReadonlyMsgList msgList)
+        {
+            if (checkBoxDebugEnable.Checked)
+            {
+                DelDebugMsg del = new DelDebugMsg(printMsg);
+                object[] args = new object[2];
+                args[0] = msgList.msgList;
+                args[1] = STR_DEBUG_RECV_PREFIX;
+                BeginInvoke(del, args);
+            }
+        }
+
+        private void UartErrorHandler()
+        {
+            if (!bpsMngObj.IsUartOpen())
+            {
+                bpsMngObj.UartClose();
+                DelUpdateUI_VV del = new DelUpdateUI_VV(RefreshUartList);
+                BeginInvoke(del);
+                del = new DelUpdateUI_VV(StateDisconnected);
+                BeginInvoke(del);
+            }
+        }
+
+        private void printMsg(List<Byte> msgList, string prefix)
         {
             string msgSendPrint = prefix;
             foreach (byte b in msgList)
@@ -139,66 +200,59 @@ namespace BPSTool
         {
             if (msgList.Count > 0)
             {
-                if(uartMng.write(msgList.ToArray()))
-                {
-                    if(checkBoxDebugEnable.Checked)
-                    {
-                        printMsg(ref msgList, STR_DEBUG_SEND_PREFIX);
-                    }
-                }
+                bpsMngObj.SendDebugData(msgList);
             }
         }
 
-        private bool IsBPSChksumOK(ref List<byte> msg)
-        {
-            UInt16 len;
-            int checksum;
+        //private bool IsBPSChksumOK(ref List<byte> msg)
+        //{
+        //    UInt16 len;
+        //    int checksum;
 
-            checksum = 0;
-            for(int i = BpsUtils.BPSHeader.Length; i < msg.Count-1; i++)
-            {
-                checksum += (msg[i] & 0xFF);
-            }
+        //    checksum = 0;
+        //    for(int i = BpsUtils.BPSHeader.Length; i < msg.Count-1; i++)
+        //    {
+        //        checksum += (msg[i] & 0xFF);
+        //    }
 
-            return (checksum & 0xFF) == (msg[msg.Count-1] & 0xFF);
-        }
+        //    return (checksum & 0xFF) == (msg[msg.Count-1] & 0xFF);
+        //}
 
-        private void HeadClear()
-        {
-            RecvBuffer.Clear();
-            RecvBuffer.Add(0);
-        }
+        //private void HeadClear()
+        //{
+        //    RecvBuffer.Clear();
+        //    RecvBuffer.Add(0);
+        //}
 
         private void UartErrorReceivedCallback(object sender, SerialErrorReceivedEventArgs e)
         {
             Console.WriteLine("error");
-            BpsToolCallback(DelUartError);
+            // BpsToolCallback(DelUartError);
         }
 
-        private void UartDataeceivedCallback(object sender, SerialDataReceivedEventArgs e)
-        {
-            Console.WriteLine("data");
-            byte[] buffer = new byte[uartMng.serialPort.BytesToRead];
-            uartMng.serialPort.Read(buffer, 0, buffer.Length);
-            List<byte> msg = new List<byte>(buffer);
-            BpsToolCallback(DelUartRecv, ref msg);
-        }
+        //private void UartDataeceivedCallback(object sender, SerialDataReceivedEventArgs e)
+        //{
+        //    Console.WriteLine("data");
+        //    byte[] buffer = new byte[uartMng.serialPort.BytesToRead];
+        //    uartMng.serialPort.Read(buffer, 0, buffer.Length);
+        //    List<byte> msg = new List<byte>(buffer);
+        //    BpsToolCallback(DelUartRecv, ref msg);
+        //}
 
         private void RefreshUartList()
         {
             string currentPortTmp = null;
-            if(comboBoxUart.Items.Count > 0)
+            if (comboBoxUart.Items.Count > 0)
             {
                 currentPortTmp = (string)comboBoxUart.SelectedItem;
             }
 
-            uartMng.RefreshPortList();
             comboBoxUart.Items.Clear();
 
-            foreach (string port in uartMng.PortList)
+            foreach (string port in bpsMngObj.PortList())
             {
                 comboBoxUart.Items.Add(port);
-                if(null != currentPortTmp && port.Equals(currentPortTmp))
+                if (null != currentPortTmp && port.Equals(currentPortTmp))
                 {
                     comboBoxUart.SelectedIndex = comboBoxUart.Items.Count - 1;
                 }
@@ -319,19 +373,31 @@ namespace BPSTool
 
         }
 
-        private void UIDoBPSPacket(ref BPSPacketCommTest bps)
+        private void UIDoBPSPacket(BPSPacketCommTest bps)
         {
-            // textBoxName.Text = "hello";
+            if(null == bps)
+            {
+                return;
+            }
         }
 
-        private void UIDoBPSPacket(ref BPSPacketBaudrate bps)
+        private void UIDoBPSPacket(BPSPacketBaudrate bps)
         {
+            if(null == bps)
+            {
+                return;
+            }
             textBoxBaudrate.Text = bps.Baudrate.ToString();
         }
 
-        private void UIDoBPSPacket(ref BPSPacketSysPara bps)
+        private void UIDoBPSPacket(BPSPacketSysPara bps)
         {
-            switch(bps.ParaId)
+            if (null == bps)
+            {
+                return;
+            }
+
+            switch (bps.ParaId)
             {
                 case BPSPacketSysPara.SysParaID.NAME:
                     if(bps.CmdTypeSysPara == BPSPacketSysPara.CmdType.READ)
@@ -342,179 +408,78 @@ namespace BPSTool
             }
         }
 
-        private void UIDoBPSPacket(ref BPSPacketReset bps)
+        private void UIDoBPSPacket(BPSPacketReset bps)
         {
-            // textBoxName.Text = "hello";
-        }
-
-        private void UIDoBPSPacket(ref BPSPacketRestoreFac bps)
-        {
-            // textBoxName.Text = "hello";
-        }
-
-        private void UartDataReceiedCallback(ref List<Byte> msg)
-        {
-            bool recvOK = false;
-            for(int i = 0; i < msg.Count; i++)
+            if (null == bps)
             {
-                byte dataTmp = msg[i];
-                switch (enBPSParseStep)
+                return;
+            };
+        }
+
+        private void UIDoBPSPacket(BPSPacketRestoreFac bps)
+        {
+            if (null == bps)
+            {
+                return;
+            }
+        }
+
+        private void UartDataReceivedHandler(BaseBPSPacket baseBPSPacket)
+        {
+            DelRecvBPSPacket del = new DelRecvBPSPacket(UartDataReceiedCallback);
+            object[] args = new object[1];
+            args[0] = baseBPSPacket;
+            BeginInvoke(del, args);
+        }
+
+        private void UartDataReceiedCallback(BaseBPSPacket baseBPSPacket)
+        {
+            try
+            {
+                switch (baseBPSPacket.ResponseCmd)
                 {
-                    case EnBPSParseStep.EN_BPS_PARSE_HEADER:
-                        if (RecvBuffer[0] == BpsUtils.BPSHeader[0] && dataTmp == BpsUtils.BPSHeader[1])
+                    case BPSPacketCommTest.RESPONSE_CMD:
                         {
-                            //s_recvSize = 1;
-                            //g_RecvBuffer[s_recvSize++] = dataTmp;
-                            //s_toAllocMemory = BPS_TRUE;
-                            RecvBuffer.Add(dataTmp);
-                            enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_VERSION;
+                            BPSPacketCommTest p = baseBPSPacket as BPSPacketCommTest;
+                            UIDoBPSPacket(p);
+                            break;
                         }
-                        else
+                    case BPSPacketBaudrate.RESPONSE_CMD:
                         {
-                            RecvBuffer[0] = dataTmp;
+                            BPSPacketBaudrate p = baseBPSPacket as BPSPacketBaudrate;
+                            UIDoBPSPacket(p);
+                            break;
                         }
-                        break;
-                    case EnBPSParseStep.EN_BPS_PARSE_VERSION:
-                        if (dataTmp <= BpsUtils.BPSVersion[0])
+                    case BPSPacketReset.RESPONSE_CMD:
                         {
-                            RecvBuffer.Add(dataTmp);
-                            enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_ADDR;
+                            BPSPacketReset p = baseBPSPacket as BPSPacketReset;
+                            UIDoBPSPacket(p);
+                            break;
                         }
-                        else
+                    case BPSPacketRestoreFac.RESPONSE_CMD:
                         {
-                            HeadClear();
-                            enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
+                            BPSPacketRestoreFac p = baseBPSPacket as BPSPacketRestoreFac;
+                            UIDoBPSPacket(p);
+                            break;
                         }
-                        break;
-                    case EnBPSParseStep.EN_BPS_PARSE_ADDR:
-                        RecvBuffer.Add(dataTmp);
-                        enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_RMN_LEN1;
-                        break;
-                    case EnBPSParseStep.EN_BPS_PARSE_RMN_LEN1:
-                        RecvBuffer.Add(dataTmp);
-                        enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_RMN_LEN2;
-                        break;
-                    case EnBPSParseStep.EN_BPS_PARSE_RMN_LEN2:
-                        RecvBuffer.Add(dataTmp);
-                        remainLength = ((RecvBuffer[RecvBuffer.Count-2] & 0xFF) << 8) + (dataTmp & 0xFF);
-                        if (remainLength < BpsUtils.BPS_CMD_WORD_SIZE)
+                    /** System Parameter Commands */
+                    case BPSPacketSysPara.RESPONSE_CMD:
                         {
-                            HeadClear();
-                            enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
+                            BPSPacketSysPara p = baseBPSPacket as BPSPacketSysPara;
+                            UIDoBPSPacket(p);
+                            break;
                         }
-                        else
-                        {
-                            enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_DATA;
-                        }
-                        break;
-                    case EnBPSParseStep.EN_BPS_PARSE_DATA:
-                        //if (s_toAllocMemory)
-                        //{
-                        //    /* the first byte of data is the command. judge it whether to alloc memory */
-                        //    s_toAllocMemory = BPS_FALSE;
-                        //    /*
-                        //    switch(dataTmp) {
-                        //  case CMD_REPORT_SIG_WORD_REQ:
-                        //    s_parseData.pu.reportSigReq.fieldArray = &reportSigField;
-                        //    reportSigField.value.t_str = sigStringBuf;
-                        //    s_parseData.pu.reportSigReq.maxFieldNum = 1;
-                        //    break;
-                        //  case CMD_SYSTEM_PARA_WORD_REQ:
-                        //    s_parseData.pu.sysParaReq.data = sigStringBuf;
-                        //    break;
-                        //  }
-                        //    */
-                        //}
-                        RecvBuffer.Add(dataTmp);
-                        if (0 == --remainLength)
-                        {
-                            enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_CHKSUM;
-                        }
-                        break;
-                    case EnBPSParseStep.EN_BPS_PARSE_CHKSUM:
-                        RecvBuffer.Add(dataTmp);
-                        // for(s_rmnLen = 0; s_rmnLen < s_recvSize; s_rmnLen++) {
-                        // bc_printf("%02x ", g_RecvBuffer[s_rmnLen]);
-                        // }
-                        // bc_printf("\r\n");
-                        if (IsBPSChksumOK(ref RecvBuffer))
-                        {
-                            recvOK = true;
-                        }
-                        // HeadClear();
-                        enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
-                        break;
-                    default:
-                        HeadClear();
-                        enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
-                        break;
                 }
             }
-
-            if (recvOK)
+            catch (Exception e)
             {
-                try
-                {
-                    switch (RecvBuffer[BpsUtils.DATA_INDEX])
-                    {
-                        case BPSPacketCommTest.RESPONSE_CMD:
-                            {
-                                BPSPacketCommTest bpsPacket = new BPSPacketCommTest();
-                                bpsPacket.ResponseParse(ref RecvBuffer);
-                                UIDoBPSPacket(ref bpsPacket);
-                                break;
-                            }
-                        case BPSPacketBaudrate.RESPONSE_CMD:
-                            {
-                                BPSPacketBaudrate bpsPacket = new BPSPacketBaudrate();
-                                bpsPacket.ResponseParse(ref RecvBuffer);
-                                UIDoBPSPacket(ref bpsPacket);
-                                break;
-                            }
-                        case BPSPacketReset.RESPONSE_CMD:
-                            {
-                                BPSPacketReset bpsPacket = new BPSPacketReset();
-                                bpsPacket.ResponseParse(ref RecvBuffer);
-                                UIDoBPSPacket(ref bpsPacket);
-                                break;
-                            }
-                        case BPSPacketRestoreFac.RESPONSE_CMD:
-                            {
-                                BPSPacketRestoreFac bpsPacket = new BPSPacketRestoreFac();
-                                bpsPacket.ResponseParse(ref RecvBuffer);
-                                UIDoBPSPacket(ref bpsPacket);
-                                break;
-                            }
-                            /** System Parameter Commands */
-                        case BPSPacketSysPara.RESPONSE_CMD:
-                            {
-                                BPSPacketSysPara bpsPacket = BPSPacketSysPara.CreateObj(ref RecvBuffer);
-                                if(null != bpsPacket)
-                                {
-                                    bpsPacket.ResponseParse(ref RecvBuffer);
-                                    UIDoBPSPacket(ref bpsPacket);
-                                }
 
-                                break;
-                            }
-
-                    }
-                    if (checkBoxDebugEnable.Checked)
-                    {
-                        printMsg(ref RecvBuffer, STR_DEBUG_RECV_PREFIX);
-                    }
-                }
-                catch(Exception e)
-                {
-
-                }
-                HeadClear();
             }
         }
 
         private void UartErrorCallback()
         {
-            uartMng.Close();
+            bpsMngObj.UartClose();
             buttonUartLink.Text = STR_BUTTON_CONNECT;
             comboBoxUart.Enabled = true;
             buttonSearch.Enabled = true;
@@ -629,18 +594,19 @@ namespace BPSTool
             BPSPacketName bpsPacket = new BPSPacketName();
             bpsPacket.CmdTypeSysPara = BPSPacketSysPara.CmdType.WRITE;
             bpsPacket.SetData(textBoxName.Text);
-            bpsPacket.RequestAssemble();
-            List<byte> refList = bpsPacket.MsgList();
-            sendMsg(ref refList);
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
         }
 
         private void buttonNameRead_Click(object sender, EventArgs e)
         {
             BPSPacketName bpsPacket = new BPSPacketName();
             bpsPacket.CmdTypeSysPara = BPSPacketSysPara.CmdType.READ;
-            bpsPacket.RequestAssemble();
-            List<byte> refList = bpsPacket.MsgList();
-            sendMsg(ref refList);
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
+            //bpsPacket.RequestAssemble();
+            //List<byte> refList = bpsPacket.MsgList();
+            //sendMsg(ref refList);
+
+
         }
 
         private void label5_Click(object sender, EventArgs e)
@@ -654,40 +620,45 @@ namespace BPSTool
 
         }
 
+        private void StateConnected()
+        {
+            buttonUartLink.Text = STR_BUTTON_DISCONNECT;
+            comboBoxUart.Enabled = false;
+            buttonSearch.Enabled = false;
+        }
+
+        private void StateDisconnected()
+        {
+            buttonUartLink.Text = STR_BUTTON_CONNECT;
+            comboBoxUart.Enabled = true;
+            buttonSearch.Enabled = true;
+        }
+
         private void buttonUartLink_Click(object sender, EventArgs e)
         {
-            if(uartMng.IsOpen())
+            if(bpsMngObj.IsUartOpen())
             {
-                uartMng.Close();
-                buttonUartLink.Text = STR_BUTTON_CONNECT;
-                comboBoxUart.Enabled = true;
-                buttonSearch.Enabled = true;
+                bpsMngObj.UartClose();
+                StateDisconnected();
             }
             else
             {
                 try
                 {
-                    uartMng.Baudrate = int.Parse(comboBoxBaudrate.Text);
-                    if (uartMng.Open((string)comboBoxUart.SelectedItem))
+                    if (bpsMngObj.UartOpen((string)comboBoxUart.SelectedItem, int.Parse(comboBoxBaudrate.Text)))
                     {
-                        buttonUartLink.Text = STR_BUTTON_DISCONNECT;
-                        comboBoxUart.Enabled = false;
-                        buttonSearch.Enabled = false;
+                        StateConnected();
                     }
                     else
                     {
-                        uartMng.Close();
-                        comboBoxUart.Enabled = true;
-                        buttonSearch.Enabled = true;
-                        buttonUartLink.Text = STR_BUTTON_CONNECT;
+                        bpsMngObj.UartClose();
+                        StateDisconnected();
                     }
                 } 
                 catch(Exception ex)
                 {
-                    uartMng.Close();
-                    comboBoxUart.Enabled = true;
-                    buttonSearch.Enabled = true;
-                    buttonUartLink.Text = STR_BUTTON_CONNECT;
+                    bpsMngObj.UartClose();
+                    StateDisconnected();
                 }
             }
         }
@@ -764,9 +735,7 @@ namespace BPSTool
         private void buttonResetSet_Click(object sender, EventArgs e)
         {
             BPSPacketReset bpsPacket = new BPSPacketReset();
-            bpsPacket.RequestAssemble();
-            List<byte> refList = bpsPacket.MsgList();
-            sendMsg(ref refList);
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
         }
 
         private void textBoxDebugSend_TextChanged(object sender, EventArgs e)
@@ -816,9 +785,7 @@ namespace BPSTool
                 BPSPacketBaudrate bpsPacket = new BPSPacketBaudrate();
                 bpsPacket.CmdTypeBaudrate = BPSPacketBaudrate.CmdType.WRITE;
                 bpsPacket.Baudrate = UInt32.Parse(textBoxBaudrate.Text);
-                bpsPacket.RequestAssemble();
-                List<byte> refList = bpsPacket.MsgList();
-                sendMsg(ref refList);
+                bpsMngObj.SendBPSPacketReq(bpsPacket);
             } 
             catch
             {
@@ -830,18 +797,13 @@ namespace BPSTool
         {
             BPSPacketBaudrate bpsPacket = new BPSPacketBaudrate();
             bpsPacket.CmdTypeBaudrate = BPSPacketBaudrate.CmdType.READ;
-            bpsPacket.RequestAssemble();
-            List<byte> refList = bpsPacket.MsgList();
-            sendMsg(ref refList);
-            // uartMng.write(bpsPacket.MsgBuffer());
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
         }
 
         private void buttonFacRestoreSet_Click(object sender, EventArgs e)
         {
             BPSPacketRestoreFac bpsPacket = new BPSPacketRestoreFac();
-            bpsPacket.RequestAssemble();
-            List<byte> refList = bpsPacket.MsgList();
-            sendMsg(ref refList);
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
         }
 
         private void comboBoxBaudrate_SelectedIndexChanged(object sender, EventArgs e)
@@ -850,33 +812,27 @@ namespace BPSTool
             {
                 comboBoxBaudrate.Text = comboBoxBaudrate.SelectedItem.ToString();
 
-                if (uartMng.IsOpen())
+                if (bpsMngObj.IsUartOpen())
                 {
-                    uartMng.Close();
+                    bpsMngObj.UartClose();
 
                     try
                     {
-                        uartMng.Baudrate = int.Parse(comboBoxBaudrate.Text);
-                        if (uartMng.Open((string)comboBoxUart.SelectedItem))
+                        // uartMng.Baudrate = int.Parse(comboBoxBaudrate.Text);
+                        if (bpsMngObj.UartOpen((string)comboBoxUart.SelectedItem, int.Parse(comboBoxBaudrate.Text)))
                         {
-                            buttonUartLink.Text = STR_BUTTON_DISCONNECT;
-                            comboBoxUart.Enabled = false;
-                            buttonSearch.Enabled = false;
+                            StateConnected();
                         }
                         else
                         {
-                            uartMng.Close();
-                            comboBoxUart.Enabled = true;
-                            buttonSearch.Enabled = true;
-                            buttonUartLink.Text = STR_BUTTON_CONNECT;
+                            bpsMngObj.UartClose();
+                            StateDisconnected();
                         }
                     }
                     catch (Exception ex)
                     {
-                        uartMng.Close();
-                        comboBoxUart.Enabled = true;
-                        buttonSearch.Enabled = true;
-                        buttonUartLink.Text = STR_BUTTON_CONNECT;
+                        bpsMngObj.UartClose();
+                        StateDisconnected();
                     }
                 }
             }
@@ -893,12 +849,29 @@ namespace BPSTool
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            if(uartMng.IsOpen())
+            if(bpsMngObj.IsUartOpen())
             {
                 return;
             }
-            SearchingForm searchForm = new SearchingForm(ref uartMng);
+            ClearBPSDelegate();
+            SearchingForm searchForm = new SearchingForm();
             searchForm.ShowDialog(this);
+            AddBPSDelegate();
+        }
+
+        private void splitContainerTop1Title_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void comboBoxUart_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

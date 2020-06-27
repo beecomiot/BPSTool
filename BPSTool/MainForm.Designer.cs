@@ -30,6 +30,14 @@ namespace BPSTool
 
             }
 
+            /** remove BPS handler */
+            if(bpsMngObj.IsUartOpen())
+            {
+                bpsMngObj.UartClose();
+            }
+            ClearBPSDelegate();
+            bpsMngObj = null;
+
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -158,6 +166,7 @@ namespace BPSTool
             this.splitContainerTop1Title.Panel1.Controls.Add(this.linkLabelVersionUpdate);
             this.splitContainerTop1Title.Panel1.Controls.Add(this.buttonCheckVersion);
             this.splitContainerTop1Title.Panel1.Tag = "";
+            this.splitContainerTop1Title.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainerTop1Title_Panel1_Paint);
             // 
             // splitContainerTop1Title.Panel2
             // 
@@ -301,6 +310,7 @@ namespace BPSTool
             this.button3.TabIndex = 12;
             this.button3.Text = "读取";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // buttonFacRestoreSet
             // 
@@ -501,14 +511,12 @@ namespace BPSTool
             // 
             this.comboBoxUart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxUart.FormattingEnabled = true;
-            this.comboBoxUart.Items.AddRange(new object[] {
-            "abc",
-            "efg"});
             this.comboBoxUart.Location = new System.Drawing.Point(109, 22);
             this.comboBoxUart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBoxUart.Name = "comboBoxUart";
             this.comboBoxUart.Size = new System.Drawing.Size(143, 23);
             this.comboBoxUart.TabIndex = 2;
+            this.comboBoxUart.SelectedIndexChanged += new System.EventHandler(this.comboBoxUart_SelectedIndexChanged);
             this.comboBoxUart.MouseHover += new System.EventHandler(this.comboBoxUart_MouseHover);
             // 
             // labelBaudrate
