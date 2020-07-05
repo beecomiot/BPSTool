@@ -478,7 +478,6 @@ namespace BPSTool
             // 
             // buttonSearch
             // 
-            this.buttonSearch.Enabled = false;
             this.buttonSearch.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.buttonSearch.Location = new System.Drawing.Point(20, 126);
             this.buttonSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

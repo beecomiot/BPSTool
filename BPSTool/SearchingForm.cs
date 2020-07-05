@@ -23,15 +23,19 @@ namespace BPSTool
         private List<string> portList;
         private int baudrateListIndex;
         private int portListIndex;
+        private bool startNewSearch;
+        private bool devFound;
+        private MainForm parentForm;
 
         private BpsMng.DelBPSRecvHandler DelUartRecv;
 
         public delegate void DelRecvBPSPacket(BaseBPSPacket baseBPSPacket);
 
-        public SearchingForm()
+        public SearchingForm(MainForm mainForm)
         {
             InitializeComponent();
-            bpsMngObj = new BpsMng();
+            parentForm = mainForm;
+            bpsMngObj = mainForm.BpsMngObj;
             DelUartRecv = new BpsMng.DelBPSRecvHandler(UartDataReceivedHandler);
             bpsMngObj.AddRecvHandler(DelUartRecv);
             timeoutLeft = 0;
@@ -41,6 +45,8 @@ namespace BPSTool
             baudrateListIndex = (baudrateList.Count > 0) ? (baudrateList.Count - 1) : -1;
             portList = new List<string>(bpsMngObj.PortList());
             portListIndex = (portList.Count > 0) ? (portList.Count - 1) : -1;
+            startNewSearch = false;
+            devFound = false;
 
             if (portListIndex >= 0)
             {
@@ -48,8 +54,7 @@ namespace BPSTool
             }
             else
             {
-                /** TODO: to show no port available */
-                this.Close();
+                timerSearchEndCheck.Enabled = false;
             }
 
             if (baudrateListIndex >= 0)
@@ -58,7 +63,6 @@ namespace BPSTool
             }
             
         }
-
 
         private void UartDataReceivedHandler(BaseBPSPacket baseBPSPacket)
         {
@@ -100,7 +104,10 @@ namespace BPSTool
             {
                 return;
             }
-            timeoutLeft = TIMEOUT;
+            if(!devFound)
+            {
+                devFound = true;
+            }
         }
 
         private void UIDoBPSPacket(BPSPacketDevInfo bps)
@@ -114,7 +121,19 @@ namespace BPSTool
 
         private void timerSearchEndCheck_Tick(object sender, EventArgs e)
         {
-            timeoutLeft -= timerSearchEndCheck.Interval;
+            if (devFound)
+            {
+                timeoutLeft = -1;
+                if (!parentForm.searchSerialPortMap.ContainsKey(currentPort))
+                {
+                    parentForm.searchSerialPortMap.Add(currentPort, currentSearchBaudrate);
+                }
+                
+            }
+            else
+            {
+                timeoutLeft -= timerSearchEndCheck.Interval;
+            }
 
             if(timeoutLeft < 0)
             {
@@ -124,6 +143,8 @@ namespace BPSTool
                     if(baudrateListIndex < 0)
                     {
                         /** completed */
+                        bpsMngObj.UartClose();
+                        bpsMngObj.RemoveRecvHandler(DelUartRecv);
                         this.Close();
                         return;
                     }
@@ -141,18 +162,45 @@ namespace BPSTool
 
                 timeoutLeft = TIMEOUT;
                 labeSearchlNote.Text = STR_BPS_SEARCH + ":" + currentSearchBaudrate + "@" + currentPort;
-                SearchPort();
+                startNewSearch = true;
             }
+
+            SearchPort();
         }
 
         private void SearchPort()
         {
+            if(startNewSearch)
+            {
+                startNewSearch = false;
+                bpsMngObj.UartClose();
+                if (bpsMngObj.UartOpen(currentPort, currentSearchBaudrate))
+                {
+                    /** do nothing */
+                }
+                else
+                {
+                    timeoutLeft = 0;
+                }
+            }
 
+            if (bpsMngObj.IsUartOpen())
+            {
+                BPSPacketCommTest bpsPacket = new BPSPacketCommTest();
+                bpsMngObj.SendBPSPacketReq(bpsPacket);
+            }
         }
 
         private void SearchingForm_Shown(object sender, EventArgs e)
         {
-
+            if (portListIndex < 0)
+            {
+                MessageBox.Show(this, MainForm.STR_NO_SERIAL_PORT, MainForm.STR_NOTE);
+                bpsMngObj.UartClose();
+                bpsMngObj.RemoveRecvHandler(DelUartRecv);
+                this.Close();
+                return;
+            }
         }
     }
 }

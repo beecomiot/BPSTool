@@ -29,22 +29,24 @@ namespace BPSTool
             EN_BPS_PARSE_CHKSUM,
         }
 
-        private const string STR_COMM_ERR = "通信错误";
-        private const string STR_NEWEST_VERSION = "已经是最新版本";
-        private const string STR_NEW_VERSION_CHECK = "检测到新版：";
-        private const string STR_BUTTON_CONNECT = "连接";
-        private const string STR_BUTTON_DISCONNECT = "断开";
-        private const string STR_TT_DEBUG_SEND = "仅支持16进制发送，例如“BB CC 00 01 00 01 00 02”";
-        private const string STR_TT_DEBUG_ENABLE = "使能串口发送/接收调试";
-        private const string STR_TT_BLE_NAME = "最长20字节";
-        private const string STR_DEBUG_SEND_PREFIX = "发送→：";
-        private const string STR_DEBUG_RECV_PREFIX = "接收←：";
-        private const string STR_NOTE = "提示";
-        private const string STR_MB_SETTING_NOT_NULL = "设置内容不可为空";
+        public const string STR_COMM_ERR = "通信错误";
+        public const string STR_NEWEST_VERSION = "已经是最新版本";
+        public const string STR_NEW_VERSION_CHECK = "检测到新版：";
+        public const string STR_BUTTON_CONNECT = "连接";
+        public const string STR_BUTTON_DISCONNECT = "断开";
+        public const string STR_TT_DEBUG_SEND = "仅支持16进制发送，例如“BB CC 00 01 00 01 00 02”";
+        public const string STR_TT_DEBUG_ENABLE = "使能串口发送/接收调试";
+        public const string STR_TT_BLE_NAME = "最长20字节";
+        public const string STR_DEBUG_SEND_PREFIX = "发送→：";
+        public const string STR_DEBUG_RECV_PREFIX = "接收←：";
+        public const string STR_NOTE = "提示";
+        public const string STR_MB_SETTING_NOT_NULL = "设置内容不可为空";
+        public const string STR_NO_SERIAL_PORT = "无串口设备";
+        public const string STR_NO_BPS_PORT_FOUND = "没有发现BPS设备";
 
         public const uint BPSTOOL_VERSION_MAIN = 1;
         public const uint BPSTOOL_VERSION_SUB = 0;
-        public const uint BPSTOOL_VERSION_PATCH = 1;
+        public const uint BPSTOOL_VERSION_PATCH = 2;
 
         public delegate void DelUpdateUI_VV();
         public delegate void DelUpdateUI_VL(ref List<Byte> msg);
@@ -66,6 +68,10 @@ namespace BPSTool
         private Updater UpdateChecker;
         // private UartMng uartMng;
         private BpsMng bpsMngObj;
+        public Dictionary<string, int> searchSerialPortMap;
+        public string searchPortSelected;
+
+        public BpsMng BpsMngObj { get => bpsMngObj; set => bpsMngObj = value; }
 
         //private List<byte> RecvBuffer;
         //private EnBPSParseStep enBPSParseStep;
@@ -108,6 +114,7 @@ namespace BPSTool
             {
                 comboBoxUart.SelectedIndex = 0;
             }
+            searchSerialPortMap = new Dictionary<string, int>();
 
             /** TODO: need to move to uartMng */
             //RecvBuffer = new List<byte>();
@@ -116,22 +123,44 @@ namespace BPSTool
             //remainLength = 0;
 
             /** read configurature */
+            bool debug_checked = true;
+            String baudrate = "9600";
             try
             {
                 //指定config文件读取
                 string file = System.Windows.Forms.Application.ExecutablePath;
                 System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(file);
+                if(!config.HasFile)
+                {
+                    string[] ConfigFileOrigin = new string[] {
+@"<?xml version=""1.0"" encoding=""utf-8"" ?>",
+@"<configuration>",
+@"  <appSettings>",
+@"    <add key=""debug_checked"" value=""TRUE"" />",
+@"    <add key=""baudrate"" value=""9600"" />",
+@"  </appSettings>",
+@"</configuration>"
+                    };
+                    using (StreamWriter sw = new StreamWriter(config.FilePath))
+                    {
+                        foreach (string s in ConfigFileOrigin)
+                        {
+                            sw.WriteLine(s);
 
-                bool debug_checked = Boolean.Parse(config.AppSettings.Settings["debug_checked"].Value);
-                String baudrate = config.AppSettings.Settings["baudrate"].Value;
+                        }
+                    }
+                }
 
-                checkBoxDebugEnable.Checked = debug_checked;
-                comboBoxBaudrate.Text = baudrate;
+                debug_checked = Boolean.Parse(config.AppSettings.Settings["debug_checked"].Value);
+                baudrate = config.AppSettings.Settings["baudrate"].Value;
             }
-            catch
+            catch(Exception e)
             {
-
+                Console.WriteLine(e.Message);
             }
+
+            checkBoxDebugEnable.Checked = debug_checked;
+            comboBoxBaudrate.Text = baudrate;
         }
 
         private void AddBPSDelegate()
@@ -849,13 +878,59 @@ namespace BPSTool
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            if(bpsMngObj.IsUartOpen())
+            if (bpsMngObj.IsUartOpen())
             {
                 return;
             }
             ClearBPSDelegate();
-            SearchingForm searchForm = new SearchingForm();
+            searchSerialPortMap.Clear();
+            SearchingForm searchForm = new SearchingForm(this);
             searchForm.ShowDialog(this);
+            if (searchSerialPortMap.Count > 0)
+            {
+                SearchListForm searchListForm = new SearchListForm(this);
+                searchListForm.ShowDialog(this);
+
+                if(null == searchPortSelected)
+                {
+                    return;
+                }
+
+                try
+                {
+                    comboBoxBaudrate.Text = searchSerialPortMap[searchPortSelected].ToString();
+                    for (int i = 0; i < comboBoxUart.Items.Count; i++)
+                    {
+                        if(comboBoxUart.Items[i].ToString() == searchPortSelected)
+                        {
+                            comboBoxUart.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                    
+                    if (bpsMngObj.UartOpen((string)comboBoxUart.SelectedItem, int.Parse(comboBoxBaudrate.Text)))
+                    {
+                        StateConnected();
+                    }
+                    else
+                    {
+                        bpsMngObj.UartClose();
+                        StateDisconnected();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    bpsMngObj.UartClose();
+                    StateDisconnected();
+                }
+
+                searchSerialPortMap.Clear();
+            }
+            else
+            {
+                MessageBox.Show(this, STR_NO_BPS_PORT_FOUND, STR_NOTE);
+            }
+            
             AddBPSDelegate();
         }
 

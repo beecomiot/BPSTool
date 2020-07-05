@@ -56,7 +56,7 @@ namespace BPSTool
         public BpsMng()
         {
             uartMngObj = UartMng.GetUartMngInstance();
-            bpsRecvHandler = BPSRecvIdleHandler;
+            // bpsRecvHandler = BPSRecvIdleHandler;
             bpsErrorHandler = BPSErrorIdleHandler;
             bpsSendDebugHandler = null;
             bpsRecvDebugHandler = null;
@@ -143,15 +143,17 @@ namespace BPSTool
                 if(BpsParseGeneral(msg, ref parseIndex))
                 {
                     BaseBPSPacket baseBPSPacketRecv = BpsParse();
-                    if (null != baseBPSPacketRecv)
+                    if (null != baseBPSPacketRecv && null != bpsRecvHandler)
                     {
                         bpsRecvHandler(baseBPSPacketRecv);
                     }
                 }
             }
-
-            IReadonlyMsgList msgList = new WritableMsgList(msg);
-            bpsRecvDebugHandler(msgList);
+            if (null != bpsRecvDebugHandler)
+            {
+                IReadonlyMsgList msgList = new WritableMsgList(msg);
+                bpsRecvDebugHandler(msgList);
+            }
         }
 
         private void UartErrorCallback(object sender, SerialErrorReceivedEventArgs e)
@@ -374,6 +376,9 @@ namespace BPSTool
 
             try
             {
+                enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
+                BpsHeaderClear();
+
                 uartMngObj.Baudrate = baudrate;
                 ret = uartMngObj.Open(port);
             }

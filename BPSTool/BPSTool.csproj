@@ -91,6 +91,12 @@
     <Compile Include="SearchingForm.Designer.cs">
       <DependentUpon>SearchingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SearchListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchListForm.Designer.cs">
+      <DependentUpon>SearchListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UartMng.cs" />
     <Compile Include="Updater.cs" />
     <EmbeddedResource Include="MainForm.resx">
@@ -109,6 +115,9 @@
     </Compile>
     <EmbeddedResource Include="SearchingForm.resx">
       <DependentUpon>SearchingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchListForm.resx">
+      <DependentUpon>SearchListForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="BPSTool.config" />
     <None Include="packages.config" />
