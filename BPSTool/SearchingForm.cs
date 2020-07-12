@@ -123,10 +123,13 @@ namespace BPSTool
         {
             if (devFound)
             {
+                devFound = false;
                 timeoutLeft = -1;
                 if (!parentForm.searchSerialPortMap.ContainsKey(currentPort))
                 {
                     parentForm.searchSerialPortMap.Add(currentPort, currentSearchBaudrate);
+                    portList.Remove(currentPort);
+                    portListIndex--;
                 }
                 
             }
@@ -140,7 +143,7 @@ namespace BPSTool
                 /** check if ports iterating completed */
                 if(portListIndex < 0)
                 {
-                    if(baudrateListIndex < 0)
+                    if(baudrateListIndex < 0 || portList.Count <= 0)
                     {
                         /** completed */
                         bpsMngObj.UartClose();

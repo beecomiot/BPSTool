@@ -47,7 +47,7 @@ namespace BPSTool
 
         public const uint BPSTOOL_VERSION_MAIN = 1;
         public const uint BPSTOOL_VERSION_SUB = 0;
-        public const uint BPSTOOL_VERSION_PATCH = 2;
+        public const uint BPSTOOL_VERSION_PATCH = 3;
 
         public delegate void DelUpdateUI_VV();
         public delegate void DelUpdateUI_VL(ref List<Byte> msg);
