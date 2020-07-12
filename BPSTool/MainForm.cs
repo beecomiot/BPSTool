@@ -35,6 +35,7 @@ namespace BPSTool
         public const string STR_BUTTON_CONNECT = "连接";
         public const string STR_BUTTON_DISCONNECT = "断开";
         public const string STR_TT_DEBUG_SEND = "仅支持16进制发送，例如“BB CC 00 01 00 01 00 02”";
+        public const string STR_TT_SEARCH = "仅搜索处于BPS模式（或者设置模式）的设备";
         public const string STR_TT_DEBUG_ENABLE = "使能串口发送/接收调试";
         public const string STR_TT_BLE_NAME = "最长20字节";
         public const string STR_DEBUG_SEND_PREFIX = "发送→：";
@@ -50,7 +51,7 @@ namespace BPSTool
 
         public delegate void DelUpdateUI_VV();
         public delegate void DelUpdateUI_VL(ref List<Byte> msg);
-        public delegate void DelDebugMsg(List<Byte> msgList, string prefix);
+        public delegate void DelDebugMsg(List<Byte> msgList, string prefix, bool isHex);
         public delegate void DelRecvBPSPacket(BaseBPSPacket baseBPSPacket);
         //public delegate void DelUartErrorUI_VV();
 
@@ -125,6 +126,8 @@ namespace BPSTool
             /** read configurature */
             bool debug_checked = true;
             String baudrate = "9600";
+            bool hex_recv = true;
+            bool hex_send = true;
             try
             {
                 //指定config文件读取
@@ -138,6 +141,8 @@ namespace BPSTool
 @"  <appSettings>",
 @"    <add key=""debug_checked"" value=""TRUE"" />",
 @"    <add key=""baudrate"" value=""9600"" />",
+@"    <add key=""hex_send"" value=""TRUE"" />",
+@"    <add key=""hex_recv"" value=""TRUE"" />",
 @"  </appSettings>",
 @"</configuration>"
                     };
@@ -153,6 +158,8 @@ namespace BPSTool
 
                 debug_checked = Boolean.Parse(config.AppSettings.Settings["debug_checked"].Value);
                 baudrate = config.AppSettings.Settings["baudrate"].Value;
+                hex_recv = Boolean.Parse(config.AppSettings.Settings["hex_recv"].Value);
+                hex_send = Boolean.Parse(config.AppSettings.Settings["hex_send"].Value);
             }
             catch(Exception e)
             {
@@ -161,6 +168,8 @@ namespace BPSTool
 
             checkBoxDebugEnable.Checked = debug_checked;
             comboBoxBaudrate.Text = baudrate;
+            checkBoxHexRecv.Checked = hex_recv;
+            checkBoxHexSend.Checked = hex_send;
         }
 
         private void AddBPSDelegate()
@@ -184,9 +193,10 @@ namespace BPSTool
             if (checkBoxDebugEnable.Checked)
             {
                 DelDebugMsg del = new DelDebugMsg(printMsg);
-                object[] args = new object[2];
+                object[] args = new object[3];
                 args[0] = msgList.msgList;
                 args[1] = STR_DEBUG_SEND_PREFIX;
+                args[2] = checkBoxHexSend.Checked;
                 BeginInvoke(del, args);
             }
         }
@@ -196,9 +206,10 @@ namespace BPSTool
             if (checkBoxDebugEnable.Checked)
             {
                 DelDebugMsg del = new DelDebugMsg(printMsg);
-                object[] args = new object[2];
+                object[] args = new object[3];
                 args[0] = msgList.msgList;
                 args[1] = STR_DEBUG_RECV_PREFIX;
+                args[2] = checkBoxHexRecv.Checked;
                 BeginInvoke(del, args);
             }
         }
@@ -215,12 +226,27 @@ namespace BPSTool
             }
         }
 
-        private void printMsg(List<Byte> msgList, string prefix)
+        private void printMsg(List<Byte> msgList, string prefix, bool isHex)
         {
             string msgSendPrint = prefix;
-            foreach (byte b in msgList)
+            if (isHex)
             {
-                msgSendPrint += " " + b.ToString("X").PadLeft(2, '0');
+                foreach (byte b in msgList)
+                {
+                    msgSendPrint += " " + b.ToString("X").PadLeft(2, '0');
+                }
+            }
+            else
+            {
+                try
+                {
+                    string tmp = System.Text.Encoding.UTF8.GetString(msgList.ToArray());
+                    msgSendPrint += tmp;
+                }
+                catch (Exception e)
+                {
+
+                }
             }
             textBoxDebugMsg.AppendText(msgSendPrint + "\r\n");
         }
@@ -555,9 +581,9 @@ namespace BPSTool
 
         private void textBoxDebugSend_MouseHover(object sender, EventArgs e)
         {
-            ToolTip p = new ToolTip();
-            p.ShowAlways = true;
-            p.SetToolTip(this.textBoxDebugSend, STR_TT_DEBUG_SEND);
+            //ToolTip p = new ToolTip();
+            //p.ShowAlways = true;
+            //p.SetToolTip(this.textBoxDebugSend, STR_TT_DEBUG_SEND);
         }
 
         private void comboBoxBaudrate_KeyPress(object sender, KeyPressEventArgs e)
@@ -578,9 +604,12 @@ namespace BPSTool
 
         private void textBoxDebugSend_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar != '\b' && e.KeyChar != ' ' && !Char.IsDigit(e.KeyChar) && !(e.KeyChar <= 'f' && e.KeyChar >= 'a') && !(e.KeyChar <= 'F' && e.KeyChar >= 'A'))
+            if (checkBoxHexSend.Checked)
             {
-                e.Handled = true;
+                if (e.KeyChar != '\b' && e.KeyChar != ' ' && !Char.IsDigit(e.KeyChar) && !(e.KeyChar <= 'f' && e.KeyChar >= 'a') && !(e.KeyChar <= 'F' && e.KeyChar >= 'A'))
+                {
+                    e.Handled = true;
+                }
             }
         }
 
@@ -699,13 +728,13 @@ namespace BPSTool
             p.SetToolTip(this.textBoxDebugSend, STR_TT_BLE_NAME);
         }
 
-        private void buttonDebugSend_Click(object sender, EventArgs e)
+        private bool hexParse(string hexString, ref List<byte> hexList)
         {
-            List<byte> msgList = new List<byte>();
-            msgList.Clear();
+            bool ret = false;
+
             try
             {
-                string[] hexMsg = textBoxDebugSend.Text.Split(' ');
+                string[] hexMsg = hexString.Split(' ');
                 if (hexMsg != null && hexMsg.Length > 0)
                 {
                     for (int i = 0; i < hexMsg.Length; i++)
@@ -716,17 +745,65 @@ namespace BPSTool
                             break;
                         }
 
-                        msgList.Add((byte)Convert.ToInt32(tmp, 16));
+                        hexList.Add((byte)Convert.ToInt32(tmp, 16));
 
                     }
+
+                    ret = true;
                 }
             }
             catch (Exception ex)
             {
-                msgList.Clear();
+                hexList.Clear();
             }
 
-            sendMsg(ref msgList);
+            return ret;
+        }
+
+        private void buttonDebugSend_Click(object sender, EventArgs e)
+        {
+            List<byte> msgList = new List<byte>();
+            msgList.Clear();
+            //try
+            //{
+            //    string[] hexMsg = textBoxDebugSend.Text.Split(' ');
+            //    if (hexMsg != null && hexMsg.Length > 0)
+            //    {
+            //        for (int i = 0; i < hexMsg.Length; i++)
+            //        {
+            //            string tmp = hexMsg[i];
+            //            if (tmp.Length < 1 || tmp.Length > 2)
+            //            {
+            //                break;
+            //            }
+
+            //            msgList.Add((byte)Convert.ToInt32(tmp, 16));
+
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    msgList.Clear();
+            //}
+            if (checkBoxHexSend.Checked)
+            {
+                if (hexParse(textBoxDebugSend.Text, ref msgList))
+                {
+                    sendMsg(ref msgList);
+                }
+            }
+            else
+            {
+
+                byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(textBoxDebugSend.Text);
+                if (null != byteArray && byteArray.Length != 0)
+                {
+                    List<byte> tmp = new List<byte>(byteArray);
+                    msgList.AddRange(tmp);
+                    sendMsg(ref msgList);
+                }
+            }
         }
 
         private void textBoxDebugSend_KeyUp(object sender, KeyEventArgs e)
@@ -945,6 +1022,23 @@ namespace BPSTool
         }
 
         private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonSearch_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip p = new ToolTip();
+            p.ShowAlways = true;
+            p.SetToolTip(this.buttonSearch, STR_TT_SEARCH);
+        }
+
+        private void checkBoxHexSend_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxDebugSend.Text = "";
+        }
+
+        private void textBoxDebugMsg_TextChanged(object sender, EventArgs e)
         {
 
         }

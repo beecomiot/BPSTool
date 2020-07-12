@@ -125,6 +125,7 @@ namespace BPSTool
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 ret = false;
             }
 

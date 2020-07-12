@@ -23,6 +23,8 @@ namespace BPSTool
 
                 config.AppSettings.Settings["debug_checked"].Value = checkBoxDebugEnable.Checked.ToString();
                 config.AppSettings.Settings["baudrate"].Value = comboBoxBaudrate.Text.ToString();
+                config.AppSettings.Settings["hex_recv"].Value = checkBoxHexRecv.Checked.ToString();
+                config.AppSettings.Settings["hex_send"].Value = checkBoxHexSend.Checked.ToString();
                 config.Save();
             }
             catch
@@ -96,6 +98,9 @@ namespace BPSTool
             this.splitContainerDebugSend = new System.Windows.Forms.SplitContainer();
             this.textBoxDebugSend = new System.Windows.Forms.TextBox();
             this.buttonDebugSend = new System.Windows.Forms.Button();
+            this.groupBoxDebug = new System.Windows.Forms.GroupBox();
+            this.checkBoxHexRecv = new System.Windows.Forms.CheckBox();
+            this.checkBoxHexSend = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).BeginInit();
             this.splitContainerTop1Title.Panel1.SuspendLayout();
             this.splitContainerTop1Title.Panel2.SuspendLayout();
@@ -119,6 +124,7 @@ namespace BPSTool
             this.splitContainerDebugSend.Panel1.SuspendLayout();
             this.splitContainerDebugSend.Panel2.SuspendLayout();
             this.splitContainerDebugSend.SuspendLayout();
+            this.groupBoxDebug.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonCheckVersion
@@ -162,9 +168,9 @@ namespace BPSTool
             // 
             // splitContainerTop1Title.Panel1
             // 
-            this.splitContainerTop1Title.Panel1.Controls.Add(this.checkBoxDebugEnable);
             this.splitContainerTop1Title.Panel1.Controls.Add(this.linkLabelVersionUpdate);
             this.splitContainerTop1Title.Panel1.Controls.Add(this.buttonCheckVersion);
+            this.splitContainerTop1Title.Panel1.Controls.Add(this.groupBoxDebug);
             this.splitContainerTop1Title.Panel1.Tag = "";
             this.splitContainerTop1Title.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainerTop1Title_Panel1_Paint);
             // 
@@ -182,7 +188,7 @@ namespace BPSTool
             this.checkBoxDebugEnable.Checked = true;
             this.checkBoxDebugEnable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDebugEnable.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.checkBoxDebugEnable.Location = new System.Drawing.Point(25, 19);
+            this.checkBoxDebugEnable.Location = new System.Drawing.Point(97, 21);
             this.checkBoxDebugEnable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxDebugEnable.Name = "checkBoxDebugEnable";
             this.checkBoxDebugEnable.Size = new System.Drawing.Size(121, 24);
@@ -487,6 +493,7 @@ namespace BPSTool
             this.buttonSearch.Text = "搜索";
             this.buttonSearch.UseVisualStyleBackColor = true;
             this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
+            this.buttonSearch.MouseHover += new System.EventHandler(this.buttonSearch_MouseHover);
             // 
             // comboBoxBaudrate
             // 
@@ -569,6 +576,7 @@ namespace BPSTool
             this.textBoxDebugMsg.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxDebugMsg.Size = new System.Drawing.Size(783, 153);
             this.textBoxDebugMsg.TabIndex = 0;
+            this.textBoxDebugMsg.TextChanged += new System.EventHandler(this.textBoxDebugMsg_TextChanged);
             // 
             // contextMenuStripDebugMsg
             // 
@@ -638,6 +646,49 @@ namespace BPSTool
             this.buttonDebugSend.Click += new System.EventHandler(this.buttonDebugSend_Click);
             this.buttonDebugSend.MouseHover += new System.EventHandler(this.buttonDebugSend_MouseHover);
             // 
+            // groupBoxDebug
+            // 
+            this.groupBoxDebug.Controls.Add(this.checkBoxHexSend);
+            this.groupBoxDebug.Controls.Add(this.checkBoxHexRecv);
+            this.groupBoxDebug.Controls.Add(this.checkBoxDebugEnable);
+            this.groupBoxDebug.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBoxDebug.Font = new System.Drawing.Font("黑体", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBoxDebug.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxDebug.Name = "groupBoxDebug";
+            this.groupBoxDebug.Size = new System.Drawing.Size(625, 54);
+            this.groupBoxDebug.TabIndex = 3;
+            this.groupBoxDebug.TabStop = false;
+            this.groupBoxDebug.Text = "Debug设置";
+            // 
+            // checkBoxHexRecv
+            // 
+            this.checkBoxHexRecv.AutoSize = true;
+            this.checkBoxHexRecv.Checked = true;
+            this.checkBoxHexRecv.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxHexRecv.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.checkBoxHexRecv.Location = new System.Drawing.Point(228, 21);
+            this.checkBoxHexRecv.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxHexRecv.Name = "checkBoxHexRecv";
+            this.checkBoxHexRecv.Size = new System.Drawing.Size(141, 24);
+            this.checkBoxHexRecv.TabIndex = 3;
+            this.checkBoxHexRecv.Text = "Hex显示接收";
+            this.checkBoxHexRecv.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxHexSend
+            // 
+            this.checkBoxHexSend.AutoSize = true;
+            this.checkBoxHexSend.Checked = true;
+            this.checkBoxHexSend.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxHexSend.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.checkBoxHexSend.Location = new System.Drawing.Point(375, 21);
+            this.checkBoxHexSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxHexSend.Name = "checkBoxHexSend";
+            this.checkBoxHexSend.Size = new System.Drawing.Size(101, 24);
+            this.checkBoxHexSend.TabIndex = 4;
+            this.checkBoxHexSend.Text = "Hex发送";
+            this.checkBoxHexSend.UseVisualStyleBackColor = true;
+            this.checkBoxHexSend.CheckedChanged += new System.EventHandler(this.checkBoxHexSend_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -649,7 +700,6 @@ namespace BPSTool
             this.Name = "MainForm";
             this.Text = "BPSTool";
             this.splitContainerTop1Title.Panel1.ResumeLayout(false);
-            this.splitContainerTop1Title.Panel1.PerformLayout();
             this.splitContainerTop1Title.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).EndInit();
             this.splitContainerTop1Title.ResumeLayout(false);
@@ -675,6 +725,8 @@ namespace BPSTool
             this.splitContainerDebugSend.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDebugSend)).EndInit();
             this.splitContainerDebugSend.ResumeLayout(false);
+            this.groupBoxDebug.ResumeLayout(false);
+            this.groupBoxDebug.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -720,6 +772,9 @@ namespace BPSTool
         private System.Windows.Forms.ContextMenuStrip contextMenuStripDebugMsg;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopy;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemClear;
+        private System.Windows.Forms.GroupBox groupBoxDebug;
+        private System.Windows.Forms.CheckBox checkBoxHexSend;
+        private System.Windows.Forms.CheckBox checkBoxHexRecv;
     }
 }
 
