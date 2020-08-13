@@ -229,6 +229,7 @@ namespace BPSTool
                         if (IsBPSChksumOK(RecvBuffer))
                         {
                             ret = true;
+                            enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
                             return ret;
                         }
                         BpsHeaderClear();
