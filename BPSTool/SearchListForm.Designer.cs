@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchListForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listBoxSerialPorts = new System.Windows.Forms.ListBox();
-            this.buttonConfirm = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonConfirm = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -71,17 +72,6 @@
             this.listBoxSerialPorts.Size = new System.Drawing.Size(382, 251);
             this.listBoxSerialPorts.TabIndex = 0;
             // 
-            // buttonConfirm
-            // 
-            this.buttonConfirm.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonConfirm.Location = new System.Drawing.Point(40, 34);
-            this.buttonConfirm.Name = "buttonConfirm";
-            this.buttonConfirm.Size = new System.Drawing.Size(95, 50);
-            this.buttonConfirm.TabIndex = 0;
-            this.buttonConfirm.Text = "确定";
-            this.buttonConfirm.UseVisualStyleBackColor = true;
-            this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
-            // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -94,12 +84,24 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
+            // buttonConfirm
+            // 
+            this.buttonConfirm.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonConfirm.Location = new System.Drawing.Point(40, 34);
+            this.buttonConfirm.Name = "buttonConfirm";
+            this.buttonConfirm.Size = new System.Drawing.Size(95, 50);
+            this.buttonConfirm.TabIndex = 0;
+            this.buttonConfirm.Text = "确定";
+            this.buttonConfirm.UseVisualStyleBackColor = true;
+            this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
+            // 
             // SearchListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 353);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SearchListForm";

@@ -109,6 +109,13 @@ namespace BPSTool
             this.splitContainerDebugSend = new System.Windows.Forms.SplitContainer();
             this.textBoxDebugSend = new System.Windows.Forms.TextBox();
             this.buttonDebugSend = new System.Windows.Forms.Button();
+            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.选项ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).BeginInit();
             this.splitContainerTop1Title.Panel1.SuspendLayout();
             this.splitContainerTop1Title.Panel2.SuspendLayout();
@@ -133,6 +140,7 @@ namespace BPSTool
             this.splitContainerDebugSend.Panel1.SuspendLayout();
             this.splitContainerDebugSend.Panel2.SuspendLayout();
             this.splitContainerDebugSend.SuspendLayout();
+            this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonCheckVersion
@@ -169,7 +177,7 @@ namespace BPSTool
             this.splitContainerTop1Title.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainerTop1Title.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainerTop1Title.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerTop1Title.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerTop1Title.Location = new System.Drawing.Point(0, 28);
             this.splitContainerTop1Title.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainerTop1Title.Name = "splitContainerTop1Title";
             this.splitContainerTop1Title.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -186,7 +194,7 @@ namespace BPSTool
             // 
             this.splitContainerTop1Title.Panel2.Controls.Add(this.splitContainerTop2DeviceAndDebug);
             this.splitContainerTop1Title.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainerTop1Title.Size = new System.Drawing.Size(1067, 562);
+            this.splitContainerTop1Title.Size = new System.Drawing.Size(1067, 534);
             this.splitContainerTop1Title.SplitterDistance = 58;
             this.splitContainerTop1Title.TabIndex = 2;
             // 
@@ -266,8 +274,8 @@ namespace BPSTool
             // splitContainerTop2DeviceAndDebug.Panel2
             // 
             this.splitContainerTop2DeviceAndDebug.Panel2.Controls.Add(this.splitContainerSettingsAndDebug);
-            this.splitContainerTop2DeviceAndDebug.Size = new System.Drawing.Size(1063, 496);
-            this.splitContainerTop2DeviceAndDebug.SplitterDistance = 308;
+            this.splitContainerTop2DeviceAndDebug.Size = new System.Drawing.Size(1063, 468);
+            this.splitContainerTop2DeviceAndDebug.SplitterDistance = 280;
             this.splitContainerTop2DeviceAndDebug.TabIndex = 0;
             // 
             // tabControlDevice
@@ -278,7 +286,7 @@ namespace BPSTool
             this.tabControlDevice.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControlDevice.Name = "tabControlDevice";
             this.tabControlDevice.SelectedIndex = 0;
-            this.tabControlDevice.Size = new System.Drawing.Size(1061, 306);
+            this.tabControlDevice.Size = new System.Drawing.Size(1061, 278);
             this.tabControlDevice.TabIndex = 0;
             this.tabControlDevice.Tag = "";
             // 
@@ -316,7 +324,7 @@ namespace BPSTool
             this.tabPageBC1110.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPageBC1110.Name = "tabPageBC1110";
             this.tabPageBC1110.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPageBC1110.Size = new System.Drawing.Size(1053, 277);
+            this.tabPageBC1110.Size = new System.Drawing.Size(1053, 249);
             this.tabPageBC1110.TabIndex = 0;
             this.tabPageBC1110.Text = " BC1110";
             this.tabPageBC1110.UseVisualStyleBackColor = true;
@@ -789,12 +797,70 @@ namespace BPSTool
             this.buttonDebugSend.Click += new System.EventHandler(this.buttonDebugSend_Click);
             this.buttonDebugSend.MouseHover += new System.EventHandler(this.buttonDebugSend_MouseHover);
             // 
+            // menuStrip2
+            // 
+            this.menuStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.编辑ToolStripMenuItem,
+            this.帮助ToolStripMenuItem});
+            this.menuStrip2.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip2.Name = "menuStrip2";
+            this.menuStrip2.Size = new System.Drawing.Size(1067, 28);
+            this.menuStrip2.TabIndex = 3;
+            this.menuStrip2.Text = "menuStrip2";
+            // 
+            // 编辑ToolStripMenuItem
+            // 
+            this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.选项ToolStripMenuItem,
+            this.CloseToolStripMenuItem});
+            this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
+            this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
+            this.编辑ToolStripMenuItem.Text = "编辑";
+            // 
+            // 选项ToolStripMenuItem
+            // 
+            this.选项ToolStripMenuItem.Name = "选项ToolStripMenuItem";
+            this.选项ToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.选项ToolStripMenuItem.Text = "选项...";
+            // 
+            // CloseToolStripMenuItem
+            // 
+            this.CloseToolStripMenuItem.Name = "CloseToolStripMenuItem";
+            this.CloseToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.CloseToolStripMenuItem.Text = "关闭";
+            this.CloseToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
+            // 
+            // 帮助ToolStripMenuItem
+            // 
+            this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DocToolStripMenuItem,
+            this.AboutToolStripMenuItem});
+            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
+            this.帮助ToolStripMenuItem.Text = "帮助";
+            // 
+            // DocToolStripMenuItem
+            // 
+            this.DocToolStripMenuItem.Name = "DocToolStripMenuItem";
+            this.DocToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.DocToolStripMenuItem.Text = "文档...";
+            this.DocToolStripMenuItem.Click += new System.EventHandler(this.DocToolStripMenuItem_Click);
+            // 
+            // AboutToolStripMenuItem
+            // 
+            this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.AboutToolStripMenuItem.Text = "关于...";
+            this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 562);
             this.Controls.Add(this.splitContainerTop1Title);
+            this.Controls.Add(this.menuStrip2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
@@ -827,7 +893,10 @@ namespace BPSTool
             this.splitContainerDebugSend.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDebugSend)).EndInit();
             this.splitContainerDebugSend.ResumeLayout(false);
+            this.menuStrip2.ResumeLayout(false);
+            this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -883,6 +952,13 @@ namespace BPSTool
         private System.Windows.Forms.Button buttonLinkMaintainTimeSet;
         private System.Windows.Forms.TextBox textBoxLinkMaintainTime;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.MenuStrip menuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem 编辑ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 选项ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CloseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DocToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
     }
 }
 

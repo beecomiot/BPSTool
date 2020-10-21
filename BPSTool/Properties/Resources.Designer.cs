@@ -63,6 +63,26 @@ namespace BPSTool.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap beecom_logo_no_back {
+            get {
+                object obj = ResourceManager.GetObject("beecom_logo_no_back", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap beecom_logo512x512 {
+            get {
+                object obj = ResourceManager.GetObject("beecom_logo512x512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap china_flag_icon_64 {
             get {
                 object obj = ResourceManager.GetObject("china_flag_icon_64", resourceCulture);

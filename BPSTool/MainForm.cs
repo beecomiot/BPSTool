@@ -1109,5 +1109,28 @@ namespace BPSTool
             bpsPacket.AdvInterval = UInt32.Parse(textBoxAdvInterval.Text);
             bpsMngObj.SendBPSPacketReq(bpsPacket);
         }
+
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm form = new AboutForm();
+            form.ShowDialog(this);
+        }
+
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void DocToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start("https://www.beecom.online/support/bpstool%e5%b7%a5%e5%85%b7/");
+            }
+            catch
+            {
+
+            }
+        }
     }
 }
