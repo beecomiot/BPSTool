@@ -16,6 +16,8 @@ namespace BPSTool.BPSPacket
         public enum SysParaID
         {
             NAME,
+            LINK_MAINTAIN_TIME,
+            ADV_INTERVAL
         }
 
         public const byte REQUEST_CMD = 0xEE;
@@ -41,8 +43,14 @@ namespace BPSTool.BPSPacket
                 int dataIndex = BpsUtils.DATA_INDEX + 2;
                 switch(msg[dataIndex])
                 {
-                    case 0:
+                    case 0x00:
                         ret = new BPSPacketName();
+                        break;
+                    case 0x01:
+                        ret = new BPSPacketLinkMaintainTime();
+                        break;
+                    case 0x02:
+                        ret = new BPSPacketAdvInterval();
                         break;
                     default:
                         ret = null;

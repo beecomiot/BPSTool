@@ -11,7 +11,7 @@ namespace BPSTool.BPSPacket
         public const byte RESPONSE_CMD = 0x0F;
 
         private byte responseCode;
-        private static byte[] safeWord = { 0xBB, 0xCC };
+        private static byte[] safeWord = { 0xBC, 0xBC };
         public static byte[] SafeWord { get => safeWord; }
 
         public override byte RequestCmd { get => 0x0E; }

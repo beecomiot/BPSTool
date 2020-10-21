@@ -460,6 +460,18 @@ namespace BPSTool
                         textBoxName.Text = bps.ToString();
                     }
                     break;
+                case BPSPacketSysPara.SysParaID.LINK_MAINTAIN_TIME:
+                    if (bps.CmdTypeSysPara == BPSPacketSysPara.CmdType.READ)
+                    {
+                        textBoxLinkMaintainTime.Text = bps.ToString();
+                    }
+                    break;
+                case BPSPacketSysPara.SysParaID.ADV_INTERVAL:
+                    if (bps.CmdTypeSysPara == BPSPacketSysPara.CmdType.READ)
+                    {
+                        textBoxAdvInterval.Text = bps.ToString();
+                    }
+                    break;
             }
         }
 
@@ -596,10 +608,7 @@ namespace BPSTool
 
         private void textBoxBaudrate_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
+            UITools.textBoxKeyPress_OnlyDigital(ref e);
         }
 
         private void textBoxDebugSend_KeyPress(object sender, KeyPressEventArgs e)
@@ -657,6 +666,7 @@ namespace BPSTool
 
         private void buttonNameRead_Click(object sender, EventArgs e)
         {
+            textBoxName.Text = "";
             BPSPacketName bpsPacket = new BPSPacketName();
             bpsPacket.CmdTypeSysPara = BPSPacketSysPara.CmdType.READ;
             bpsMngObj.SendBPSPacketReq(bpsPacket);
@@ -856,7 +866,6 @@ namespace BPSTool
 
         private void textBoxBaudrate_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void textBoxName_KeyPress(object sender, KeyPressEventArgs e)
@@ -901,6 +910,7 @@ namespace BPSTool
 
         private void buttonBaudrateRead_Click(object sender, EventArgs e)
         {
+            textBoxBaudrate.Text = "";
             BPSPacketBaudrate bpsPacket = new BPSPacketBaudrate();
             bpsPacket.CmdTypeBaudrate = BPSPacketBaudrate.CmdType.READ;
             bpsMngObj.SendBPSPacketReq(bpsPacket);
@@ -1041,6 +1051,63 @@ namespace BPSTool
         private void textBoxDebugMsg_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBoxLinkMaintainTime_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            UITools.textBoxKeyPress_OnlyDigital(ref e);
+        }
+
+        private void textBoxAdvInterval_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxAdvInterval_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            UITools.textBoxKeyPress_OnlyDigital(ref e);
+        }
+
+        private void buttonLinkMaintainTimeRead_Click(object sender, EventArgs e)
+        {
+            textBoxLinkMaintainTime.Text = "";
+            BPSPacketLinkMaintainTime bpsPacket = new BPSPacketLinkMaintainTime();
+            bpsPacket.CmdTypeSysPara = BPSPacketSysPara.CmdType.READ;
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
+        }
+
+        private void buttonAdvIntervalRead_Click(object sender, EventArgs e)
+        {
+            textBoxAdvInterval.Text = "";
+            BPSPacketAdvInterval bpsPacket = new BPSPacketAdvInterval();
+            bpsPacket.CmdTypeSysPara = BPSPacketSysPara.CmdType.READ;
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
+        }
+
+        private void buttonLinkMaintainTimeSet_Click(object sender, EventArgs e)
+        {
+            if (textBoxLinkMaintainTime.Text.Length == 0)
+            {
+                DialogResult dr = MessageBox.Show(STR_MB_SETTING_NOT_NULL, STR_NOTE);
+                return;
+            }
+            BPSPacketLinkMaintainTime bpsPacket = new BPSPacketLinkMaintainTime();
+            bpsPacket.CmdTypeSysPara = BPSPacketSysPara.CmdType.WRITE;
+            bpsPacket.LinkMaintainTime = UInt32.Parse(textBoxLinkMaintainTime.Text);
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
+        }
+
+        private void buttonAdvIntervalSet_Click(object sender, EventArgs e)
+        {
+            if (textBoxAdvInterval.Text.Length == 0)
+            {
+                DialogResult dr = MessageBox.Show(STR_MB_SETTING_NOT_NULL, STR_NOTE);
+                return;
+            }
+            BPSPacketAdvInterval bpsPacket = new BPSPacketAdvInterval();
+            bpsPacket.CmdTypeSysPara = BPSPacketSysPara.CmdType.WRITE;
+            bpsPacket.AdvInterval = UInt32.Parse(textBoxAdvInterval.Text);
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
         }
     }
 }

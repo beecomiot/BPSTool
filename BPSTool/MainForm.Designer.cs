@@ -62,10 +62,21 @@ namespace BPSTool
             this.buttonCheckVersion = new System.Windows.Forms.Button();
             this.linkLabelVersionUpdate = new System.Windows.Forms.LinkLabel();
             this.splitContainerTop1Title = new System.Windows.Forms.SplitContainer();
+            this.groupBoxDebug = new System.Windows.Forms.GroupBox();
+            this.checkBoxHexSend = new System.Windows.Forms.CheckBox();
+            this.checkBoxHexRecv = new System.Windows.Forms.CheckBox();
             this.checkBoxDebugEnable = new System.Windows.Forms.CheckBox();
             this.splitContainerTop2DeviceAndDebug = new System.Windows.Forms.SplitContainer();
             this.tabControlDevice = new System.Windows.Forms.TabControl();
             this.tabPageBC1110 = new System.Windows.Forms.TabPage();
+            this.buttonAdvIntervalRead = new System.Windows.Forms.Button();
+            this.buttonAdvIntervalSet = new System.Windows.Forms.Button();
+            this.textBoxAdvInterval = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.buttonLinkMaintainTimeRead = new System.Windows.Forms.Button();
+            this.buttonLinkMaintainTimeSet = new System.Windows.Forms.Button();
+            this.textBoxLinkMaintainTime = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
             this.buttonResetSet = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -98,13 +109,11 @@ namespace BPSTool
             this.splitContainerDebugSend = new System.Windows.Forms.SplitContainer();
             this.textBoxDebugSend = new System.Windows.Forms.TextBox();
             this.buttonDebugSend = new System.Windows.Forms.Button();
-            this.groupBoxDebug = new System.Windows.Forms.GroupBox();
-            this.checkBoxHexRecv = new System.Windows.Forms.CheckBox();
-            this.checkBoxHexSend = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).BeginInit();
             this.splitContainerTop1Title.Panel1.SuspendLayout();
             this.splitContainerTop1Title.Panel2.SuspendLayout();
             this.splitContainerTop1Title.SuspendLayout();
+            this.groupBoxDebug.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop2DeviceAndDebug)).BeginInit();
             this.splitContainerTop2DeviceAndDebug.Panel1.SuspendLayout();
             this.splitContainerTop2DeviceAndDebug.Panel2.SuspendLayout();
@@ -124,7 +133,6 @@ namespace BPSTool
             this.splitContainerDebugSend.Panel1.SuspendLayout();
             this.splitContainerDebugSend.Panel2.SuspendLayout();
             this.splitContainerDebugSend.SuspendLayout();
-            this.groupBoxDebug.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonCheckVersion
@@ -182,6 +190,49 @@ namespace BPSTool
             this.splitContainerTop1Title.SplitterDistance = 58;
             this.splitContainerTop1Title.TabIndex = 2;
             // 
+            // groupBoxDebug
+            // 
+            this.groupBoxDebug.Controls.Add(this.checkBoxHexSend);
+            this.groupBoxDebug.Controls.Add(this.checkBoxHexRecv);
+            this.groupBoxDebug.Controls.Add(this.checkBoxDebugEnable);
+            this.groupBoxDebug.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBoxDebug.Font = new System.Drawing.Font("黑体", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBoxDebug.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxDebug.Name = "groupBoxDebug";
+            this.groupBoxDebug.Size = new System.Drawing.Size(625, 54);
+            this.groupBoxDebug.TabIndex = 3;
+            this.groupBoxDebug.TabStop = false;
+            this.groupBoxDebug.Text = "Debug设置";
+            // 
+            // checkBoxHexSend
+            // 
+            this.checkBoxHexSend.AutoSize = true;
+            this.checkBoxHexSend.Checked = true;
+            this.checkBoxHexSend.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxHexSend.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.checkBoxHexSend.Location = new System.Drawing.Point(375, 21);
+            this.checkBoxHexSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxHexSend.Name = "checkBoxHexSend";
+            this.checkBoxHexSend.Size = new System.Drawing.Size(101, 24);
+            this.checkBoxHexSend.TabIndex = 4;
+            this.checkBoxHexSend.Text = "Hex发送";
+            this.checkBoxHexSend.UseVisualStyleBackColor = true;
+            this.checkBoxHexSend.CheckedChanged += new System.EventHandler(this.checkBoxHexSend_CheckedChanged);
+            // 
+            // checkBoxHexRecv
+            // 
+            this.checkBoxHexRecv.AutoSize = true;
+            this.checkBoxHexRecv.Checked = true;
+            this.checkBoxHexRecv.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxHexRecv.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.checkBoxHexRecv.Location = new System.Drawing.Point(228, 21);
+            this.checkBoxHexRecv.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxHexRecv.Name = "checkBoxHexRecv";
+            this.checkBoxHexRecv.Size = new System.Drawing.Size(141, 24);
+            this.checkBoxHexRecv.TabIndex = 3;
+            this.checkBoxHexRecv.Text = "Hex显示接收";
+            this.checkBoxHexRecv.UseVisualStyleBackColor = true;
+            // 
             // checkBoxDebugEnable
             // 
             this.checkBoxDebugEnable.AutoSize = true;
@@ -229,11 +280,20 @@ namespace BPSTool
             this.tabControlDevice.SelectedIndex = 0;
             this.tabControlDevice.Size = new System.Drawing.Size(1061, 306);
             this.tabControlDevice.TabIndex = 0;
+            this.tabControlDevice.Tag = "";
             // 
             // tabPageBC1110
             // 
             this.tabPageBC1110.AutoScroll = true;
             this.tabPageBC1110.AutoScrollMinSize = new System.Drawing.Size(0, 300);
+            this.tabPageBC1110.Controls.Add(this.buttonAdvIntervalRead);
+            this.tabPageBC1110.Controls.Add(this.buttonAdvIntervalSet);
+            this.tabPageBC1110.Controls.Add(this.textBoxAdvInterval);
+            this.tabPageBC1110.Controls.Add(this.label7);
+            this.tabPageBC1110.Controls.Add(this.buttonLinkMaintainTimeRead);
+            this.tabPageBC1110.Controls.Add(this.buttonLinkMaintainTimeSet);
+            this.tabPageBC1110.Controls.Add(this.textBoxLinkMaintainTime);
+            this.tabPageBC1110.Controls.Add(this.label6);
             this.tabPageBC1110.Controls.Add(this.button5);
             this.tabPageBC1110.Controls.Add(this.buttonResetSet);
             this.tabPageBC1110.Controls.Add(this.textBox1);
@@ -258,15 +318,98 @@ namespace BPSTool
             this.tabPageBC1110.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPageBC1110.Size = new System.Drawing.Size(1053, 277);
             this.tabPageBC1110.TabIndex = 0;
-            this.tabPageBC1110.Text = "BC1110";
+            this.tabPageBC1110.Text = " BC1110";
             this.tabPageBC1110.UseVisualStyleBackColor = true;
             this.tabPageBC1110.Click += new System.EventHandler(this.tabPageBC1110_Click);
             this.tabPageBC1110.MouseHover += new System.EventHandler(this.tabPageBC1110_MouseHover);
             // 
+            // buttonAdvIntervalRead
+            // 
+            this.buttonAdvIntervalRead.Location = new System.Drawing.Point(546, 216);
+            this.buttonAdvIntervalRead.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonAdvIntervalRead.Name = "buttonAdvIntervalRead";
+            this.buttonAdvIntervalRead.Size = new System.Drawing.Size(75, 30);
+            this.buttonAdvIntervalRead.TabIndex = 25;
+            this.buttonAdvIntervalRead.Text = "读取";
+            this.buttonAdvIntervalRead.UseVisualStyleBackColor = true;
+            this.buttonAdvIntervalRead.Click += new System.EventHandler(this.buttonAdvIntervalRead_Click);
+            // 
+            // buttonAdvIntervalSet
+            // 
+            this.buttonAdvIntervalSet.Location = new System.Drawing.Point(437, 216);
+            this.buttonAdvIntervalSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonAdvIntervalSet.Name = "buttonAdvIntervalSet";
+            this.buttonAdvIntervalSet.Size = new System.Drawing.Size(75, 30);
+            this.buttonAdvIntervalSet.TabIndex = 24;
+            this.buttonAdvIntervalSet.Text = "设置";
+            this.buttonAdvIntervalSet.UseVisualStyleBackColor = true;
+            this.buttonAdvIntervalSet.Click += new System.EventHandler(this.buttonAdvIntervalSet_Click);
+            // 
+            // textBoxAdvInterval
+            // 
+            this.textBoxAdvInterval.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBoxAdvInterval.Location = new System.Drawing.Point(274, 216);
+            this.textBoxAdvInterval.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBoxAdvInterval.Name = "textBoxAdvInterval";
+            this.textBoxAdvInterval.Size = new System.Drawing.Size(100, 30);
+            this.textBoxAdvInterval.TabIndex = 23;
+            this.textBoxAdvInterval.TextChanged += new System.EventHandler(this.textBoxAdvInterval_TextChanged);
+            this.textBoxAdvInterval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxAdvInterval_KeyPress);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(49, 221);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(177, 20);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "广播间隔（毫秒）";
+            // 
+            // buttonLinkMaintainTimeRead
+            // 
+            this.buttonLinkMaintainTimeRead.Location = new System.Drawing.Point(546, 161);
+            this.buttonLinkMaintainTimeRead.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonLinkMaintainTimeRead.Name = "buttonLinkMaintainTimeRead";
+            this.buttonLinkMaintainTimeRead.Size = new System.Drawing.Size(75, 30);
+            this.buttonLinkMaintainTimeRead.TabIndex = 21;
+            this.buttonLinkMaintainTimeRead.Text = "读取";
+            this.buttonLinkMaintainTimeRead.UseVisualStyleBackColor = true;
+            this.buttonLinkMaintainTimeRead.Click += new System.EventHandler(this.buttonLinkMaintainTimeRead_Click);
+            // 
+            // buttonLinkMaintainTimeSet
+            // 
+            this.buttonLinkMaintainTimeSet.Location = new System.Drawing.Point(437, 161);
+            this.buttonLinkMaintainTimeSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonLinkMaintainTimeSet.Name = "buttonLinkMaintainTimeSet";
+            this.buttonLinkMaintainTimeSet.Size = new System.Drawing.Size(75, 30);
+            this.buttonLinkMaintainTimeSet.TabIndex = 20;
+            this.buttonLinkMaintainTimeSet.Text = "设置";
+            this.buttonLinkMaintainTimeSet.UseVisualStyleBackColor = true;
+            this.buttonLinkMaintainTimeSet.Click += new System.EventHandler(this.buttonLinkMaintainTimeSet_Click);
+            // 
+            // textBoxLinkMaintainTime
+            // 
+            this.textBoxLinkMaintainTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBoxLinkMaintainTime.Location = new System.Drawing.Point(274, 161);
+            this.textBoxLinkMaintainTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBoxLinkMaintainTime.Name = "textBoxLinkMaintainTime";
+            this.textBoxLinkMaintainTime.Size = new System.Drawing.Size(100, 30);
+            this.textBoxLinkMaintainTime.TabIndex = 19;
+            this.textBoxLinkMaintainTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxLinkMaintainTime_KeyPress);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(49, 166);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(198, 20);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "链接维持时间（秒）";
+            // 
             // button5
             // 
             this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(545, 218);
+            this.button5.Location = new System.Drawing.Point(546, 326);
             this.button5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 30);
@@ -276,7 +419,7 @@ namespace BPSTool
             // 
             // buttonResetSet
             // 
-            this.buttonResetSet.Location = new System.Drawing.Point(436, 218);
+            this.buttonResetSet.Location = new System.Drawing.Point(437, 326);
             this.buttonResetSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonResetSet.Name = "buttonResetSet";
             this.buttonResetSet.Size = new System.Drawing.Size(75, 30);
@@ -289,7 +432,7 @@ namespace BPSTool
             // 
             this.textBox1.Enabled = false;
             this.textBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(273, 218);
+            this.textBox1.Location = new System.Drawing.Point(274, 326);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 30);
@@ -299,7 +442,7 @@ namespace BPSTool
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(48, 228);
+            this.label5.Location = new System.Drawing.Point(49, 331);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(93, 20);
             this.label5.TabIndex = 13;
@@ -309,7 +452,7 @@ namespace BPSTool
             // button3
             // 
             this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(545, 160);
+            this.button3.Location = new System.Drawing.Point(546, 271);
             this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 30);
@@ -320,7 +463,7 @@ namespace BPSTool
             // 
             // buttonFacRestoreSet
             // 
-            this.buttonFacRestoreSet.Location = new System.Drawing.Point(436, 160);
+            this.buttonFacRestoreSet.Location = new System.Drawing.Point(437, 271);
             this.buttonFacRestoreSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonFacRestoreSet.Name = "buttonFacRestoreSet";
             this.buttonFacRestoreSet.Size = new System.Drawing.Size(75, 30);
@@ -377,7 +520,7 @@ namespace BPSTool
             // 
             this.textBox5.Enabled = false;
             this.textBox5.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox5.Location = new System.Drawing.Point(273, 160);
+            this.textBox5.Location = new System.Drawing.Point(274, 271);
             this.textBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(100, 30);
@@ -410,7 +553,7 @@ namespace BPSTool
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(48, 170);
+            this.label4.Location = new System.Drawing.Point(49, 276);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(135, 20);
             this.label4.TabIndex = 3;
@@ -419,7 +562,7 @@ namespace BPSTool
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(48, 106);
+            this.label3.Location = new System.Drawing.Point(48, 111);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(114, 20);
             this.label3.TabIndex = 2;
@@ -428,7 +571,7 @@ namespace BPSTool
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(489, 128);
+            this.label2.Location = new System.Drawing.Point(490, 238);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(0, 20);
             this.label2.TabIndex = 1;
@@ -646,49 +789,6 @@ namespace BPSTool
             this.buttonDebugSend.Click += new System.EventHandler(this.buttonDebugSend_Click);
             this.buttonDebugSend.MouseHover += new System.EventHandler(this.buttonDebugSend_MouseHover);
             // 
-            // groupBoxDebug
-            // 
-            this.groupBoxDebug.Controls.Add(this.checkBoxHexSend);
-            this.groupBoxDebug.Controls.Add(this.checkBoxHexRecv);
-            this.groupBoxDebug.Controls.Add(this.checkBoxDebugEnable);
-            this.groupBoxDebug.Dock = System.Windows.Forms.DockStyle.Left;
-            this.groupBoxDebug.Font = new System.Drawing.Font("黑体", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBoxDebug.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxDebug.Name = "groupBoxDebug";
-            this.groupBoxDebug.Size = new System.Drawing.Size(625, 54);
-            this.groupBoxDebug.TabIndex = 3;
-            this.groupBoxDebug.TabStop = false;
-            this.groupBoxDebug.Text = "Debug设置";
-            // 
-            // checkBoxHexRecv
-            // 
-            this.checkBoxHexRecv.AutoSize = true;
-            this.checkBoxHexRecv.Checked = true;
-            this.checkBoxHexRecv.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHexRecv.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.checkBoxHexRecv.Location = new System.Drawing.Point(228, 21);
-            this.checkBoxHexRecv.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBoxHexRecv.Name = "checkBoxHexRecv";
-            this.checkBoxHexRecv.Size = new System.Drawing.Size(141, 24);
-            this.checkBoxHexRecv.TabIndex = 3;
-            this.checkBoxHexRecv.Text = "Hex显示接收";
-            this.checkBoxHexRecv.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxHexSend
-            // 
-            this.checkBoxHexSend.AutoSize = true;
-            this.checkBoxHexSend.Checked = true;
-            this.checkBoxHexSend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHexSend.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.checkBoxHexSend.Location = new System.Drawing.Point(375, 21);
-            this.checkBoxHexSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBoxHexSend.Name = "checkBoxHexSend";
-            this.checkBoxHexSend.Size = new System.Drawing.Size(101, 24);
-            this.checkBoxHexSend.TabIndex = 4;
-            this.checkBoxHexSend.Text = "Hex发送";
-            this.checkBoxHexSend.UseVisualStyleBackColor = true;
-            this.checkBoxHexSend.CheckedChanged += new System.EventHandler(this.checkBoxHexSend_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -703,6 +803,8 @@ namespace BPSTool
             this.splitContainerTop1Title.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).EndInit();
             this.splitContainerTop1Title.ResumeLayout(false);
+            this.groupBoxDebug.ResumeLayout(false);
+            this.groupBoxDebug.PerformLayout();
             this.splitContainerTop2DeviceAndDebug.Panel1.ResumeLayout(false);
             this.splitContainerTop2DeviceAndDebug.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop2DeviceAndDebug)).EndInit();
@@ -725,8 +827,6 @@ namespace BPSTool
             this.splitContainerDebugSend.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDebugSend)).EndInit();
             this.splitContainerDebugSend.ResumeLayout(false);
-            this.groupBoxDebug.ResumeLayout(false);
-            this.groupBoxDebug.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -775,6 +875,14 @@ namespace BPSTool
         private System.Windows.Forms.GroupBox groupBoxDebug;
         private System.Windows.Forms.CheckBox checkBoxHexSend;
         private System.Windows.Forms.CheckBox checkBoxHexRecv;
+        private System.Windows.Forms.Button buttonAdvIntervalRead;
+        private System.Windows.Forms.Button buttonAdvIntervalSet;
+        private System.Windows.Forms.TextBox textBoxAdvInterval;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button buttonLinkMaintainTimeRead;
+        private System.Windows.Forms.Button buttonLinkMaintainTimeSet;
+        private System.Windows.Forms.TextBox textBoxLinkMaintainTime;
+        private System.Windows.Forms.Label label6;
     }
 }
 

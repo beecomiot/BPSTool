@@ -65,10 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BpsMng.cs" />
+    <Compile Include="BPSPacket\BPSPacketAdvInterval.cs" />
     <Compile Include="BPSPacket\BPSPacketBaudrate.cs" />
     <Compile Include="BPSPacket\BPSPacketCommTest.cs" />
     <Compile Include="BPSPacket\BaseBPSPacket.cs" />
     <Compile Include="BPSPacket\BPSPacketDevInfo.cs" />
+    <Compile Include="BPSPacket\BPSPacketLinkMaintainTime.cs" />
     <Compile Include="BPSPacket\BPSPacketName.cs" />
     <Compile Include="BPSPacket\BPSPacketReset.cs" />
     <Compile Include="BPSPacket\BPSPacketRestoreFac.cs" />
@@ -98,6 +100,7 @@
       <DependentUpon>SearchListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UartMng.cs" />
+    <Compile Include="UITools.cs" />
     <Compile Include="Updater.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
