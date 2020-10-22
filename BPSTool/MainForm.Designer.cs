@@ -25,6 +25,7 @@ namespace BPSTool
                 config.AppSettings.Settings["baudrate"].Value = comboBoxBaudrate.Text.ToString();
                 config.AppSettings.Settings["hex_recv"].Value = checkBoxHexRecv.Checked.ToString();
                 config.AppSettings.Settings["hex_send"].Value = checkBoxHexSend.Checked.ToString();
+                config.AppSettings.Settings["language"].Value = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
                 config.Save();
             }
             catch
@@ -59,9 +60,24 @@ namespace BPSTool
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.buttonCheckVersion = new System.Windows.Forms.Button();
-            this.linkLabelVersionUpdate = new System.Windows.Forms.LinkLabel();
+            this.splitContainerSettingsAndDebug = new System.Windows.Forms.SplitContainer();
+            this.buttonUartLink = new System.Windows.Forms.Button();
+            this.buttonSearch = new System.Windows.Forms.Button();
+            this.comboBoxBaudrate = new System.Windows.Forms.ComboBox();
+            this.comboBoxUart = new System.Windows.Forms.ComboBox();
+            this.labelBaudrate = new System.Windows.Forms.Label();
+            this.labelSerial = new System.Windows.Forms.Label();
+            this.splitContainerDebug = new System.Windows.Forms.SplitContainer();
+            this.textBoxDebugMsg = new System.Windows.Forms.TextBox();
+            this.contextMenuStripDebugMsg = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainerDebugSend = new System.Windows.Forms.SplitContainer();
+            this.textBoxDebugSend = new System.Windows.Forms.TextBox();
+            this.buttonDebugSend = new System.Windows.Forms.Button();
             this.splitContainerTop1Title = new System.Windows.Forms.SplitContainer();
+            this.linkLabelVersionUpdate = new System.Windows.Forms.LinkLabel();
+            this.buttonCheckVersion = new System.Windows.Forms.Button();
             this.groupBoxDebug = new System.Windows.Forms.GroupBox();
             this.checkBoxHexSend = new System.Windows.Forms.CheckBox();
             this.checkBoxHexRecv = new System.Windows.Forms.CheckBox();
@@ -94,39 +110,14 @@ namespace BPSTool
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.splitContainerSettingsAndDebug = new System.Windows.Forms.SplitContainer();
-            this.buttonUartLink = new System.Windows.Forms.Button();
-            this.buttonSearch = new System.Windows.Forms.Button();
-            this.comboBoxBaudrate = new System.Windows.Forms.ComboBox();
-            this.comboBoxUart = new System.Windows.Forms.ComboBox();
-            this.labelBaudrate = new System.Windows.Forms.Label();
-            this.labelSerial = new System.Windows.Forms.Label();
-            this.splitContainerDebug = new System.Windows.Forms.SplitContainer();
-            this.textBoxDebugMsg = new System.Windows.Forms.TextBox();
-            this.contextMenuStripDebugMsg = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItemCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitContainerDebugSend = new System.Windows.Forms.SplitContainer();
-            this.textBoxDebugSend = new System.Windows.Forms.TextBox();
-            this.buttonDebugSend = new System.Windows.Forms.Button();
-            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
-            this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.选项ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).BeginInit();
-            this.splitContainerTop1Title.Panel1.SuspendLayout();
-            this.splitContainerTop1Title.Panel2.SuspendLayout();
-            this.splitContainerTop1Title.SuspendLayout();
-            this.groupBoxDebug.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop2DeviceAndDebug)).BeginInit();
-            this.splitContainerTop2DeviceAndDebug.Panel1.SuspendLayout();
-            this.splitContainerTop2DeviceAndDebug.Panel2.SuspendLayout();
-            this.splitContainerTop2DeviceAndDebug.SuspendLayout();
-            this.tabControlDevice.SuspendLayout();
-            this.tabPageBC1110.SuspendLayout();
+            this.menuStripMain = new System.Windows.Forms.MenuStrip();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.docToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerSettingsAndDebug)).BeginInit();
             this.splitContainerSettingsAndDebug.Panel1.SuspendLayout();
             this.splitContainerSettingsAndDebug.Panel2.SuspendLayout();
@@ -140,47 +131,170 @@ namespace BPSTool
             this.splitContainerDebugSend.Panel1.SuspendLayout();
             this.splitContainerDebugSend.Panel2.SuspendLayout();
             this.splitContainerDebugSend.SuspendLayout();
-            this.menuStrip2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).BeginInit();
+            this.splitContainerTop1Title.Panel1.SuspendLayout();
+            this.splitContainerTop1Title.Panel2.SuspendLayout();
+            this.splitContainerTop1Title.SuspendLayout();
+            this.groupBoxDebug.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop2DeviceAndDebug)).BeginInit();
+            this.splitContainerTop2DeviceAndDebug.Panel1.SuspendLayout();
+            this.splitContainerTop2DeviceAndDebug.Panel2.SuspendLayout();
+            this.splitContainerTop2DeviceAndDebug.SuspendLayout();
+            this.tabControlDevice.SuspendLayout();
+            this.tabPageBC1110.SuspendLayout();
+            this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // buttonCheckVersion
+            // splitContainerSettingsAndDebug
             // 
-            this.buttonCheckVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCheckVersion.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonCheckVersion.Location = new System.Drawing.Point(930, 18);
-            this.buttonCheckVersion.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonCheckVersion.Name = "buttonCheckVersion";
-            this.buttonCheckVersion.Size = new System.Drawing.Size(120, 29);
-            this.buttonCheckVersion.TabIndex = 0;
-            this.buttonCheckVersion.Text = "检查版本";
-            this.buttonCheckVersion.UseVisualStyleBackColor = true;
-            this.buttonCheckVersion.Click += new System.EventHandler(this.ButtonCheckVersion_Click);
+            this.splitContainerSettingsAndDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.splitContainerSettingsAndDebug, "splitContainerSettingsAndDebug");
+            this.splitContainerSettingsAndDebug.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainerSettingsAndDebug.Name = "splitContainerSettingsAndDebug";
             // 
-            // linkLabelVersionUpdate
+            // splitContainerSettingsAndDebug.Panel1
             // 
-            this.linkLabelVersionUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabelVersionUpdate.Enabled = false;
-            this.linkLabelVersionUpdate.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.linkLabelVersionUpdate.Location = new System.Drawing.Point(578, 19);
-            this.linkLabelVersionUpdate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.linkLabelVersionUpdate.Name = "linkLabelVersionUpdate";
-            this.linkLabelVersionUpdate.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.linkLabelVersionUpdate.Size = new System.Drawing.Size(344, 25);
-            this.linkLabelVersionUpdate.TabIndex = 1;
-            this.linkLabelVersionUpdate.TabStop = true;
-            this.linkLabelVersionUpdate.Text = "Version";
-            this.linkLabelVersionUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.linkLabelVersionUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelVersionUpdate_LinkClicked);
+            resources.ApplyResources(this.splitContainerSettingsAndDebug.Panel1, "splitContainerSettingsAndDebug.Panel1");
+            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.buttonUartLink);
+            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.buttonSearch);
+            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.comboBoxBaudrate);
+            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.comboBoxUart);
+            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.labelBaudrate);
+            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.labelSerial);
+            // 
+            // splitContainerSettingsAndDebug.Panel2
+            // 
+            this.splitContainerSettingsAndDebug.Panel2.Controls.Add(this.splitContainerDebug);
+            // 
+            // buttonUartLink
+            // 
+            resources.ApplyResources(this.buttonUartLink, "buttonUartLink");
+            this.buttonUartLink.Name = "buttonUartLink";
+            this.buttonUartLink.UseVisualStyleBackColor = true;
+            this.buttonUartLink.Click += new System.EventHandler(this.buttonUartLink_Click);
+            // 
+            // buttonSearch
+            // 
+            resources.ApplyResources(this.buttonSearch, "buttonSearch");
+            this.buttonSearch.Name = "buttonSearch";
+            this.buttonSearch.UseVisualStyleBackColor = true;
+            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
+            this.buttonSearch.MouseHover += new System.EventHandler(this.buttonSearch_MouseHover);
+            // 
+            // comboBoxBaudrate
+            // 
+            this.comboBoxBaudrate.FormattingEnabled = true;
+            this.comboBoxBaudrate.Items.AddRange(new object[] {
+            resources.GetString("comboBoxBaudrate.Items"),
+            resources.GetString("comboBoxBaudrate.Items1"),
+            resources.GetString("comboBoxBaudrate.Items2"),
+            resources.GetString("comboBoxBaudrate.Items3"),
+            resources.GetString("comboBoxBaudrate.Items4")});
+            resources.ApplyResources(this.comboBoxBaudrate, "comboBoxBaudrate");
+            this.comboBoxBaudrate.Name = "comboBoxBaudrate";
+            this.comboBoxBaudrate.SelectedIndexChanged += new System.EventHandler(this.comboBoxBaudrate_SelectedIndexChanged);
+            this.comboBoxBaudrate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxBaudrate_KeyPress);
+            // 
+            // comboBoxUart
+            // 
+            this.comboBoxUart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxUart.FormattingEnabled = true;
+            resources.ApplyResources(this.comboBoxUart, "comboBoxUart");
+            this.comboBoxUart.Name = "comboBoxUart";
+            this.comboBoxUart.SelectedIndexChanged += new System.EventHandler(this.comboBoxUart_SelectedIndexChanged);
+            this.comboBoxUart.MouseHover += new System.EventHandler(this.comboBoxUart_MouseHover);
+            // 
+            // labelBaudrate
+            // 
+            resources.ApplyResources(this.labelBaudrate, "labelBaudrate");
+            this.labelBaudrate.Name = "labelBaudrate";
+            // 
+            // labelSerial
+            // 
+            resources.ApplyResources(this.labelSerial, "labelSerial");
+            this.labelSerial.Name = "labelSerial";
+            // 
+            // splitContainerDebug
+            // 
+            this.splitContainerDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.splitContainerDebug, "splitContainerDebug");
+            this.splitContainerDebug.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainerDebug.Name = "splitContainerDebug";
+            // 
+            // splitContainerDebug.Panel1
+            // 
+            this.splitContainerDebug.Panel1.Controls.Add(this.textBoxDebugMsg);
+            this.splitContainerDebug.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
+            // 
+            // splitContainerDebug.Panel2
+            // 
+            this.splitContainerDebug.Panel2.Controls.Add(this.splitContainerDebugSend);
+            // 
+            // textBoxDebugMsg
+            // 
+            this.textBoxDebugMsg.ContextMenuStrip = this.contextMenuStripDebugMsg;
+            resources.ApplyResources(this.textBoxDebugMsg, "textBoxDebugMsg");
+            this.textBoxDebugMsg.Name = "textBoxDebugMsg";
+            this.textBoxDebugMsg.TextChanged += new System.EventHandler(this.textBoxDebugMsg_TextChanged);
+            // 
+            // contextMenuStripDebugMsg
+            // 
+            this.contextMenuStripDebugMsg.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStripDebugMsg.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemCopy,
+            this.toolStripMenuItemClear});
+            this.contextMenuStripDebugMsg.Name = "contextMenuStripDebugMsg";
+            resources.ApplyResources(this.contextMenuStripDebugMsg, "contextMenuStripDebugMsg");
+            // 
+            // toolStripMenuItemCopy
+            // 
+            this.toolStripMenuItemCopy.Name = "toolStripMenuItemCopy";
+            resources.ApplyResources(this.toolStripMenuItemCopy, "toolStripMenuItemCopy");
+            this.toolStripMenuItemCopy.Click += new System.EventHandler(this.toolStripMenuItemCopy_Click);
+            // 
+            // toolStripMenuItemClear
+            // 
+            this.toolStripMenuItemClear.Name = "toolStripMenuItemClear";
+            resources.ApplyResources(this.toolStripMenuItemClear, "toolStripMenuItemClear");
+            this.toolStripMenuItemClear.Click += new System.EventHandler(this.toolStripMenuItemClear_Click);
+            // 
+            // splitContainerDebugSend
+            // 
+            resources.ApplyResources(this.splitContainerDebugSend, "splitContainerDebugSend");
+            this.splitContainerDebugSend.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainerDebugSend.Name = "splitContainerDebugSend";
+            // 
+            // splitContainerDebugSend.Panel1
+            // 
+            this.splitContainerDebugSend.Panel1.Controls.Add(this.textBoxDebugSend);
+            // 
+            // splitContainerDebugSend.Panel2
+            // 
+            this.splitContainerDebugSend.Panel2.Controls.Add(this.buttonDebugSend);
+            // 
+            // textBoxDebugSend
+            // 
+            resources.ApplyResources(this.textBoxDebugSend, "textBoxDebugSend");
+            this.textBoxDebugSend.Name = "textBoxDebugSend";
+            this.textBoxDebugSend.TextChanged += new System.EventHandler(this.textBoxDebugSend_TextChanged);
+            this.textBoxDebugSend.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDebugSend_KeyPress);
+            this.textBoxDebugSend.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBoxDebugSend_KeyUp);
+            this.textBoxDebugSend.MouseHover += new System.EventHandler(this.textBoxDebugSend_MouseHover);
+            // 
+            // buttonDebugSend
+            // 
+            resources.ApplyResources(this.buttonDebugSend, "buttonDebugSend");
+            this.buttonDebugSend.Name = "buttonDebugSend";
+            this.buttonDebugSend.UseVisualStyleBackColor = true;
+            this.buttonDebugSend.Click += new System.EventHandler(this.buttonDebugSend_Click);
+            this.buttonDebugSend.MouseHover += new System.EventHandler(this.buttonDebugSend_MouseHover);
             // 
             // splitContainerTop1Title
             // 
             this.splitContainerTop1Title.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.splitContainerTop1Title.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.splitContainerTop1Title, "splitContainerTop1Title");
             this.splitContainerTop1Title.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerTop1Title.Location = new System.Drawing.Point(0, 28);
-            this.splitContainerTop1Title.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainerTop1Title.Name = "splitContainerTop1Title";
-            this.splitContainerTop1Title.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainerTop1Title.Panel1
             // 
@@ -194,65 +308,53 @@ namespace BPSTool
             // 
             this.splitContainerTop1Title.Panel2.Controls.Add(this.splitContainerTop2DeviceAndDebug);
             this.splitContainerTop1Title.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainerTop1Title.Size = new System.Drawing.Size(1067, 534);
-            this.splitContainerTop1Title.SplitterDistance = 58;
-            this.splitContainerTop1Title.TabIndex = 2;
+            // 
+            // linkLabelVersionUpdate
+            // 
+            resources.ApplyResources(this.linkLabelVersionUpdate, "linkLabelVersionUpdate");
+            this.linkLabelVersionUpdate.Name = "linkLabelVersionUpdate";
+            this.linkLabelVersionUpdate.TabStop = true;
+            this.linkLabelVersionUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelVersionUpdate_LinkClicked);
+            // 
+            // buttonCheckVersion
+            // 
+            resources.ApplyResources(this.buttonCheckVersion, "buttonCheckVersion");
+            this.buttonCheckVersion.Name = "buttonCheckVersion";
+            this.buttonCheckVersion.UseVisualStyleBackColor = true;
+            this.buttonCheckVersion.Click += new System.EventHandler(this.ButtonCheckVersion_Click);
             // 
             // groupBoxDebug
             // 
             this.groupBoxDebug.Controls.Add(this.checkBoxHexSend);
             this.groupBoxDebug.Controls.Add(this.checkBoxHexRecv);
             this.groupBoxDebug.Controls.Add(this.checkBoxDebugEnable);
-            this.groupBoxDebug.Dock = System.Windows.Forms.DockStyle.Left;
-            this.groupBoxDebug.Font = new System.Drawing.Font("黑体", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBoxDebug.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.groupBoxDebug, "groupBoxDebug");
             this.groupBoxDebug.Name = "groupBoxDebug";
-            this.groupBoxDebug.Size = new System.Drawing.Size(625, 54);
-            this.groupBoxDebug.TabIndex = 3;
             this.groupBoxDebug.TabStop = false;
-            this.groupBoxDebug.Text = "Debug设置";
             // 
             // checkBoxHexSend
             // 
-            this.checkBoxHexSend.AutoSize = true;
+            resources.ApplyResources(this.checkBoxHexSend, "checkBoxHexSend");
             this.checkBoxHexSend.Checked = true;
             this.checkBoxHexSend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHexSend.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.checkBoxHexSend.Location = new System.Drawing.Point(375, 21);
-            this.checkBoxHexSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxHexSend.Name = "checkBoxHexSend";
-            this.checkBoxHexSend.Size = new System.Drawing.Size(101, 24);
-            this.checkBoxHexSend.TabIndex = 4;
-            this.checkBoxHexSend.Text = "Hex发送";
             this.checkBoxHexSend.UseVisualStyleBackColor = true;
             this.checkBoxHexSend.CheckedChanged += new System.EventHandler(this.checkBoxHexSend_CheckedChanged);
             // 
             // checkBoxHexRecv
             // 
-            this.checkBoxHexRecv.AutoSize = true;
+            resources.ApplyResources(this.checkBoxHexRecv, "checkBoxHexRecv");
             this.checkBoxHexRecv.Checked = true;
             this.checkBoxHexRecv.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHexRecv.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.checkBoxHexRecv.Location = new System.Drawing.Point(228, 21);
-            this.checkBoxHexRecv.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxHexRecv.Name = "checkBoxHexRecv";
-            this.checkBoxHexRecv.Size = new System.Drawing.Size(141, 24);
-            this.checkBoxHexRecv.TabIndex = 3;
-            this.checkBoxHexRecv.Text = "Hex显示接收";
             this.checkBoxHexRecv.UseVisualStyleBackColor = true;
             // 
             // checkBoxDebugEnable
             // 
-            this.checkBoxDebugEnable.AutoSize = true;
+            resources.ApplyResources(this.checkBoxDebugEnable, "checkBoxDebugEnable");
             this.checkBoxDebugEnable.Checked = true;
             this.checkBoxDebugEnable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDebugEnable.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.checkBoxDebugEnable.Location = new System.Drawing.Point(97, 21);
-            this.checkBoxDebugEnable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxDebugEnable.Name = "checkBoxDebugEnable";
-            this.checkBoxDebugEnable.Size = new System.Drawing.Size(121, 24);
-            this.checkBoxDebugEnable.TabIndex = 2;
-            this.checkBoxDebugEnable.Text = "使能Debug";
             this.checkBoxDebugEnable.UseVisualStyleBackColor = true;
             this.checkBoxDebugEnable.CheckedChanged += new System.EventHandler(this.checkBoxDebugEnable_CheckedChanged);
             this.checkBoxDebugEnable.MouseHover += new System.EventHandler(this.checkBoxDebugEnable_MouseHover);
@@ -260,12 +362,9 @@ namespace BPSTool
             // splitContainerTop2DeviceAndDebug
             // 
             this.splitContainerTop2DeviceAndDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitContainerTop2DeviceAndDebug.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.splitContainerTop2DeviceAndDebug, "splitContainerTop2DeviceAndDebug");
             this.splitContainerTop2DeviceAndDebug.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainerTop2DeviceAndDebug.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerTop2DeviceAndDebug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainerTop2DeviceAndDebug.Name = "splitContainerTop2DeviceAndDebug";
-            this.splitContainerTop2DeviceAndDebug.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainerTop2DeviceAndDebug.Panel1
             // 
@@ -274,26 +373,18 @@ namespace BPSTool
             // splitContainerTop2DeviceAndDebug.Panel2
             // 
             this.splitContainerTop2DeviceAndDebug.Panel2.Controls.Add(this.splitContainerSettingsAndDebug);
-            this.splitContainerTop2DeviceAndDebug.Size = new System.Drawing.Size(1063, 468);
-            this.splitContainerTop2DeviceAndDebug.SplitterDistance = 280;
-            this.splitContainerTop2DeviceAndDebug.TabIndex = 0;
             // 
             // tabControlDevice
             // 
             this.tabControlDevice.Controls.Add(this.tabPageBC1110);
-            this.tabControlDevice.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlDevice.Location = new System.Drawing.Point(0, 0);
-            this.tabControlDevice.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.tabControlDevice, "tabControlDevice");
             this.tabControlDevice.Name = "tabControlDevice";
             this.tabControlDevice.SelectedIndex = 0;
-            this.tabControlDevice.Size = new System.Drawing.Size(1061, 278);
-            this.tabControlDevice.TabIndex = 0;
             this.tabControlDevice.Tag = "";
             // 
             // tabPageBC1110
             // 
-            this.tabPageBC1110.AutoScroll = true;
-            this.tabPageBC1110.AutoScrollMinSize = new System.Drawing.Size(0, 300);
+            resources.ApplyResources(this.tabPageBC1110, "tabPageBC1110");
             this.tabPageBC1110.Controls.Add(this.buttonAdvIntervalRead);
             this.tabPageBC1110.Controls.Add(this.buttonAdvIntervalSet);
             this.tabPageBC1110.Controls.Add(this.textBoxAdvInterval);
@@ -319,565 +410,231 @@ namespace BPSTool
             this.tabPageBC1110.Controls.Add(this.label3);
             this.tabPageBC1110.Controls.Add(this.label2);
             this.tabPageBC1110.Controls.Add(this.label1);
-            this.tabPageBC1110.Font = new System.Drawing.Font("黑体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tabPageBC1110.Location = new System.Drawing.Point(4, 25);
-            this.tabPageBC1110.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPageBC1110.Name = "tabPageBC1110";
-            this.tabPageBC1110.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPageBC1110.Size = new System.Drawing.Size(1053, 249);
-            this.tabPageBC1110.TabIndex = 0;
-            this.tabPageBC1110.Text = " BC1110";
             this.tabPageBC1110.UseVisualStyleBackColor = true;
             this.tabPageBC1110.Click += new System.EventHandler(this.tabPageBC1110_Click);
             this.tabPageBC1110.MouseHover += new System.EventHandler(this.tabPageBC1110_MouseHover);
             // 
             // buttonAdvIntervalRead
             // 
-            this.buttonAdvIntervalRead.Location = new System.Drawing.Point(546, 216);
-            this.buttonAdvIntervalRead.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonAdvIntervalRead, "buttonAdvIntervalRead");
             this.buttonAdvIntervalRead.Name = "buttonAdvIntervalRead";
-            this.buttonAdvIntervalRead.Size = new System.Drawing.Size(75, 30);
-            this.buttonAdvIntervalRead.TabIndex = 25;
-            this.buttonAdvIntervalRead.Text = "读取";
             this.buttonAdvIntervalRead.UseVisualStyleBackColor = true;
             this.buttonAdvIntervalRead.Click += new System.EventHandler(this.buttonAdvIntervalRead_Click);
             // 
             // buttonAdvIntervalSet
             // 
-            this.buttonAdvIntervalSet.Location = new System.Drawing.Point(437, 216);
-            this.buttonAdvIntervalSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonAdvIntervalSet, "buttonAdvIntervalSet");
             this.buttonAdvIntervalSet.Name = "buttonAdvIntervalSet";
-            this.buttonAdvIntervalSet.Size = new System.Drawing.Size(75, 30);
-            this.buttonAdvIntervalSet.TabIndex = 24;
-            this.buttonAdvIntervalSet.Text = "设置";
             this.buttonAdvIntervalSet.UseVisualStyleBackColor = true;
             this.buttonAdvIntervalSet.Click += new System.EventHandler(this.buttonAdvIntervalSet_Click);
             // 
             // textBoxAdvInterval
             // 
-            this.textBoxAdvInterval.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBoxAdvInterval.Location = new System.Drawing.Point(274, 216);
-            this.textBoxAdvInterval.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.textBoxAdvInterval, "textBoxAdvInterval");
             this.textBoxAdvInterval.Name = "textBoxAdvInterval";
-            this.textBoxAdvInterval.Size = new System.Drawing.Size(100, 30);
-            this.textBoxAdvInterval.TabIndex = 23;
             this.textBoxAdvInterval.TextChanged += new System.EventHandler(this.textBoxAdvInterval_TextChanged);
             this.textBoxAdvInterval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxAdvInterval_KeyPress);
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(49, 221);
+            resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(177, 20);
-            this.label7.TabIndex = 22;
-            this.label7.Text = "广播间隔（毫秒）";
             // 
             // buttonLinkMaintainTimeRead
             // 
-            this.buttonLinkMaintainTimeRead.Location = new System.Drawing.Point(546, 161);
-            this.buttonLinkMaintainTimeRead.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonLinkMaintainTimeRead, "buttonLinkMaintainTimeRead");
             this.buttonLinkMaintainTimeRead.Name = "buttonLinkMaintainTimeRead";
-            this.buttonLinkMaintainTimeRead.Size = new System.Drawing.Size(75, 30);
-            this.buttonLinkMaintainTimeRead.TabIndex = 21;
-            this.buttonLinkMaintainTimeRead.Text = "读取";
             this.buttonLinkMaintainTimeRead.UseVisualStyleBackColor = true;
             this.buttonLinkMaintainTimeRead.Click += new System.EventHandler(this.buttonLinkMaintainTimeRead_Click);
             // 
             // buttonLinkMaintainTimeSet
             // 
-            this.buttonLinkMaintainTimeSet.Location = new System.Drawing.Point(437, 161);
-            this.buttonLinkMaintainTimeSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonLinkMaintainTimeSet, "buttonLinkMaintainTimeSet");
             this.buttonLinkMaintainTimeSet.Name = "buttonLinkMaintainTimeSet";
-            this.buttonLinkMaintainTimeSet.Size = new System.Drawing.Size(75, 30);
-            this.buttonLinkMaintainTimeSet.TabIndex = 20;
-            this.buttonLinkMaintainTimeSet.Text = "设置";
             this.buttonLinkMaintainTimeSet.UseVisualStyleBackColor = true;
             this.buttonLinkMaintainTimeSet.Click += new System.EventHandler(this.buttonLinkMaintainTimeSet_Click);
             // 
             // textBoxLinkMaintainTime
             // 
-            this.textBoxLinkMaintainTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBoxLinkMaintainTime.Location = new System.Drawing.Point(274, 161);
-            this.textBoxLinkMaintainTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.textBoxLinkMaintainTime, "textBoxLinkMaintainTime");
             this.textBoxLinkMaintainTime.Name = "textBoxLinkMaintainTime";
-            this.textBoxLinkMaintainTime.Size = new System.Drawing.Size(100, 30);
-            this.textBoxLinkMaintainTime.TabIndex = 19;
             this.textBoxLinkMaintainTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxLinkMaintainTime_KeyPress);
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(49, 166);
+            resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(198, 20);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "链接维持时间（秒）";
             // 
             // button5
             // 
-            this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(546, 326);
-            this.button5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.button5, "button5");
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 30);
-            this.button5.TabIndex = 16;
-            this.button5.Text = "读取";
             this.button5.UseVisualStyleBackColor = true;
             // 
             // buttonResetSet
             // 
-            this.buttonResetSet.Location = new System.Drawing.Point(437, 326);
-            this.buttonResetSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonResetSet, "buttonResetSet");
             this.buttonResetSet.Name = "buttonResetSet";
-            this.buttonResetSet.Size = new System.Drawing.Size(75, 30);
-            this.buttonResetSet.TabIndex = 15;
-            this.buttonResetSet.Text = "设置";
             this.buttonResetSet.UseVisualStyleBackColor = true;
             this.buttonResetSet.Click += new System.EventHandler(this.buttonResetSet_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(274, 326);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.textBox1, "textBox1");
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 30);
-            this.textBox1.TabIndex = 14;
-            this.textBox1.Text = "无";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(49, 331);
+            resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(93, 20);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "重启系统";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // button3
             // 
-            this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(546, 271);
-            this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.button3, "button3");
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 30);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "读取";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // buttonFacRestoreSet
             // 
-            this.buttonFacRestoreSet.Location = new System.Drawing.Point(437, 271);
-            this.buttonFacRestoreSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonFacRestoreSet, "buttonFacRestoreSet");
             this.buttonFacRestoreSet.Name = "buttonFacRestoreSet";
-            this.buttonFacRestoreSet.Size = new System.Drawing.Size(75, 30);
-            this.buttonFacRestoreSet.TabIndex = 11;
-            this.buttonFacRestoreSet.Text = "设置";
             this.buttonFacRestoreSet.UseVisualStyleBackColor = true;
             this.buttonFacRestoreSet.Click += new System.EventHandler(this.buttonFacRestoreSet_Click);
             // 
             // buttonBaudrateRead
             // 
-            this.buttonBaudrateRead.Location = new System.Drawing.Point(545, 106);
-            this.buttonBaudrateRead.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonBaudrateRead, "buttonBaudrateRead");
             this.buttonBaudrateRead.Name = "buttonBaudrateRead";
-            this.buttonBaudrateRead.Size = new System.Drawing.Size(75, 30);
-            this.buttonBaudrateRead.TabIndex = 10;
-            this.buttonBaudrateRead.Text = "读取";
             this.buttonBaudrateRead.UseVisualStyleBackColor = true;
             this.buttonBaudrateRead.Click += new System.EventHandler(this.buttonBaudrateRead_Click);
             // 
             // buttonBaudrateSet
             // 
-            this.buttonBaudrateSet.Location = new System.Drawing.Point(436, 106);
-            this.buttonBaudrateSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonBaudrateSet, "buttonBaudrateSet");
             this.buttonBaudrateSet.Name = "buttonBaudrateSet";
-            this.buttonBaudrateSet.Size = new System.Drawing.Size(75, 30);
-            this.buttonBaudrateSet.TabIndex = 9;
-            this.buttonBaudrateSet.Text = "设置";
             this.buttonBaudrateSet.UseVisualStyleBackColor = true;
             this.buttonBaudrateSet.Click += new System.EventHandler(this.buttonBaudrateSet_Click);
             // 
             // buttonNameRead
             // 
-            this.buttonNameRead.Location = new System.Drawing.Point(545, 48);
-            this.buttonNameRead.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonNameRead, "buttonNameRead");
             this.buttonNameRead.Name = "buttonNameRead";
-            this.buttonNameRead.Size = new System.Drawing.Size(75, 30);
-            this.buttonNameRead.TabIndex = 8;
-            this.buttonNameRead.Text = "读取";
             this.buttonNameRead.UseVisualStyleBackColor = true;
             this.buttonNameRead.Click += new System.EventHandler(this.buttonNameRead_Click);
             // 
             // buttonNameSet
             // 
-            this.buttonNameSet.Location = new System.Drawing.Point(436, 48);
-            this.buttonNameSet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.buttonNameSet, "buttonNameSet");
             this.buttonNameSet.Name = "buttonNameSet";
-            this.buttonNameSet.Size = new System.Drawing.Size(75, 30);
-            this.buttonNameSet.TabIndex = 7;
-            this.buttonNameSet.Text = "设置";
             this.buttonNameSet.UseVisualStyleBackColor = true;
             this.buttonNameSet.Click += new System.EventHandler(this.buttonNameSet_Click);
             // 
             // textBox5
             // 
-            this.textBox5.Enabled = false;
-            this.textBox5.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox5.Location = new System.Drawing.Point(274, 271);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.textBox5, "textBox5");
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 30);
-            this.textBox5.TabIndex = 6;
-            this.textBox5.Text = "无";
             // 
             // textBoxBaudrate
             // 
-            this.textBoxBaudrate.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBoxBaudrate.Location = new System.Drawing.Point(273, 106);
-            this.textBoxBaudrate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.textBoxBaudrate, "textBoxBaudrate");
             this.textBoxBaudrate.Name = "textBoxBaudrate";
-            this.textBoxBaudrate.Size = new System.Drawing.Size(100, 30);
-            this.textBoxBaudrate.TabIndex = 5;
             this.textBoxBaudrate.TextChanged += new System.EventHandler(this.textBoxBaudrate_TextChanged);
             this.textBoxBaudrate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxBaudrate_KeyPress);
             // 
             // textBoxName
             // 
-            this.textBoxName.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBoxName.Location = new System.Drawing.Point(273, 48);
-            this.textBoxName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            resources.ApplyResources(this.textBoxName, "textBoxName");
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(100, 30);
-            this.textBoxName.TabIndex = 4;
             this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
             this.textBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxName_KeyPress);
             this.textBoxName.MouseHover += new System.EventHandler(this.textBox3_MouseHover);
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(49, 276);
+            resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(135, 20);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "恢复出厂设置";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(48, 111);
+            resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(114, 20);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "串口波特率";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(490, 238);
+            resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(0, 20);
-            this.label2.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(48, 51);
+            resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "广播名称";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // splitContainerSettingsAndDebug
+            // menuStripMain
             // 
-            this.splitContainerSettingsAndDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitContainerSettingsAndDebug.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerSettingsAndDebug.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerSettingsAndDebug.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerSettingsAndDebug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.splitContainerSettingsAndDebug.Name = "splitContainerSettingsAndDebug";
+            this.menuStripMain.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            resources.ApplyResources(this.menuStripMain, "menuStripMain");
+            this.menuStripMain.Name = "menuStripMain";
             // 
-            // splitContainerSettingsAndDebug.Panel1
+            // editToolStripMenuItem
             // 
-            this.splitContainerSettingsAndDebug.Panel1.AutoScroll = true;
-            this.splitContainerSettingsAndDebug.Panel1.AutoScrollMinSize = new System.Drawing.Size(280, 0);
-            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.buttonUartLink);
-            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.buttonSearch);
-            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.comboBoxBaudrate);
-            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.comboBoxUart);
-            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.labelBaudrate);
-            this.splitContainerSettingsAndDebug.Panel1.Controls.Add(this.labelSerial);
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            resources.ApplyResources(this.editToolStripMenuItem, "editToolStripMenuItem");
             // 
-            // splitContainerSettingsAndDebug.Panel2
+            // optionsToolStripMenuItem
             // 
-            this.splitContainerSettingsAndDebug.Panel2.Controls.Add(this.splitContainerDebug);
-            this.splitContainerSettingsAndDebug.Size = new System.Drawing.Size(1063, 184);
-            this.splitContainerSettingsAndDebug.SplitterDistance = 274;
-            this.splitContainerSettingsAndDebug.TabIndex = 0;
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            resources.ApplyResources(this.optionsToolStripMenuItem, "optionsToolStripMenuItem");
             // 
-            // buttonUartLink
+            // exitToolStripMenuItem
             // 
-            this.buttonUartLink.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonUartLink.Location = new System.Drawing.Point(155, 126);
-            this.buttonUartLink.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonUartLink.Name = "buttonUartLink";
-            this.buttonUartLink.Size = new System.Drawing.Size(96, 40);
-            this.buttonUartLink.TabIndex = 5;
-            this.buttonUartLink.Text = "连接";
-            this.buttonUartLink.UseVisualStyleBackColor = true;
-            this.buttonUartLink.Click += new System.EventHandler(this.buttonUartLink_Click);
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
-            // buttonSearch
+            // helpToolStripMenuItem
             // 
-            this.buttonSearch.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonSearch.Location = new System.Drawing.Point(20, 126);
-            this.buttonSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonSearch.Name = "buttonSearch";
-            this.buttonSearch.Size = new System.Drawing.Size(96, 40);
-            this.buttonSearch.TabIndex = 4;
-            this.buttonSearch.Text = "搜索";
-            this.buttonSearch.UseVisualStyleBackColor = true;
-            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
-            this.buttonSearch.MouseHover += new System.EventHandler(this.buttonSearch_MouseHover);
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.docToolStripMenuItem,
+            this.languageToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             // 
-            // comboBoxBaudrate
+            // docToolStripMenuItem
             // 
-            this.comboBoxBaudrate.FormattingEnabled = true;
-            this.comboBoxBaudrate.Items.AddRange(new object[] {
-            "9600",
-            "19200",
-            "38400",
-            "57600",
-            "115200"});
-            this.comboBoxBaudrate.Location = new System.Drawing.Point(109, 78);
-            this.comboBoxBaudrate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBoxBaudrate.Name = "comboBoxBaudrate";
-            this.comboBoxBaudrate.Size = new System.Drawing.Size(143, 23);
-            this.comboBoxBaudrate.TabIndex = 3;
-            this.comboBoxBaudrate.Text = "9600";
-            this.comboBoxBaudrate.SelectedIndexChanged += new System.EventHandler(this.comboBoxBaudrate_SelectedIndexChanged);
-            this.comboBoxBaudrate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxBaudrate_KeyPress);
+            this.docToolStripMenuItem.Name = "docToolStripMenuItem";
+            resources.ApplyResources(this.docToolStripMenuItem, "docToolStripMenuItem");
+            this.docToolStripMenuItem.Click += new System.EventHandler(this.DocToolStripMenuItem_Click);
             // 
-            // comboBoxUart
+            // languageToolStripMenuItem
             // 
-            this.comboBoxUart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxUart.FormattingEnabled = true;
-            this.comboBoxUart.Location = new System.Drawing.Point(109, 22);
-            this.comboBoxUart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBoxUart.Name = "comboBoxUart";
-            this.comboBoxUart.Size = new System.Drawing.Size(143, 23);
-            this.comboBoxUart.TabIndex = 2;
-            this.comboBoxUart.SelectedIndexChanged += new System.EventHandler(this.comboBoxUart_SelectedIndexChanged);
-            this.comboBoxUart.MouseHover += new System.EventHandler(this.comboBoxUart_MouseHover);
+            resources.ApplyResources(this.languageToolStripMenuItem, "languageToolStripMenuItem");
+            this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            this.languageToolStripMenuItem.Click += new System.EventHandler(this.LanguageToolStripMenuItem_Click);
             // 
-            // labelBaudrate
+            // aboutToolStripMenuItem
             // 
-            this.labelBaudrate.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labelBaudrate.Location = new System.Drawing.Point(16, 80);
-            this.labelBaudrate.Name = "labelBaudrate";
-            this.labelBaudrate.Size = new System.Drawing.Size(100, 22);
-            this.labelBaudrate.TabIndex = 1;
-            this.labelBaudrate.Text = "波特率";
-            // 
-            // labelSerial
-            // 
-            this.labelSerial.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labelSerial.Location = new System.Drawing.Point(16, 22);
-            this.labelSerial.Name = "labelSerial";
-            this.labelSerial.Size = new System.Drawing.Size(100, 22);
-            this.labelSerial.TabIndex = 0;
-            this.labelSerial.Text = "串口";
-            // 
-            // splitContainerDebug
-            // 
-            this.splitContainerDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitContainerDebug.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerDebug.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainerDebug.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerDebug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.splitContainerDebug.Name = "splitContainerDebug";
-            this.splitContainerDebug.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainerDebug.Panel1
-            // 
-            this.splitContainerDebug.Panel1.Controls.Add(this.textBoxDebugMsg);
-            this.splitContainerDebug.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
-            // 
-            // splitContainerDebug.Panel2
-            // 
-            this.splitContainerDebug.Panel2.Controls.Add(this.splitContainerDebugSend);
-            this.splitContainerDebug.Size = new System.Drawing.Size(785, 184);
-            this.splitContainerDebug.SplitterDistance = 155;
-            this.splitContainerDebug.TabIndex = 0;
-            // 
-            // textBoxDebugMsg
-            // 
-            this.textBoxDebugMsg.ContextMenuStrip = this.contextMenuStripDebugMsg;
-            this.textBoxDebugMsg.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxDebugMsg.Location = new System.Drawing.Point(0, 0);
-            this.textBoxDebugMsg.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBoxDebugMsg.Multiline = true;
-            this.textBoxDebugMsg.Name = "textBoxDebugMsg";
-            this.textBoxDebugMsg.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxDebugMsg.Size = new System.Drawing.Size(783, 153);
-            this.textBoxDebugMsg.TabIndex = 0;
-            this.textBoxDebugMsg.TextChanged += new System.EventHandler(this.textBoxDebugMsg_TextChanged);
-            // 
-            // contextMenuStripDebugMsg
-            // 
-            this.contextMenuStripDebugMsg.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStripDebugMsg.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemCopy,
-            this.toolStripMenuItemClear});
-            this.contextMenuStripDebugMsg.Name = "contextMenuStripDebugMsg";
-            this.contextMenuStripDebugMsg.Size = new System.Drawing.Size(109, 52);
-            // 
-            // toolStripMenuItemCopy
-            // 
-            this.toolStripMenuItemCopy.Name = "toolStripMenuItemCopy";
-            this.toolStripMenuItemCopy.Size = new System.Drawing.Size(108, 24);
-            this.toolStripMenuItemCopy.Text = "复制";
-            this.toolStripMenuItemCopy.Click += new System.EventHandler(this.toolStripMenuItemCopy_Click);
-            // 
-            // toolStripMenuItemClear
-            // 
-            this.toolStripMenuItemClear.Name = "toolStripMenuItemClear";
-            this.toolStripMenuItemClear.Size = new System.Drawing.Size(108, 24);
-            this.toolStripMenuItemClear.Text = "清空";
-            this.toolStripMenuItemClear.Click += new System.EventHandler(this.toolStripMenuItemClear_Click);
-            // 
-            // splitContainerDebugSend
-            // 
-            this.splitContainerDebugSend.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerDebugSend.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainerDebugSend.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerDebugSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.splitContainerDebugSend.Name = "splitContainerDebugSend";
-            // 
-            // splitContainerDebugSend.Panel1
-            // 
-            this.splitContainerDebugSend.Panel1.Controls.Add(this.textBoxDebugSend);
-            // 
-            // splitContainerDebugSend.Panel2
-            // 
-            this.splitContainerDebugSend.Panel2.Controls.Add(this.buttonDebugSend);
-            this.splitContainerDebugSend.Size = new System.Drawing.Size(783, 23);
-            this.splitContainerDebugSend.SplitterDistance = 673;
-            this.splitContainerDebugSend.TabIndex = 0;
-            // 
-            // textBoxDebugSend
-            // 
-            this.textBoxDebugSend.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxDebugSend.Location = new System.Drawing.Point(0, 0);
-            this.textBoxDebugSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBoxDebugSend.Name = "textBoxDebugSend";
-            this.textBoxDebugSend.Size = new System.Drawing.Size(673, 25);
-            this.textBoxDebugSend.TabIndex = 0;
-            this.textBoxDebugSend.TextChanged += new System.EventHandler(this.textBoxDebugSend_TextChanged);
-            this.textBoxDebugSend.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDebugSend_KeyPress);
-            this.textBoxDebugSend.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBoxDebugSend_KeyUp);
-            this.textBoxDebugSend.MouseHover += new System.EventHandler(this.textBoxDebugSend_MouseHover);
-            // 
-            // buttonDebugSend
-            // 
-            this.buttonDebugSend.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonDebugSend.Location = new System.Drawing.Point(0, 0);
-            this.buttonDebugSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonDebugSend.Name = "buttonDebugSend";
-            this.buttonDebugSend.Size = new System.Drawing.Size(106, 23);
-            this.buttonDebugSend.TabIndex = 0;
-            this.buttonDebugSend.Text = "发送";
-            this.buttonDebugSend.UseVisualStyleBackColor = true;
-            this.buttonDebugSend.Click += new System.EventHandler(this.buttonDebugSend_Click);
-            this.buttonDebugSend.MouseHover += new System.EventHandler(this.buttonDebugSend_MouseHover);
-            // 
-            // menuStrip2
-            // 
-            this.menuStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.编辑ToolStripMenuItem,
-            this.帮助ToolStripMenuItem});
-            this.menuStrip2.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(1067, 28);
-            this.menuStrip2.TabIndex = 3;
-            this.menuStrip2.Text = "menuStrip2";
-            // 
-            // 编辑ToolStripMenuItem
-            // 
-            this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.选项ToolStripMenuItem,
-            this.CloseToolStripMenuItem});
-            this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
-            this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
-            this.编辑ToolStripMenuItem.Text = "编辑";
-            // 
-            // 选项ToolStripMenuItem
-            // 
-            this.选项ToolStripMenuItem.Name = "选项ToolStripMenuItem";
-            this.选项ToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.选项ToolStripMenuItem.Text = "选项...";
-            // 
-            // CloseToolStripMenuItem
-            // 
-            this.CloseToolStripMenuItem.Name = "CloseToolStripMenuItem";
-            this.CloseToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.CloseToolStripMenuItem.Text = "关闭";
-            this.CloseToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
-            // 
-            // 帮助ToolStripMenuItem
-            // 
-            this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.DocToolStripMenuItem,
-            this.AboutToolStripMenuItem});
-            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
-            this.帮助ToolStripMenuItem.Text = "帮助";
-            // 
-            // DocToolStripMenuItem
-            // 
-            this.DocToolStripMenuItem.Name = "DocToolStripMenuItem";
-            this.DocToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.DocToolStripMenuItem.Text = "文档...";
-            this.DocToolStripMenuItem.Click += new System.EventHandler(this.DocToolStripMenuItem_Click);
-            // 
-            // AboutToolStripMenuItem
-            // 
-            this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.AboutToolStripMenuItem.Text = "关于...";
-            this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 562);
             this.Controls.Add(this.splitContainerTop1Title);
-            this.Controls.Add(this.menuStrip2);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Controls.Add(this.menuStripMain);
             this.Name = "MainForm";
-            this.Text = "BPSTool";
-            this.splitContainerTop1Title.Panel1.ResumeLayout(false);
-            this.splitContainerTop1Title.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).EndInit();
-            this.splitContainerTop1Title.ResumeLayout(false);
-            this.groupBoxDebug.ResumeLayout(false);
-            this.groupBoxDebug.PerformLayout();
-            this.splitContainerTop2DeviceAndDebug.Panel1.ResumeLayout(false);
-            this.splitContainerTop2DeviceAndDebug.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop2DeviceAndDebug)).EndInit();
-            this.splitContainerTop2DeviceAndDebug.ResumeLayout(false);
-            this.tabControlDevice.ResumeLayout(false);
-            this.tabPageBC1110.ResumeLayout(false);
-            this.tabPageBC1110.PerformLayout();
             this.splitContainerSettingsAndDebug.Panel1.ResumeLayout(false);
             this.splitContainerSettingsAndDebug.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerSettingsAndDebug)).EndInit();
@@ -893,8 +650,21 @@ namespace BPSTool
             this.splitContainerDebugSend.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDebugSend)).EndInit();
             this.splitContainerDebugSend.ResumeLayout(false);
-            this.menuStrip2.ResumeLayout(false);
-            this.menuStrip2.PerformLayout();
+            this.splitContainerTop1Title.Panel1.ResumeLayout(false);
+            this.splitContainerTop1Title.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop1Title)).EndInit();
+            this.splitContainerTop1Title.ResumeLayout(false);
+            this.groupBoxDebug.ResumeLayout(false);
+            this.groupBoxDebug.PerformLayout();
+            this.splitContainerTop2DeviceAndDebug.Panel1.ResumeLayout(false);
+            this.splitContainerTop2DeviceAndDebug.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTop2DeviceAndDebug)).EndInit();
+            this.splitContainerTop2DeviceAndDebug.ResumeLayout(false);
+            this.tabControlDevice.ResumeLayout(false);
+            this.tabPageBC1110.ResumeLayout(false);
+            this.tabPageBC1110.PerformLayout();
+            this.menuStripMain.ResumeLayout(false);
+            this.menuStripMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -952,13 +722,14 @@ namespace BPSTool
         private System.Windows.Forms.Button buttonLinkMaintainTimeSet;
         private System.Windows.Forms.TextBox textBoxLinkMaintainTime;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.MenuStrip menuStrip2;
-        private System.Windows.Forms.ToolStripMenuItem 编辑ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 选项ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem CloseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem DocToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStripMain;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem docToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
     }
 }
 

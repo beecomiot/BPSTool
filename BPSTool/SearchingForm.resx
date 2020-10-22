@@ -117,6 +117,150 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="splitContainerWaiting.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="splitContainerWaiting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>540, 200</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxWaiting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>540, 200</value>
+  </data>
+  <data name="pictureBoxWaiting.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Panel1.Name" xml:space="preserve">
+    <value>splitContainerWaiting.Panel1</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxWaiting.Name" xml:space="preserve">
+    <value>pictureBoxWaiting</value>
+  </data>
+  <data name="pictureBoxWaiting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 200</value>
+  </data>
+  <data name="&gt;&gt;timerSearchEndCheck.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labeSearchlNote.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Panel2.Name" xml:space="preserve">
+    <value>splitContainerWaiting.Panel2</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>SearchingForm</value>
+  </data>
+  <data name="labeSearchlNote.Size" type="System.Drawing.Size, System.Drawing">
+    <value>356, 200</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Name" xml:space="preserve">
+    <value>splitContainerWaiting</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;labeSearchlNote.Parent" xml:space="preserve">
+    <value>splitContainerWaiting.Panel2</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="labeSearchlNote.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="pictureBoxWaiting.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>CenterImage</value>
+  </data>
+  <data name="&gt;&gt;labeSearchlNote.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="pictureBoxWaiting.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="splitContainerWaiting.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxWaiting.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="labeSearchlNote.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 13.8pt, style=Bold</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
+  </data>
+  <data name="labeSearchlNote.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="splitContainerWaiting.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;timerSearchEndCheck.Name" xml:space="preserve">
+    <value>timerSearchEndCheck</value>
+  </data>
+  <data name="pictureBoxWaiting.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="labeSearchlNote.Text" xml:space="preserve">
+    <value>BPS Search</value>
+  </data>
+  <data name="labeSearchlNote.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="labeSearchlNote.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="splitContainerWaiting.SplitterDistance" type="System.Int32, mscorlib">
+    <value>180</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxWaiting.Parent" xml:space="preserve">
+    <value>splitContainerWaiting.Panel1</value>
+  </data>
+  <data name="&gt;&gt;labeSearchlNote.Name" xml:space="preserve">
+    <value>labeSearchlNote</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Panel2.Parent" xml:space="preserve">
+    <value>splitContainerWaiting</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>8, 15</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>SearchingForm</value>
+  </data>
+  <data name="&gt;&gt;splitContainerWaiting.Panel1.Parent" xml:space="preserve">
+    <value>splitContainerWaiting</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>zh-Hans</value>
+  </metadata>
   <metadata name="timerSearchEndCheck.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

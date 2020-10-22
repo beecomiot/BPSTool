@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -14,7 +17,7 @@ namespace BPSTool
     public partial class SearchingForm : Form
     {
         private const int TIMEOUT = 500; // 2000 milliseconds
-        private const string STR_BPS_SEARCH = "BPS搜索";
+        private string strBPSSearch;
         private int timeoutLeft;
         private int currentSearchBaudrate;
         private string currentPort;
@@ -39,7 +42,10 @@ namespace BPSTool
             DelUartRecv = new BpsMng.DelBPSRecvHandler(UartDataReceivedHandler);
             bpsMngObj.AddRecvHandler(DelUartRecv);
             timeoutLeft = 0;
-            
+
+            // strBPSSearch = labeSearchlNote.Text;
+            ResourceManager rm = UITools.getResourceMng();
+            strBPSSearch = rm.GetString("StrSearch", System.Threading.Thread.CurrentThread.CurrentUICulture);
 
             baudrateList = new List<int>(BpsUtils.StdBaudrate);
             baudrateListIndex = (baudrateList.Count > 0) ? (baudrateList.Count - 1) : -1;
@@ -164,7 +170,7 @@ namespace BPSTool
                 }
 
                 timeoutLeft = TIMEOUT;
-                labeSearchlNote.Text = STR_BPS_SEARCH + ":" + currentSearchBaudrate + "@" + currentPort;
+                labeSearchlNote.Text = strBPSSearch + ":" + currentSearchBaudrate + "@" + currentPort;
                 startNewSearch = true;
             }
 

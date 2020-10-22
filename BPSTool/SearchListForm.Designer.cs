@@ -41,71 +41,49 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.splitContainer1, "splitContainer1");
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
+            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             this.splitContainer1.Panel1.Controls.Add(this.listBoxSerialPorts);
             // 
             // splitContainer1.Panel2
             // 
+            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.Controls.Add(this.buttonCancel);
             this.splitContainer1.Panel2.Controls.Add(this.buttonConfirm);
-            this.splitContainer1.Size = new System.Drawing.Size(382, 353);
-            this.splitContainer1.SplitterDistance = 251;
-            this.splitContainer1.TabIndex = 0;
             // 
             // listBoxSerialPorts
             // 
-            this.listBoxSerialPorts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxSerialPorts.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            resources.ApplyResources(this.listBoxSerialPorts, "listBoxSerialPorts");
             this.listBoxSerialPorts.FormattingEnabled = true;
-            this.listBoxSerialPorts.HorizontalScrollbar = true;
-            this.listBoxSerialPorts.ItemHeight = 20;
-            this.listBoxSerialPorts.Location = new System.Drawing.Point(0, 0);
             this.listBoxSerialPorts.Name = "listBoxSerialPorts";
-            this.listBoxSerialPorts.ScrollAlwaysVisible = true;
-            this.listBoxSerialPorts.Size = new System.Drawing.Size(382, 251);
-            this.listBoxSerialPorts.TabIndex = 0;
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonCancel.Location = new System.Drawing.Point(245, 34);
+            resources.ApplyResources(this.buttonCancel, "buttonCancel");
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(95, 50);
-            this.buttonCancel.TabIndex = 1;
-            this.buttonCancel.Text = "取消";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // buttonConfirm
             // 
-            this.buttonConfirm.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonConfirm.Location = new System.Drawing.Point(40, 34);
+            resources.ApplyResources(this.buttonConfirm, "buttonConfirm");
             this.buttonConfirm.Name = "buttonConfirm";
-            this.buttonConfirm.Size = new System.Drawing.Size(95, 50);
-            this.buttonConfirm.TabIndex = 0;
-            this.buttonConfirm.Text = "确定";
             this.buttonConfirm.UseVisualStyleBackColor = true;
             this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
             // 
             // SearchListForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(382, 353);
             this.Controls.Add(this.splitContainer1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SearchListForm";
-            this.Text = "SearchListForm";
             this.Load += new System.EventHandler(this.SearchListForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

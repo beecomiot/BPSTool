@@ -128,6 +128,7 @@ namespace BPSTool
             String baudrate = "9600";
             bool hex_recv = true;
             bool hex_send = true;
+            String lanugage = "NONE";
             try
             {
                 //指定config文件读取
@@ -143,6 +144,7 @@ namespace BPSTool
 @"    <add key=""baudrate"" value=""9600"" />",
 @"    <add key=""hex_send"" value=""TRUE"" />",
 @"    <add key=""hex_recv"" value=""TRUE"" />",
+@"    <add key=""language"" value=""NONE"" />",
 @"  </appSettings>",
 @"</configuration>"
                     };
@@ -160,6 +162,7 @@ namespace BPSTool
                 baudrate = config.AppSettings.Settings["baudrate"].Value;
                 hex_recv = Boolean.Parse(config.AppSettings.Settings["hex_recv"].Value);
                 hex_send = Boolean.Parse(config.AppSettings.Settings["hex_send"].Value);
+                lanugage = config.AppSettings.Settings["language"].Value;
             }
             catch(Exception e)
             {
@@ -170,6 +173,66 @@ namespace BPSTool
             comboBoxBaudrate.Text = baudrate;
             checkBoxHexRecv.Checked = hex_recv;
             checkBoxHexSend.Checked = hex_send;
+
+            
+            if (lanugage.Length == 0 || lanugage.Equals("NONE"))
+            {
+                LanguageForm form = new LanguageForm();
+                form.ShowDialog(this);
+                if(form.DialogResult == DialogResult.OK)
+                {
+                    // System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(form.langSelected);
+                    ChangeLanguage(form.langSelected);
+                }
+                else
+                {
+                    // System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
+                    ChangeLanguage("en");
+                }
+            }
+            else
+            {
+                // System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(lanugage);
+                ChangeLanguage(lanugage);
+            }
+        }
+
+        private void ChangeLanguage(String lang)
+        {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(lang);
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(MainForm));
+            resources.ApplyResources(this, "$this");
+            applyResources(resources, this.Controls);
+        }
+
+        private void applyResources(ComponentResourceManager resources, Control.ControlCollection ctls)
+        {
+            foreach (Control ctl in ctls)
+            {
+                resources.ApplyResources(ctl, ctl.Name);
+                applyResources(resources, ctl.Controls);
+            }
+
+            resources.ApplyResources(this.editToolStripMenuItem, this.editToolStripMenuItem.Name);
+            resources.ApplyResources(this.helpToolStripMenuItem, this.helpToolStripMenuItem.Name);
+
+            resources.ApplyResources(this.optionsToolStripMenuItem, this.optionsToolStripMenuItem.Name);
+            resources.ApplyResources(this.exitToolStripMenuItem, this.exitToolStripMenuItem.Name);
+            resources.ApplyResources(this.docToolStripMenuItem, this.docToolStripMenuItem.Name);
+            resources.ApplyResources(this.languageToolStripMenuItem, this.languageToolStripMenuItem.Name);
+            resources.ApplyResources(this.aboutToolStripMenuItem, this.aboutToolStripMenuItem.Name);
+        }
+
+        private void ApplyResource()
+        {
+            System.ComponentModel.ComponentResourceManager res = new ComponentResourceManager(typeof(MainForm));
+            foreach (Control ctl in Controls)
+            {
+                res.ApplyResources(ctl, ctl.Name);
+            }
+            this.ResumeLayout(false);
+            this.PerformLayout();
+            res.ApplyResources(this, "$this");
         }
 
         private void AddBPSDelegate()
@@ -1132,5 +1195,17 @@ namespace BPSTool
 
             }
         }
+
+        private void LanguageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LanguageForm form = new LanguageForm();
+            form.ShowDialog(this);
+            if (form.DialogResult == DialogResult.OK)
+            {
+                ChangeLanguage(form.langSelected);
+            }
+        }
+
+
     }
 }

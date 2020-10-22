@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,6 +16,11 @@ namespace BPSTool
             {
                 e.Handled = true;
             }
+        }
+
+        static public ResourceManager getResourceMng()
+        {
+            return new ResourceManager("BPSTool.ResourceStr", Assembly.GetExecutingAssembly());
         }
     }
 }
