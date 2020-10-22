@@ -117,7 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="StrCommErr" xml:space="preserve">
+    <value>Communication Error</value>
+  </data>
+  <data name="StrLatestVersion" xml:space="preserve">
+    <value>It's already the latest version</value>
+  </data>
+  <data name="StrLink" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="StrMax20BytesNote" xml:space="preserve">
+    <value>Only 20 bytes maximum allowed</value>
+  </data>
+  <data name="StrNewVersionAvailable" xml:space="preserve">
+    <value>New version available</value>
+  </data>
+  <data name="StrNoBPSDevFound" xml:space="preserve">
+    <value>No BPS device found</value>
+  </data>
+  <data name="StrNoSerialDev" xml:space="preserve">
+    <value>No serial port found</value>
+  </data>
+  <data name="StrNotAllowNoneNote" xml:space="preserve">
+    <value>It cannot write blank data</value>
+  </data>
+  <data name="StrNote" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="StrRecvArrow" xml:space="preserve">
+    <value>Recv←</value>
+  </data>
   <data name="StrSearch" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="StrSendArrow" xml:space="preserve">
+    <value>Send→</value>
+  </data>
+  <data name="StrTTDebugCheckbox" xml:space="preserve">
+    <value>Enable uart sending/receiving debugging</value>
+  </data>
+  <data name="StrTTSearchButton" xml:space="preserve">
+    <value>Only search device in BPS mode or setting mode</value>
+  </data>
+  <data name="StrUnlink" xml:space="preserve">
+    <value>Unlink</value>
   </data>
 </root>

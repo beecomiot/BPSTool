@@ -44,8 +44,9 @@ namespace BPSTool
             timeoutLeft = 0;
 
             // strBPSSearch = labeSearchlNote.Text;
-            ResourceManager rm = UITools.getResourceMng();
-            strBPSSearch = rm.GetString("StrSearch", System.Threading.Thread.CurrentThread.CurrentUICulture);
+            // ResourceManager rm = UITools.getResourceMng();
+            // strBPSSearch = rm.GetString("StrSearch", System.Threading.Thread.CurrentThread.CurrentUICulture);
+            strBPSSearch = UITools.GetString("StrSearch");
 
             baudrateList = new List<int>(BpsUtils.StdBaudrate);
             baudrateListIndex = (baudrateList.Count > 0) ? (baudrateList.Count - 1) : -1;
@@ -204,7 +205,7 @@ namespace BPSTool
         {
             if (portListIndex < 0)
             {
-                MessageBox.Show(this, MainForm.STR_NO_SERIAL_PORT, MainForm.STR_NOTE);
+                MessageBox.Show(this, UITools.GetString("StrNoSerialDev"), UITools.GetString("StrNote"));
                 bpsMngObj.UartClose();
                 bpsMngObj.RemoveRecvHandler(DelUartRecv);
                 this.Close();

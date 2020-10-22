@@ -10,6 +10,7 @@ namespace BPSTool
 {
     class UITools
     {
+        private static ResourceManager rmInstance = null;
         static public void textBoxKeyPress_OnlyDigital(ref KeyPressEventArgs e)
         {
             if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
@@ -18,9 +19,18 @@ namespace BPSTool
             }
         }
 
-        static public ResourceManager getResourceMng()
+        static private ResourceManager getResourceMng()
         {
-            return new ResourceManager("BPSTool.ResourceStr", Assembly.GetExecutingAssembly());
+            if(null == rmInstance)
+            {
+                rmInstance = new ResourceManager("BPSTool.ResourceStr", Assembly.GetExecutingAssembly());
+            }
+            return rmInstance;
+        }
+
+        static public String GetString(String name)
+        {
+            return getResourceMng().GetString(name, System.Threading.Thread.CurrentThread.CurrentUICulture);
         }
     }
 }

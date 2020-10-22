@@ -29,25 +29,13 @@ namespace BPSTool
             EN_BPS_PARSE_CHKSUM,
         }
 
-        public const string STR_COMM_ERR = "通信错误";
-        public const string STR_NEWEST_VERSION = "已经是最新版本";
-        public const string STR_NEW_VERSION_CHECK = "检测到新版：";
-        public const string STR_BUTTON_CONNECT = "连接";
-        public const string STR_BUTTON_DISCONNECT = "断开";
-        public const string STR_TT_DEBUG_SEND = "仅支持16进制发送，例如“BB CC 00 01 00 01 00 02”";
-        public const string STR_TT_SEARCH = "仅搜索处于BPS模式（或者设置模式）的设备";
-        public const string STR_TT_DEBUG_ENABLE = "使能串口发送/接收调试";
-        public const string STR_TT_BLE_NAME = "最长20字节";
-        public const string STR_DEBUG_SEND_PREFIX = "发送→：";
-        public const string STR_DEBUG_RECV_PREFIX = "接收←：";
-        public const string STR_NOTE = "提示";
-        public const string STR_MB_SETTING_NOT_NULL = "设置内容不可为空";
-        public const string STR_NO_SERIAL_PORT = "无串口设备";
-        public const string STR_NO_BPS_PORT_FOUND = "没有发现BPS设备";
+        private string STR_SEND_PREFIX;
+        private string STR_RECV_PREFIX;
 
+        public const string BPSTOOL_NAME = "BPSTool";
         public const uint BPSTOOL_VERSION_MAIN = 1;
         public const uint BPSTOOL_VERSION_SUB = 0;
-        public const uint BPSTOOL_VERSION_PATCH = 3;
+        public const uint BPSTOOL_VERSION_PATCH = 2;
 
         public delegate void DelUpdateUI_VV();
         public delegate void DelUpdateUI_VL(ref List<Byte> msg);
@@ -83,46 +71,6 @@ namespace BPSTool
         {
             InitializeComponent();
 
-            UpdateChecker = new Updater(this);
-            DelUpdateChecker = new DelUpdateUI_VV(UpdateLabelCallback);
-
-            if (UpdateChecker.EndFlag)
-            {
-                UpdateChecker.StartWebRequest(DelUpdateChecker);
-            }
-            linkLabelVersionUpdate.Text = "";
-
-            /** append version info to title */
-            this.Text += "-V" + BPSTOOL_VERSION_MAIN + "." + BPSTOOL_VERSION_SUB + "." + BPSTOOL_VERSION_PATCH;
-
-            //uartMng = new UartMng(this);
-            bpsMngObj = new BpsMng();
-            DelUartRecv = new BpsMng.DelBPSRecvHandler(UartDataReceivedHandler);
-            DelUartSendDebug = new BpsMng.DelBPSSendDebugHandler(SendDebugHandler);
-            DelUartRecvDebug = new BpsMng.DelBPSRecvDebugHandler(RecvDebugHandler);
-            DelUartError = new BpsMng.DelUartErrorHandler(UartErrorHandler);
-
-            AddBPSDelegate();
-            // DelUartError = new DelUpdateUI_VV(UartErrorCallback);
-
-            //serialErrorReceivedEvent = new SerialErrorReceivedEventHandler(UartErrorReceivedCallback);
-            //uartMng.ErrorCallbackAdd(serialErrorReceivedEvent);
-            //serialDataReceivedEvent = new SerialDataReceivedEventHandler(UartDataeceivedCallback);
-            //uartMng.ReadCallbackAdd(serialDataReceivedEvent);
-
-            RefreshUartList();
-            if (comboBoxUart.Items.Count > 0)
-            {
-                comboBoxUart.SelectedIndex = 0;
-            }
-            searchSerialPortMap = new Dictionary<string, int>();
-
-            /** TODO: need to move to uartMng */
-            //RecvBuffer = new List<byte>();
-            //HeadClear();
-            //enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
-            //remainLength = 0;
-
             /** read configurature */
             bool debug_checked = true;
             String baudrate = "9600";
@@ -134,7 +82,7 @@ namespace BPSTool
                 //指定config文件读取
                 string file = System.Windows.Forms.Application.ExecutablePath;
                 System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(file);
-                if(!config.HasFile)
+                if (!config.HasFile)
                 {
                     string[] ConfigFileOrigin = new string[] {
 @"<?xml version=""1.0"" encoding=""utf-8"" ?>",
@@ -164,22 +112,16 @@ namespace BPSTool
                 hex_send = Boolean.Parse(config.AppSettings.Settings["hex_send"].Value);
                 lanugage = config.AppSettings.Settings["language"].Value;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            checkBoxDebugEnable.Checked = debug_checked;
-            comboBoxBaudrate.Text = baudrate;
-            checkBoxHexRecv.Checked = hex_recv;
-            checkBoxHexSend.Checked = hex_send;
-
-            
             if (lanugage.Length == 0 || lanugage.Equals("NONE"))
             {
                 LanguageForm form = new LanguageForm();
                 form.ShowDialog(this);
-                if(form.DialogResult == DialogResult.OK)
+                if (form.DialogResult == DialogResult.OK)
                 {
                     // System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(form.langSelected);
                     ChangeLanguage(form.langSelected);
@@ -195,6 +137,52 @@ namespace BPSTool
                 // System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(lanugage);
                 ChangeLanguage(lanugage);
             }
+
+            checkBoxDebugEnable.Checked = debug_checked;
+            comboBoxBaudrate.Text = baudrate;
+            checkBoxHexRecv.Checked = hex_recv;
+            checkBoxHexSend.Checked = hex_send;
+
+            UpdateChecker = new Updater(this);
+            DelUpdateChecker = new DelUpdateUI_VV(UpdateLabelCallback);
+
+            if (UpdateChecker.EndFlag)
+            {
+                UpdateChecker.StartWebRequest(DelUpdateChecker);
+            }
+
+            linkLabelVersionUpdate.Text = "";
+
+            /** append version info to title */
+            this.Text = BPSTOOL_NAME + "-V" + BPSTOOL_VERSION_MAIN + "." + BPSTOOL_VERSION_SUB + "." + BPSTOOL_VERSION_PATCH;
+
+            //uartMng = new UartMng(this);
+            bpsMngObj = new BpsMng();
+            DelUartRecv = new BpsMng.DelBPSRecvHandler(UartDataReceivedHandler);
+            DelUartSendDebug = new BpsMng.DelBPSSendDebugHandler(SendDebugHandler);
+            DelUartRecvDebug = new BpsMng.DelBPSRecvDebugHandler(RecvDebugHandler);
+            DelUartError = new BpsMng.DelUartErrorHandler(UartErrorHandler);
+
+            AddBPSDelegate();
+            // DelUartError = new DelUpdateUI_VV(UartErrorCallback);
+
+            //serialErrorReceivedEvent = new SerialErrorReceivedEventHandler(UartErrorReceivedCallback);
+            //uartMng.ErrorCallbackAdd(serialErrorReceivedEvent);
+            //serialDataReceivedEvent = new SerialDataReceivedEventHandler(UartDataeceivedCallback);
+            //uartMng.ReadCallbackAdd(serialDataReceivedEvent);
+
+            RefreshUartList();
+            if (comboBoxUart.Items.Count > 0)
+            {
+                comboBoxUart.SelectedIndex = 0;
+            }
+            searchSerialPortMap = new Dictionary<string, int>();
+
+            /** TODO: need to move to uartMng */
+            //RecvBuffer = new List<byte>();
+            //HeadClear();
+            //enBPSParseStep = EnBPSParseStep.EN_BPS_PARSE_HEADER;
+            //remainLength = 0;
         }
 
         private void ChangeLanguage(String lang)
@@ -203,6 +191,14 @@ namespace BPSTool
             ComponentResourceManager resources = new ComponentResourceManager(typeof(MainForm));
             resources.ApplyResources(this, "$this");
             applyResources(resources, this.Controls);
+
+            /* this label cannot be update, so we clear it*/
+            linkLabelVersionUpdate.Text = "";
+            this.Text = BPSTOOL_NAME + "-V" + BPSTOOL_VERSION_MAIN + "." + BPSTOOL_VERSION_SUB + "." + BPSTOOL_VERSION_PATCH;
+
+            /* these strings used in different threads which need to be set previously*/
+            STR_SEND_PREFIX = UITools.GetString("StrSendArrow");
+            STR_RECV_PREFIX = UITools.GetString("StrRecvArrow");
         }
 
         private void applyResources(ComponentResourceManager resources, Control.ControlCollection ctls)
@@ -258,7 +254,7 @@ namespace BPSTool
                 DelDebugMsg del = new DelDebugMsg(printMsg);
                 object[] args = new object[3];
                 args[0] = msgList.msgList;
-                args[1] = STR_DEBUG_SEND_PREFIX;
+                args[1] = STR_SEND_PREFIX;
                 args[2] = checkBoxHexSend.Checked;
                 BeginInvoke(del, args);
             }
@@ -271,7 +267,7 @@ namespace BPSTool
                 DelDebugMsg del = new DelDebugMsg(printMsg);
                 object[] args = new object[3];
                 args[0] = msgList.msgList;
-                args[1] = STR_DEBUG_RECV_PREFIX;
+                args[1] = STR_RECV_PREFIX;
                 args[2] = checkBoxHexRecv.Checked;
                 BeginInvoke(del, args);
             }
@@ -411,7 +407,7 @@ namespace BPSTool
                 if (!UpdateChecker.LaunchCheckFlag)
                 {
                     linkLabelVersionUpdate.LinkColor = Color.Red;
-                    linkLabelVersionUpdate.Text = STR_COMM_ERR;
+                    linkLabelVersionUpdate.Text = UITools.GetString("StrCommErr");
                     linkLabelVersionUpdate.Enabled = false;
                 }
             }
@@ -468,7 +464,7 @@ namespace BPSTool
 
                 if(newVersionProbed)
                 {
-                    linkLabelVersionUpdate.Text = STR_NEW_VERSION_CHECK + UpdateChecker.LastestVersion;
+                    linkLabelVersionUpdate.Text = UITools.GetString("StrNewVersionAvailable") + ":" + UpdateChecker.LastestVersion;
                     linkLabelVersionUpdate.LinkColor = Color.Blue;
                     linkLabelVersionUpdate.Enabled = true;
                 }
@@ -478,7 +474,7 @@ namespace BPSTool
                     {
                         linkLabelVersionUpdate.Enabled = true;
                         linkLabelVersionUpdate.LinkColor = Color.Green;
-                        linkLabelVersionUpdate.Text = STR_NEWEST_VERSION;
+                        linkLabelVersionUpdate.Text = UITools.GetString("StrLatestVersion");
                     }
                 }
             }
@@ -610,7 +606,7 @@ namespace BPSTool
         private void UartErrorCallback()
         {
             bpsMngObj.UartClose();
-            buttonUartLink.Text = STR_BUTTON_CONNECT;
+            buttonUartLink.Text = UITools.GetString("StrLink") ;
             comboBoxUart.Enabled = true;
             buttonSearch.Enabled = true;
         }
@@ -651,7 +647,6 @@ namespace BPSTool
         {
             ToolTip p = new ToolTip();
             p.ShowAlways = true;
-            p.SetToolTip(this.buttonDebugSend, STR_TT_DEBUG_SEND);
         }
 
         private void textBoxDebugSend_MouseHover(object sender, EventArgs e)
@@ -701,7 +696,7 @@ namespace BPSTool
         {
             ToolTip p = new ToolTip();
             p.ShowAlways = true;
-            p.SetToolTip(this.checkBoxDebugEnable, STR_TT_DEBUG_ENABLE);
+            p.SetToolTip(this.checkBoxDebugEnable, UITools.GetString("StrTTDebugCheckbox"));
         }
 
         private void tabPageBC1110_Click(object sender, EventArgs e)
@@ -718,7 +713,7 @@ namespace BPSTool
         {
             if(textBoxName.Text.Length == 0)
             {
-                DialogResult dr = MessageBox.Show(STR_MB_SETTING_NOT_NULL, STR_NOTE);
+                DialogResult dr = MessageBox.Show(UITools.GetString("StrNotAllowNoneNote"), UITools.GetString("StrNote"));
                 return;
             }
             BPSPacketName bpsPacket = new BPSPacketName();
@@ -753,14 +748,14 @@ namespace BPSTool
 
         private void StateConnected()
         {
-            buttonUartLink.Text = STR_BUTTON_DISCONNECT;
+            buttonUartLink.Text = UITools.GetString("StrUnlink");
             comboBoxUart.Enabled = false;
             buttonSearch.Enabled = false;
         }
 
         private void StateDisconnected()
         {
-            buttonUartLink.Text = STR_BUTTON_CONNECT;
+            buttonUartLink.Text = UITools.GetString("StrLink");
             comboBoxUart.Enabled = true;
             buttonSearch.Enabled = true;
         }
@@ -798,7 +793,7 @@ namespace BPSTool
         {
             ToolTip p = new ToolTip();
             p.ShowAlways = true;
-            p.SetToolTip(this.textBoxDebugSend, STR_TT_BLE_NAME);
+            p.SetToolTip(this.textBoxDebugSend, UITools.GetString("StrMax20BytesNote"));
         }
 
         private bool hexParse(string hexString, ref List<byte> hexList)
@@ -940,7 +935,7 @@ namespace BPSTool
             {
                 if (e.KeyChar != '\b')
                 {
-                    DialogResult dr = MessageBox.Show(STR_TT_BLE_NAME, STR_NOTE);
+                    DialogResult dr = MessageBox.Show(UITools.GetString("StrMax20BytesNote"), UITools.GetString("StrNote"));
                     e.Handled = true;
                 }
             }
@@ -957,7 +952,7 @@ namespace BPSTool
             {
                 if (textBoxBaudrate.Text.Length == 0)
                 {
-                    DialogResult dr = MessageBox.Show(STR_MB_SETTING_NOT_NULL, STR_NOTE);
+                    DialogResult dr = MessageBox.Show(UITools.GetString("StrNotAllowNoneNote"), UITools.GetString("StrNote"));
                     return;
                 }
                 BPSPacketBaudrate bpsPacket = new BPSPacketBaudrate();
@@ -1078,7 +1073,7 @@ namespace BPSTool
             }
             else
             {
-                MessageBox.Show(this, STR_NO_BPS_PORT_FOUND, STR_NOTE);
+                MessageBox.Show(this, UITools.GetString("StrNoBPSDevFound"), UITools.GetString("StrNote"));
             }
             
             AddBPSDelegate();
@@ -1103,7 +1098,7 @@ namespace BPSTool
         {
             ToolTip p = new ToolTip();
             p.ShowAlways = true;
-            p.SetToolTip(this.buttonSearch, STR_TT_SEARCH);
+            p.SetToolTip(this.buttonSearch, UITools.GetString("StrTTSearchButton"));
         }
 
         private void checkBoxHexSend_CheckedChanged(object sender, EventArgs e)
@@ -1151,7 +1146,7 @@ namespace BPSTool
         {
             if (textBoxLinkMaintainTime.Text.Length == 0)
             {
-                DialogResult dr = MessageBox.Show(STR_MB_SETTING_NOT_NULL, STR_NOTE);
+                DialogResult dr = MessageBox.Show(UITools.GetString("StrNotAllowNoneNote"), UITools.GetString("StrNote"));
                 return;
             }
             BPSPacketLinkMaintainTime bpsPacket = new BPSPacketLinkMaintainTime();
@@ -1164,7 +1159,7 @@ namespace BPSTool
         {
             if (textBoxAdvInterval.Text.Length == 0)
             {
-                DialogResult dr = MessageBox.Show(STR_MB_SETTING_NOT_NULL, STR_NOTE);
+                DialogResult dr = MessageBox.Show(UITools.GetString("StrNotAllowNoneNote"), UITools.GetString("StrNote"));
                 return;
             }
             BPSPacketAdvInterval bpsPacket = new BPSPacketAdvInterval();
@@ -1202,7 +1197,11 @@ namespace BPSTool
             form.ShowDialog(this);
             if (form.DialogResult == DialogResult.OK)
             {
-                ChangeLanguage(form.langSelected);
+                if(!form.langSelected.Equals(System.Threading.Thread.CurrentThread.CurrentUICulture.Name))
+                {
+                    ChangeLanguage(form.langSelected);
+                }
+                
             }
         }
 

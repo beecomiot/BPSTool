@@ -117,7 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="StrCommErr" xml:space="preserve">
+    <value>通信错误</value>
+  </data>
+  <data name="StrLatestVersion" xml:space="preserve">
+    <value>已经是最新版本</value>
+  </data>
+  <data name="StrLink" xml:space="preserve">
+    <value>连接</value>
+  </data>
+  <data name="StrMax20BytesNote" xml:space="preserve">
+    <value>最长20字节</value>
+  </data>
+  <data name="StrNewVersionAvailable" xml:space="preserve">
+    <value>检测到新版</value>
+  </data>
+  <data name="StrNoBPSDevFound" xml:space="preserve">
+    <value>没有发现BPS设备</value>
+  </data>
+  <data name="StrNoSerialDev" xml:space="preserve">
+    <value>无串口设备</value>
+  </data>
+  <data name="StrNotAllowNoneNote" xml:space="preserve">
+    <value>设置内容不可为空</value>
+  </data>
+  <data name="StrNote" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="StrRecvArrow" xml:space="preserve">
+    <value>接收←</value>
+  </data>
   <data name="StrSearch" xml:space="preserve">
     <value>搜索</value>
+  </data>
+  <data name="StrSendArrow" xml:space="preserve">
+    <value>发送→</value>
+  </data>
+  <data name="StrTTDebugCheckbox" xml:space="preserve">
+    <value>使能串口发送/接收调试</value>
+  </data>
+  <data name="StrTTSearchButton" xml:space="preserve">
+    <value>仅搜索处于BPS模式（或者设置模式）的设备</value>
+  </data>
+  <data name="StrUnlink" xml:space="preserve">
+    <value>断开</value>
   </data>
 </root>
