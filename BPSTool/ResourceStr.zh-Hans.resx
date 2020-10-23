@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="StrAddrLimitNote" xml:space="preserve">
+    <value>从机地址取值必须为0x0~0xE</value>
+  </data>
+  <data name="StrAddrNotSameWarning" xml:space="preserve">
+    <value>从机地址不可与主机地址相同</value>
+  </data>
   <data name="StrCommErr" xml:space="preserve">
     <value>通信错误</value>
   </data>
@@ -144,6 +150,9 @@
   <data name="StrNote" xml:space="preserve">
     <value>提示</value>
   </data>
+  <data name="StrPleaseReferTo" xml:space="preserve">
+    <value>请参考</value>
+  </data>
   <data name="StrRecvArrow" xml:space="preserve">
     <value>接收←</value>
   </data>
@@ -153,6 +162,9 @@
   <data name="StrSendArrow" xml:space="preserve">
     <value>发送→</value>
   </data>
+  <data name="StrSlaveAddrChangeNote" xml:space="preserve">
+    <value>修改设备地址将导致BPSTool无法与当前设备继续通信，除非您修改BPSTool配置文件中的地址。</value>
+  </data>
   <data name="StrTTDebugCheckbox" xml:space="preserve">
     <value>使能串口发送/接收调试</value>
   </data>
@@ -161,5 +173,8 @@
   </data>
   <data name="StrUnlink" xml:space="preserve">
     <value>断开</value>
+  </data>
+  <data name="StrWarning" xml:space="preserve">
+    <value>警告</value>
   </data>
 </root>

@@ -7,8 +7,10 @@ namespace BPSTool
 {
     class BpsUtils
     {
-        private static int hostAddress = 0;
-        private static int moduleAddress = 1;
+        public static int DEFAULT_MASTER_ADDR = 0;
+        public static int DEFAULT_MODULE_ADDR = 1;
+        private static int hostAddress = DEFAULT_MASTER_ADDR;
+        private static int moduleAddress = DEFAULT_MODULE_ADDR;
         private static byte[] bpsHeader = { 0xBB, 0xCC };
         private static byte[] bpsVersion = { 0x00 };
 
@@ -32,6 +34,28 @@ namespace BPSTool
 
         public static int REMAIN_LEN_INDEX = BPSHeader.Length + BpsUtils.BPSVersion.Length + BpsUtils.BPSAddr.Length;
         public static int DATA_INDEX = REMAIN_LEN_INDEX + BpsUtils.REMAIN_LEN_SIZE;
+
+        public static int MAX_ADDR = 0xE;
+        public static int MIN_ADDR = 0x0;
+
+        public static void updateBpsAddr(int masterAddr, int slaveAddr)
+        {
+            if(masterAddr == slaveAddr)
+            {
+                return;
+            }
+            if(masterAddr < MIN_ADDR || masterAddr > MAX_ADDR)
+            {
+                return;
+            }
+            if (slaveAddr < MIN_ADDR || slaveAddr > MAX_ADDR)
+            {
+                return;
+            }
+            HostAddress = masterAddr;
+            ModuleAddress = slaveAddr;
+            BPSAddr[0] = (byte)((HostAddress << 4) | ModuleAddress);
+        }
 
         public static void PackHeader(ref List<Byte> buf)
         {

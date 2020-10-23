@@ -71,6 +71,7 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="BpsMng.cs" />
+    <Compile Include="BPSPacket\BPSPacketAddrSet.cs" />
     <Compile Include="BPSPacket\BPSPacketAdvInterval.cs" />
     <Compile Include="BPSPacket\BPSPacketBaudrate.cs" />
     <Compile Include="BPSPacket\BPSPacketCommTest.cs" />
@@ -96,6 +97,12 @@
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,6 +139,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.zh-Hans.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsForm.zh-Hans.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ResourceStr.en.resx" />
     <EmbeddedResource Include="ResourceStr.zh-Hans.resx" />

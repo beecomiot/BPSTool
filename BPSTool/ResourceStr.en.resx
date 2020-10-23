@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="StrAddrLimitNote" xml:space="preserve">
+    <value>Only 0x0~0xE are allowed</value>
+  </data>
+  <data name="StrAddrNotSameWarning" xml:space="preserve">
+    <value>The slave address cannot be the same as the master address</value>
+  </data>
   <data name="StrCommErr" xml:space="preserve">
     <value>Communication Error</value>
   </data>
@@ -144,6 +150,9 @@
   <data name="StrNote" xml:space="preserve">
     <value>Note</value>
   </data>
+  <data name="StrPleaseReferTo" xml:space="preserve">
+    <value>Please refer to</value>
+  </data>
   <data name="StrRecvArrow" xml:space="preserve">
     <value>Recv←</value>
   </data>
@@ -153,6 +162,9 @@
   <data name="StrSendArrow" xml:space="preserve">
     <value>Send→</value>
   </data>
+  <data name="StrSlaveAddrChangeNote" xml:space="preserve">
+    <value>When you change the device address, BPSTool will not be able to communicate with the device unless you change the address in  the configure file.</value>
+  </data>
   <data name="StrTTDebugCheckbox" xml:space="preserve">
     <value>Enable uart sending/receiving debugging</value>
   </data>
@@ -161,5 +173,8 @@
   </data>
   <data name="StrUnlink" xml:space="preserve">
     <value>Unlink</value>
+  </data>
+  <data name="StrWarning" xml:space="preserve">
+    <value>Warning</value>
   </data>
 </root>

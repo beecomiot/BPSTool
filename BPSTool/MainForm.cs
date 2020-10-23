@@ -35,7 +35,7 @@ namespace BPSTool
         public const string BPSTOOL_NAME = "BPSTool";
         public const uint BPSTOOL_VERSION_MAIN = 1;
         public const uint BPSTOOL_VERSION_SUB = 0;
-        public const uint BPSTOOL_VERSION_PATCH = 2;
+        public const uint BPSTOOL_VERSION_PATCH = 4;
 
         public delegate void DelUpdateUI_VV();
         public delegate void DelUpdateUI_VL(ref List<Byte> msg);
@@ -77,6 +77,9 @@ namespace BPSTool
             bool hex_recv = true;
             bool hex_send = true;
             String lanugage = "NONE";
+            int masterAddr = BpsUtils.DEFAULT_MASTER_ADDR;
+            int slaveAddr = BpsUtils.DEFAULT_MODULE_ADDR;
+
             try
             {
                 //指定config文件读取
@@ -93,6 +96,8 @@ namespace BPSTool
 @"    <add key=""hex_send"" value=""TRUE"" />",
 @"    <add key=""hex_recv"" value=""TRUE"" />",
 @"    <add key=""language"" value=""NONE"" />",
+@"    <add key=""master_addr"" value=""0"" />",
+@"    <add key=""slave_addr"" value=""1"" />",
 @"  </appSettings>",
 @"</configuration>"
                     };
@@ -111,6 +116,8 @@ namespace BPSTool
                 hex_recv = Boolean.Parse(config.AppSettings.Settings["hex_recv"].Value);
                 hex_send = Boolean.Parse(config.AppSettings.Settings["hex_send"].Value);
                 lanugage = config.AppSettings.Settings["language"].Value;
+                masterAddr = int.Parse(config.AppSettings.Settings["master_addr"].Value);
+                slaveAddr = int.Parse(config.AppSettings.Settings["slave_addr"].Value);
             }
             catch (Exception e)
             {
@@ -142,6 +149,8 @@ namespace BPSTool
             comboBoxBaudrate.Text = baudrate;
             checkBoxHexRecv.Checked = hex_recv;
             checkBoxHexSend.Checked = hex_send;
+
+            BpsUtils.updateBpsAddr(masterAddr, slaveAddr);
 
             UpdateChecker = new Updater(this);
             DelUpdateChecker = new DelUpdateUI_VV(UpdateLabelCallback);
@@ -550,6 +559,14 @@ namespace BPSTool
             }
         }
 
+        private void UIDoBPSPacket(BPSPacketAddrSet bps)
+        {
+            if (null == bps)
+            {
+                return;
+            }
+        }
+
         private void UartDataReceivedHandler(BaseBPSPacket baseBPSPacket)
         {
             DelRecvBPSPacket del = new DelRecvBPSPacket(UartDataReceiedCallback);
@@ -585,6 +602,12 @@ namespace BPSTool
                     case BPSPacketRestoreFac.RESPONSE_CMD:
                         {
                             BPSPacketRestoreFac p = baseBPSPacket as BPSPacketRestoreFac;
+                            UIDoBPSPacket(p);
+                            break;
+                        }
+                    case BPSPacketAddrSet.RESPONSE_CMD:
+                        {
+                            BPSPacketAddrSet p = baseBPSPacket as BPSPacketAddrSet;
                             UIDoBPSPacket(p);
                             break;
                         }
@@ -1181,9 +1204,19 @@ namespace BPSTool
 
         private void DocToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string url;
+            if(System.Threading.Thread.CurrentThread.CurrentUICulture.Name.Contains("en"))
+            {
+                url = "https://www.beecom.online/beecom_files/en/BPSToolUserGuide.pdf";
+            }
+            else
+            {
+                url = "https://www.beecom.online/beecom_files/cn/BPSToolUserGuide.pdf";
+            }
+
             try
             {
-                Process.Start("https://www.beecom.online/support/bpstool%e5%b7%a5%e5%85%b7/");
+                Process.Start(url);
             }
             catch
             {
@@ -1205,6 +1238,61 @@ namespace BPSTool
             }
         }
 
+        private void buttonAddrSet_Click(object sender, EventArgs e)
+        {
+            if (textBoxAddrSet.Text.Length == 0)
+            {
+                DialogResult dr = MessageBox.Show(UITools.GetString("StrNotAllowNoneNote"), UITools.GetString("StrNote"));
+                return;
+            }
 
+            int addr = Convert.ToInt32(textBoxAddrSet.Text, 16);
+            
+            if(addr == BpsUtils.HostAddress)
+            {
+                DialogResult dr = MessageBox.Show(UITools.GetString("StrAddrNotSameWarning"), UITools.GetString("StrNote"));
+                return;
+            }
+
+            String message = UITools.GetString("StrSlaveAddrChangeNote") + UITools.PleaseReferTo(editToolStripMenuItem, optionsToolStripMenuItem);
+
+            if (MessageBox.Show(message, UITools.GetString("StrNote"), MessageBoxButtons.OKCancel) != DialogResult.OK)
+            {
+                return;
+            }
+
+            if (addr < BpsUtils.MIN_ADDR || addr > BpsUtils.MAX_ADDR)
+            {
+                DialogResult dr = MessageBox.Show(UITools.GetString("StrAddrLimitNote"), UITools.GetString("StrNote"));
+                return;
+            }
+            BPSPacketAddrSet bpsPacket = new BPSPacketAddrSet();
+            bpsPacket.Addr = (byte)(addr & 0x0f);
+            bpsMngObj.SendBPSPacketReq(bpsPacket);
+        }
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OptionsForm form = new OptionsForm();
+            form.ShowDialog(this);
+        }
+
+        private void textBoxAddrSet_TextChanged(object sender, EventArgs e)
+        {
+            if(textBoxAddrSet.Text.Length > 1)
+            {
+                textBoxAddrSet.Text = textBoxAddrSet.Text.Substring(0, 1);
+            }
+        }
+
+        private void textBoxAddrSet_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            UITools.textBoxKeyPress_OnlyHex(ref e);
+        }
+
+        private void menuStripMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

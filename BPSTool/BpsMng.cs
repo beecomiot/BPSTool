@@ -276,6 +276,12 @@ namespace BPSTool
                             ret.ResponseParse(ref RecvBuffer);
                             break;
                         }
+                    case BPSPacketAddrSet.RESPONSE_CMD:
+                        {
+                            ret = new BPSPacketAddrSet();
+                            ret.ResponseParse(ref RecvBuffer);
+                            break;
+                        }
                     /** System Parameter Commands */
                     case BPSPacketSysPara.RESPONSE_CMD:
                         {
