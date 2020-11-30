@@ -153,8 +153,8 @@ namespace BPSTool
             // 
             // splitContainerSettingsAndDebug
             // 
-            this.splitContainerSettingsAndDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.splitContainerSettingsAndDebug, "splitContainerSettingsAndDebug");
+            this.splitContainerSettingsAndDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainerSettingsAndDebug.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainerSettingsAndDebug.Name = "splitContainerSettingsAndDebug";
             // 
@@ -170,6 +170,7 @@ namespace BPSTool
             // 
             // splitContainerSettingsAndDebug.Panel2
             // 
+            resources.ApplyResources(this.splitContainerSettingsAndDebug.Panel2, "splitContainerSettingsAndDebug.Panel2");
             this.splitContainerSettingsAndDebug.Panel2.Controls.Add(this.splitContainerDebug);
             // 
             // buttonUartLink
@@ -189,6 +190,7 @@ namespace BPSTool
             // 
             // comboBoxBaudrate
             // 
+            resources.ApplyResources(this.comboBoxBaudrate, "comboBoxBaudrate");
             this.comboBoxBaudrate.FormattingEnabled = true;
             this.comboBoxBaudrate.Items.AddRange(new object[] {
             resources.GetString("comboBoxBaudrate.Items"),
@@ -196,16 +198,15 @@ namespace BPSTool
             resources.GetString("comboBoxBaudrate.Items2"),
             resources.GetString("comboBoxBaudrate.Items3"),
             resources.GetString("comboBoxBaudrate.Items4")});
-            resources.ApplyResources(this.comboBoxBaudrate, "comboBoxBaudrate");
             this.comboBoxBaudrate.Name = "comboBoxBaudrate";
             this.comboBoxBaudrate.SelectedIndexChanged += new System.EventHandler(this.comboBoxBaudrate_SelectedIndexChanged);
             this.comboBoxBaudrate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxBaudrate_KeyPress);
             // 
             // comboBoxUart
             // 
+            resources.ApplyResources(this.comboBoxUart, "comboBoxUart");
             this.comboBoxUart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxUart.FormattingEnabled = true;
-            resources.ApplyResources(this.comboBoxUart, "comboBoxUart");
             this.comboBoxUart.Name = "comboBoxUart";
             this.comboBoxUart.SelectedIndexChanged += new System.EventHandler(this.comboBoxUart_SelectedIndexChanged);
             this.comboBoxUart.MouseHover += new System.EventHandler(this.comboBoxUart_MouseHover);
@@ -222,46 +223,48 @@ namespace BPSTool
             // 
             // splitContainerDebug
             // 
-            this.splitContainerDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.splitContainerDebug, "splitContainerDebug");
+            this.splitContainerDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainerDebug.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainerDebug.Name = "splitContainerDebug";
             // 
             // splitContainerDebug.Panel1
             // 
+            resources.ApplyResources(this.splitContainerDebug.Panel1, "splitContainerDebug.Panel1");
             this.splitContainerDebug.Panel1.Controls.Add(this.textBoxDebugMsg);
             this.splitContainerDebug.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainerDebug.Panel2
             // 
+            resources.ApplyResources(this.splitContainerDebug.Panel2, "splitContainerDebug.Panel2");
             this.splitContainerDebug.Panel2.Controls.Add(this.splitContainerDebugSend);
             // 
             // textBoxDebugMsg
             // 
-            this.textBoxDebugMsg.ContextMenuStrip = this.contextMenuStripDebugMsg;
             resources.ApplyResources(this.textBoxDebugMsg, "textBoxDebugMsg");
+            this.textBoxDebugMsg.ContextMenuStrip = this.contextMenuStripDebugMsg;
             this.textBoxDebugMsg.Name = "textBoxDebugMsg";
             this.textBoxDebugMsg.TextChanged += new System.EventHandler(this.textBoxDebugMsg_TextChanged);
             // 
             // contextMenuStripDebugMsg
             // 
+            resources.ApplyResources(this.contextMenuStripDebugMsg, "contextMenuStripDebugMsg");
             this.contextMenuStripDebugMsg.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStripDebugMsg.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemCopy,
             this.toolStripMenuItemClear});
             this.contextMenuStripDebugMsg.Name = "contextMenuStripDebugMsg";
-            resources.ApplyResources(this.contextMenuStripDebugMsg, "contextMenuStripDebugMsg");
             // 
             // toolStripMenuItemCopy
             // 
-            this.toolStripMenuItemCopy.Name = "toolStripMenuItemCopy";
             resources.ApplyResources(this.toolStripMenuItemCopy, "toolStripMenuItemCopy");
+            this.toolStripMenuItemCopy.Name = "toolStripMenuItemCopy";
             this.toolStripMenuItemCopy.Click += new System.EventHandler(this.toolStripMenuItemCopy_Click);
             // 
             // toolStripMenuItemClear
             // 
-            this.toolStripMenuItemClear.Name = "toolStripMenuItemClear";
             resources.ApplyResources(this.toolStripMenuItemClear, "toolStripMenuItemClear");
+            this.toolStripMenuItemClear.Name = "toolStripMenuItemClear";
             this.toolStripMenuItemClear.Click += new System.EventHandler(this.toolStripMenuItemClear_Click);
             // 
             // splitContainerDebugSend
@@ -272,10 +275,12 @@ namespace BPSTool
             // 
             // splitContainerDebugSend.Panel1
             // 
+            resources.ApplyResources(this.splitContainerDebugSend.Panel1, "splitContainerDebugSend.Panel1");
             this.splitContainerDebugSend.Panel1.Controls.Add(this.textBoxDebugSend);
             // 
             // splitContainerDebugSend.Panel2
             // 
+            resources.ApplyResources(this.splitContainerDebugSend.Panel2, "splitContainerDebugSend.Panel2");
             this.splitContainerDebugSend.Panel2.Controls.Add(this.buttonDebugSend);
             // 
             // textBoxDebugSend
@@ -297,13 +302,14 @@ namespace BPSTool
             // 
             // splitContainerTop1Title
             // 
-            this.splitContainerTop1Title.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             resources.ApplyResources(this.splitContainerTop1Title, "splitContainerTop1Title");
+            this.splitContainerTop1Title.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainerTop1Title.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainerTop1Title.Name = "splitContainerTop1Title";
             // 
             // splitContainerTop1Title.Panel1
             // 
+            resources.ApplyResources(this.splitContainerTop1Title.Panel1, "splitContainerTop1Title.Panel1");
             this.splitContainerTop1Title.Panel1.Controls.Add(this.linkLabelVersionUpdate);
             this.splitContainerTop1Title.Panel1.Controls.Add(this.buttonCheckVersion);
             this.splitContainerTop1Title.Panel1.Controls.Add(this.groupBoxDebug);
@@ -312,6 +318,7 @@ namespace BPSTool
             // 
             // splitContainerTop1Title.Panel2
             // 
+            resources.ApplyResources(this.splitContainerTop1Title.Panel2, "splitContainerTop1Title.Panel2");
             this.splitContainerTop1Title.Panel2.Controls.Add(this.splitContainerTop2DeviceAndDebug);
             this.splitContainerTop1Title.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             // 
@@ -330,10 +337,10 @@ namespace BPSTool
             // 
             // groupBoxDebug
             // 
+            resources.ApplyResources(this.groupBoxDebug, "groupBoxDebug");
             this.groupBoxDebug.Controls.Add(this.checkBoxHexSend);
             this.groupBoxDebug.Controls.Add(this.checkBoxHexRecv);
             this.groupBoxDebug.Controls.Add(this.checkBoxDebugEnable);
-            resources.ApplyResources(this.groupBoxDebug, "groupBoxDebug");
             this.groupBoxDebug.Name = "groupBoxDebug";
             this.groupBoxDebug.TabStop = false;
             // 
@@ -366,23 +373,25 @@ namespace BPSTool
             // 
             // splitContainerTop2DeviceAndDebug
             // 
-            this.splitContainerTop2DeviceAndDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.splitContainerTop2DeviceAndDebug, "splitContainerTop2DeviceAndDebug");
+            this.splitContainerTop2DeviceAndDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainerTop2DeviceAndDebug.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainerTop2DeviceAndDebug.Name = "splitContainerTop2DeviceAndDebug";
             // 
             // splitContainerTop2DeviceAndDebug.Panel1
             // 
+            resources.ApplyResources(this.splitContainerTop2DeviceAndDebug.Panel1, "splitContainerTop2DeviceAndDebug.Panel1");
             this.splitContainerTop2DeviceAndDebug.Panel1.Controls.Add(this.tabControlDevice);
             // 
             // splitContainerTop2DeviceAndDebug.Panel2
             // 
+            resources.ApplyResources(this.splitContainerTop2DeviceAndDebug.Panel2, "splitContainerTop2DeviceAndDebug.Panel2");
             this.splitContainerTop2DeviceAndDebug.Panel2.Controls.Add(this.splitContainerSettingsAndDebug);
             // 
             // tabControlDevice
             // 
-            this.tabControlDevice.Controls.Add(this.tabPageBC1110);
             resources.ApplyResources(this.tabControlDevice, "tabControlDevice");
+            this.tabControlDevice.Controls.Add(this.tabPageBC1110);
             this.tabControlDevice.Name = "tabControlDevice";
             this.tabControlDevice.SelectedIndex = 0;
             this.tabControlDevice.Tag = "";
@@ -609,47 +618,47 @@ namespace BPSTool
             // 
             // menuStripMain
             // 
+            resources.ApplyResources(this.menuStripMain, "menuStripMain");
             this.menuStripMain.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editToolStripMenuItem,
             this.helpToolStripMenuItem});
-            resources.ApplyResources(this.menuStripMain, "menuStripMain");
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStripMain_ItemClicked);
             // 
             // editToolStripMenuItem
             // 
+            resources.ApplyResources(this.editToolStripMenuItem, "editToolStripMenuItem");
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.optionsToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            resources.ApplyResources(this.editToolStripMenuItem, "editToolStripMenuItem");
             // 
             // optionsToolStripMenuItem
             // 
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             resources.ApplyResources(this.optionsToolStripMenuItem, "optionsToolStripMenuItem");
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.docToolStripMenuItem,
             this.languageToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             // 
             // docToolStripMenuItem
             // 
-            this.docToolStripMenuItem.Name = "docToolStripMenuItem";
             resources.ApplyResources(this.docToolStripMenuItem, "docToolStripMenuItem");
+            this.docToolStripMenuItem.Name = "docToolStripMenuItem";
             this.docToolStripMenuItem.Click += new System.EventHandler(this.DocToolStripMenuItem_Click);
             // 
             // languageToolStripMenuItem
@@ -660,8 +669,8 @@ namespace BPSTool
             // 
             // aboutToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // MainForm

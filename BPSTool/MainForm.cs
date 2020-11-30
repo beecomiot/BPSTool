@@ -226,6 +226,9 @@ namespace BPSTool
             resources.ApplyResources(this.docToolStripMenuItem, this.docToolStripMenuItem.Name);
             resources.ApplyResources(this.languageToolStripMenuItem, this.languageToolStripMenuItem.Name);
             resources.ApplyResources(this.aboutToolStripMenuItem, this.aboutToolStripMenuItem.Name);
+
+            resources.ApplyResources(this.toolStripMenuItemCopy, this.toolStripMenuItemCopy.Name);
+            resources.ApplyResources(this.toolStripMenuItemClear, this.toolStripMenuItemClear.Name);
         }
 
         private void ApplyResource()
